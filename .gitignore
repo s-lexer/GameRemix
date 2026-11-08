@@ -1,0 +1,16 @@
+scratch/
+dist/
+Screenshot_*.jpg
+*.exe
+*.dll
+*.png
+*.jpg
+*.gz
+*.cmp
+__pycache__/
+*.pyc
+.claude/
+
+# local tool state
+.codegraph/
+.cursor/

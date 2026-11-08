@@ -1,0 +1,17 @@
+# Descriptor of the downloadable item-pictures set "Items: Redrawn" (built by shared/assets/build_asset_set.py). NOT published to the server.
+id=items-redrawn
+game=divine-divinity
+version=1.2.4
+kind=items
+layer=1
+name.ru=Предметы: Перерисованные
+name.en=Items: Redrawn
+desc.ru=Предметы в рюкзаке и на земле перерисованы заново и крупнее (×1,2), иконки оружия на кукле — в стиле «Перерисованного» интерфейса; иконки хотбара и слотов — оригинальные
+desc.en=Backpack and ground items redrawn and larger (x1.2), weapons on the paper doll in the "Redrawn" style; hotbar and quick-slot icons stay original
+src=scratch/sr_lab/set_items_a0
+include=static/imagelists
+orig=scratch/gfx_sets/orig
+orig=scratch/gfx_sets/v2_1
+orig=scratch/gfx_sets/v2full
+orig=X:/GAMES/Divine Divinity
+preview=inv|previews/inv_itemsRedrawn.jpg|600|350

@@ -1,0 +1,55 @@
+# Help texts of the Graphics page for Divine Divinity (embedded as resource help_game). Same format as shared/help/graphics.txt.
+
+## gfx_pic
+title.ru=Апскейлинг
+title.en=Upscaling
+ru=Переключатель «Выкл | Вкл». Вкл — вся картинка игры (персонажи, монстры, предметы, плитки земли) заменяется копией, очищенной нейросетью от шума и зубцов; размеры и прозрачность не меняются.\nВыкл — оригинальные рисунки.\nПример: у героев и доспехов ровнее края и чище цвета.\nНабор весит ~470 МБ и скачивается один раз с нашего сервера (можно отменить и продолжить). Оригиналы сохраняются, откат одной кнопкой. Как и остальные выборы на странице, переключатель ничего не меняет, пока вы не нажмёте «Применить».
+en=An Off | On switch. On - the whole game picture (characters, monsters, items, ground tiles) is replaced by a copy cleaned of noise and jaggies by a neural network; sizes and transparency stay the same.\nOff - the original pictures.\nExample: heroes and armour have cleaner edges and colours.\nThe set weighs about 470 MB and is downloaded once from our server (you can cancel and continue). Originals are kept, one-click revert. Like every choice on the page, the switch changes nothing until you press Apply.
+
+## gfx_ui
+title.ru=Интерфейс
+title.en=Interface
+ru=Оформление окон, рамок и кнопок. Раскладка окон не меняется — только рисунки.\n«Перерисованный» — новые окна инвентаря и экипировки, остальное в той же бирюзе с золотом. «Пергамент» — тёмная кожа и бумага. «Тёмный металл» — железо и бронза. «Оригинал HD» — прежний вид, но чище. «Тёмное стекло» — плоские графитовые панели.\nОдин скин за раз. Выбор виден на превью слева (ползунок «До | После»).\nСкины ложатся поверх выбранной картинки игры.
+en=The look of windows, frames and buttons. The window layout does not change - only the pictures.\nRedrawn - new inventory and equipment windows, the rest in the same teal and gold. Parchment - dark leather and paper. Dark metal - iron and bronze. Original HD - the old look, but cleaner. Dark glass - flat graphite panels.\nOne skin at a time. The choice shows in the preview on the left (Before | After slider).\nSkins go on top of the chosen game picture.
+
+## gfx_fonts
+title.ru=Шрифты
+title.en=Fonts
+ru=Переключатель «Выкл | Вкл». «Выкл» сразу ставит оригинальные шрифты. «Вкл» открывает окно выбора шрифтов: основные, книги и дневник, диалоги — по три варианта с образцом текста; «Крупные» и остальное применяются там. Если закрыть окно, ничего не выбрав, переключатель вернётся в прежнее положение. То же окно открывает и клик по названию «Шрифты ›». Если выбраны свои шрифты, ни одна сторона не горит.\nПример: «Крупные» помогают читать диалоги на мониторе 2K и 4K.\nШрифты меняются сразу (а не кнопкой «Применить» внизу страницы); игра должна быть закрыта.
+en=An Off | On switch. Off puts the original fonts back at once. On opens the font window: main, books and diary, dialogues - three variants each with a text sample; "Larger" and the rest are applied there. If you close the window without choosing, the switch goes back to where it was. Clicking the name "Fonts >" opens the same window. If you picked your own fonts, neither side is lit.\nExample: Larger makes dialogues easier to read on a 2K or 4K monitor.\nFonts change at once (not with the Apply button at the bottom of the page); the game must be closed.
+
+## gfx_render
+title.ru=Рендер
+title.en=Renderer
+ru=Какая обёртка выводит картинку игры на экран: gr-draw (рекомендуется) или dgVoodoo.\nКнопка «Настроить» открывает окно настроек включённой обёртки: режим окна, фильтр, сглаживание, синхронизация.\nПереключить обёртку можно на странице «Патчи и фиксы».
+en=Which wrapper puts the game picture on the screen: gr-draw (recommended) or dgVoodoo.\nThe Adjust button opens the settings of the active wrapper: window mode, filter, smoothing, sync.\nYou can switch the wrapper on the Patches & fixes page.
+
+## gfx_fix_dusk
+title.ru=Закат и рассвет
+title.en=Dusk and dawn
+ru=Игра меняет день на ночь резким скачком. Правка делает смену плавной (один байт в div.exe).\nНичего больше не затрагивает; выключается обратно без следов.
+en=The game switches day to night in one jump. The fix makes the change smooth (one byte in div.exe).\nNothing else is touched; it turns off again without a trace.
+
+## gfx_apply
+title.ru=Применить и вернуть оригинал
+title.en=Apply and restore original
+ru=Выбор на странице ничего не меняет на диске, пока вы не нажмёте «Применить». Слева от кнопок видно, что изменится и сколько нужно скачать.\n«Применить» делает всё одним действием: скачивает (с вашего согласия, загрузку можно отменить и продолжить позже), сохраняет оригиналы, ставит; при сбое возвращает прежнее состояние. Игра должна быть закрыта.\n«Вернуть оригинал» убирает наборы картинки и скины. Шрифты, размер интерфейса и рендер настраиваются отдельно.
+en=A choice on the page changes nothing on disk until you press Apply. Left of the buttons you see what will change and how much to download.\nApply does everything in one go: downloads (with your consent; you can cancel and continue later), keeps the originals, installs; on a failure it restores the previous state. The game must be closed.\nRestore original removes the picture sets and skins. Fonts, interface size and renderer are set separately.
+
+## gfx_items
+title.ru=Предметы
+title.en=Items
+ru=Рисунки вещей: оружие, броня, иконки в инвентаре и на земле.\n«Оригинал» — как в игре. Перерисованные наборы появятся здесь, как только будут готовы; предпросмотр добавим на превью вверху.\nРисунки предметов можно менять независимо от апскейлинга и интерфейса. Новые вещи и лут — отдельными наборами, позже.
+en=The pictures of things: weapons, armour, inventory and ground icons.\nOriginal - as in the game. Redrawn sets will appear here when they are ready; a preview will be added to the picture above.\nItem pictures can be changed independently of upscaling and the interface. New items and loot - as separate sets, later.
+
+## gfx_bag
+title.ru=Крупные окна (рюкзак, торговля, характеристики)
+title.en=Large windows (backpack, trade, stats)
+ru=Переключатель «Выкл | Вкл». Вкл — одним комплектом: рюкзак крупнее (422×480 вместо 332×310) и прокручивается колесом мыши; торговля плитками с вкладками (оружие, броня, зелья, книги, прочее), предметы разложены по группам, надетое помечено «надето»; окно характеристик шире и подходит под крупные шрифты; в рюкзаке появилась кнопка «Сортировать» (и клавиши Ctrl+C) рядом с «Закрыть»; окна экипировки и характеристик открываются слева, рюкзак справа, а не друг на друге.\nПример: в рюкзак помещается вдвое больше вещей, а «Сортировать» раскладывает их по типам.\nЧто меняется: рисунок окон (набор файлов около 10 МБ, свой для каждого интерфейса), небольшая правка самой игры (div.exe 1.0.0.62, русская и английская версия) и две строки в данных игры (раскладка характеристик, подсказка кнопки). Всё ставится и снимается целиком; оригиналы сохраняются, «Выкл» возвращает всё как было.\nЕсли вы уже двигали окна в игре, они откроются там же, где вы их оставили. Работает с интерфейсами «Оригинал», «Оригинал HD» и «Перерисованный». Как и остальные выборы, ничего не меняет, пока вы не нажмёте «Применить».
+en=An Off | On switch. On - one kit: a bigger backpack (422x480 instead of 332x310) that scrolls with the mouse wheel; trading with tiles and tabs (weapons, armour, potions, books, other), items grouped by type, worn items marked "worn"; a wider character-stats window that fits the large fonts; a "Sort" button (and Ctrl+C) next to "Close" in the backpack; the equipment and stats windows open on the left and the backpack on the right instead of on top of each other.\nExample: twice as many things fit into the backpack and "Sort" puts them in order by type.\nWhat changes: the window artwork (a set of about 10 MB, made for each interface), a small change to the game itself (div.exe 1.0.0.62, Russian and English version) and two lines in the game data (the stats layout, the button tooltip). Everything goes in and out as one piece; the originals are kept and Off brings everything back.\nWindows you have already moved in the game open where you left them. Works with the Original, Original HD and Redrawn interfaces. Like the other choices, it changes nothing until you press Apply.
+
+## gfx_glow
+title.ru=Подсветка предметов
+title.en=Item glow
+ru=Переключатель «Выкл | Вкл». Вкл — у редких предметов в рюкзаке появляется цветной ореол под рисунком (зелёный, жёлтый, золотой — как цвет названия в подсказке), а подписи предметов на земле по клавише Alt сразу цветные. Обычные предметы без изменений.\nПример: золотой меч в рюкзаке с золотистым ореолом — его не пропустишь среди хлама.\nЧто меняется: небольшая правка самой игры (div.exe 1.0.0.62, русская и английская версия), файлы не трогаются. Название предмета в подсказках остаётся таким же, как в оригинале. Включено по умолчанию; «Выкл» возвращает всё как было. Ничего не меняет, пока вы не нажмёте «Применить».
+en=An Off | On switch. On - rare items in the backpack get a coloured halo under the picture (green, yellow, gold - the colour of the name in the tooltip), and the labels of items on the ground (Alt) are coloured at once. Ordinary items are unchanged.\nExample: a gold sword in the backpack has a golden halo - you will not miss it among the junk.\nWhat changes: a small change to the game itself (div.exe 1.0.0.62, Russian and English version); no files are touched. The item name in tooltips stays as in the original. On by default; Off brings everything back. Changes nothing until you press Apply.

@@ -1,0 +1,80 @@
+# GameRemix change log. Important things only: new games, new features, milestones. Small fixes and corrections are not listed (AGENTS.md, item 13).
+## 1.0.33 — 2026-11-07
+- Quick setup: items right after upscaling, a new "Effect shaders" step (experimental, off by default) with the F9, F10, F11 keys
+
+## 1.0.32 — 2026-11-07
+- Fixes are installed afresh from the original game files: updating works correctly even after skipping several versions of the program
+
+## 1.0.31 — 2026-11-07
+- The Play button reminds you of new versions of the installed sets and offers to update them before playing
+
+## 1.0.30 — 2026-11-07
+- FPS mode: fire, torches, candles and fireplaces burn calmer, as intended, the world runs a steady 40 steps a second
+- Quick setup turns the FPS mode on by default
+
+## 1.0.29 — 2026-11-07
+- When a new version of an installed set (items, interface, etc.) comes out, the program offers to update it in one click
+
+## 1.0.28 — 2026-11-07
+- FPS mode (80 Hz tick) refined
+
+## 1.0.27 — 2026-11-07
+- FPS mode: townsfolk walking about now move smoothly at 80 Hz too
+
+## 1.0.26 — 2026-11-07
+- Backpack sorting on Ctrl+C (or with the Sort button)
+
+## 1.0.25 — 2026-11-07
+- Quick setup now offers the redrawn items (they are the default) and, on 2K and 4K monitors, switches to larger fonts by itself
+
+## 1.0.20 — 2026-11-07
+- "FPS mod" (80 Hz tick): a new tab in Effects and FPS and a step in Quick setup together with item glow
+
+## 1.0.19 — 2026-11-07
+- "Large windows" now work with every interface - Parchment, Dark metal, Dark glass, Original HD, Redrawn - and together with Clean graphics (v2)
+
+## 1.0.18 — 2026-11-07
+- Quick setup is now a step-by-step wizard: monitor, interface, upscaling, fonts, large windows, items - every step shows pictures of the result, and one Apply at the end shows the progress
+- "Large windows" (Off | On) on the Graphics tab - one kit: a big backpack with the mouse wheel, trading with tiles and tabs, a Sort button (Ctrl+C) and a stats window that fits the large fonts; the equipment and backpack windows no longer open on top of each other
+- Redrawn items: 634 pictures of weapons, armour and things in the new "Redrawn" set (and "Original HD")
+- "Item glow" (Off | On, on by default): a coloured halo under green, yellow and gold items in the backpack and coloured Alt labels
+- The character stats window is bigger and fits the large fonts
+
+## 1.0.17 — 2026-11-06
+- Quick setup in two steps: the monitor and the game first, then choosing the graphics on the Graphics tab
+
+## 1.0.16 — 2026-11-06
+- gr-draw: our own graphics wrapper (a fork of cnc-ddraw) — FPS counter (F11), effects (F9, F10) and single-core mode work together with the chosen scaling filter
+
+## 1.0.15 — 2026-11-06
+- FPS counter and effect shaders in the game: F11, F9, F10 (keys can be changed), set up on the Graphics tab
+- The update button blinks until the update is installed
+
+## 1.0.14 — 2026-11-06
+- "Quick setup" is highlighted like "Play"
+
+## 1.0.13 — 2026-11-06
+- Items editor 2 (DDIE) in Tools
+- Graphics: Before | After preview with a single slider and a visual interface size
+
+## 1.0.12 — 2026-11-06
+- Graphics tab: picture sets and interface skins, Before | After preview, interface size, one-click revert
+- One-click auto-update with signature check
+
+## 1.0.11 — 2026-11-06
+- Graphics sets download faster: GitHub is the main source, the site is the fallback
+
+## 1.0.10 — 2026-11-06
+- Game interface size (Auto / 100–200%) for 2K and 4K monitors
+- Light theme
+- Secrets and articles in English
+
+## 1.0.9 — 2026-11-06
+- Quick setup HD / 2K / 4K: game, graphics, sound, fonts and shortcut in one click
+- cnc-ddraw ★ — the recommended graphics wrapper (borderless window, scaling filters)
+- Larger fonts with a preview
+- World editor DivEdit
+- Feedback right from the program
+
+## 1.0.8
+- "Game graphics (DGE)" tool

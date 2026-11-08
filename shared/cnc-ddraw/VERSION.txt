@@ -1,0 +1,2 @@
+cnc-ddraw v7.1.0.0 (MIT) https://github.com/FunkyFr3sh/cnc-ddraw
+release zip sha256 0b13ab89a64c9918189b1dadd449ef6ed3cb3b7b19cabd96d8adbd95505bb908

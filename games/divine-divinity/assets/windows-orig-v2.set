@@ -1,0 +1,20 @@
+# Descriptor of the downloadable set "Large windows" on the original interface (built by shared/assets/build_asset_set.py via tools/make_windows_sets.py, format: docs/asset_sets.md). NOT published to the server.
+# One COMPLETE kit per interface skin: archive 8 (backpack 8/4, trade 8/5 + columns 8/88..91, tab looks, Sort-button sprites 663..665, character stats background 8/186) and dat/flat.cmp
+# (inventpl.bmg with the centred pair [Close | Sort], tradepl.bmg, statuspl.bmg). The kit goes in and out AS A WHOLE (a flat.cmp without the sprites crashes the backpack): the program
+# also checks "sprites in archive 8 >= highest index used by the bmg files". The rest of the kit is in gfx.txt: patch=windows (exe), cmpentry= (statuspl layout inside global.cmp), textrec= (tooltip).
+# flat.cmp: the pristine one of the game; skin A (own flat.cmp) is NOT combinable with this set (the orig list names only the pristine flat.cmp).
+id=windows-orig-v2
+game=divine-divinity
+version=1.0.1
+kind=ui-bag
+layer=2
+name.ru=Крупные окна (на Оригинал HD, Чистая v2)
+name.en=Large windows (Original HD, Clean v2)
+desc.ru=Рюкзак, торговля, характеристики, сортировка
+desc.en=Backpack, trade, stats window, sort button
+src=scratch/sr_lab/set_win_orig-v2
+include=static/imagelists;dat
+orig=scratch/gfx_sets/v2_1
+orig=scratch/gfx_sets/v2full
+orig=scratch/gfx_sets/orig_flat
+preview=inv|previews/inv_bag.jpg|600|350

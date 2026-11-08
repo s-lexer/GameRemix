@@ -1,0 +1,18 @@
+# Descriptor of the downloadable interface skin "Interface: Original HD" (built by shared/assets/build_asset_set.py, format: docs/asset_sets.md). NOT published to the server.
+id=skin-c
+game=divine-divinity
+version=1.0.1
+kind=ui-skin
+layer=1
+name.ru=Интерфейс: Оригинал HD
+name.en=Interface: Original HD
+desc.ru=Тот же вид, но чище и резче
+desc.en=The same look, cleaner and sharper
+src=scratch/ui_skins/C
+include=static/imagelists
+# the pristine files this skin may replace: the game's own, and the clean-v2 / v2.1 sets (skins were drawn over it, so they also fit on top of it)
+orig=scratch/gfx_sets/orig
+orig=scratch/gfx_sets/v2_1
+orig=scratch/gfx_sets/v2full
+orig=X:/GAMES/Divine Divinity
+preview=inv|previews/inv_C.jpg|600|350

@@ -1,0 +1,15 @@
+# Descriptor of the downloadable set "Clean graphics" (built by shared/assets/build_asset_set.py, format: docs/asset_sets.md). NOT published to the server.
+# version 2.1 = v2 (Real-ESRGAN animevideov3 x4 -> area down -> sharpen) + text/line-art guard: 893 sprites (button captions, flat UI bars, glyph-like art) stay ORIGINAL. Rule: gfx_pilot/text_fix/classify.py keep_v21()
+id=clean-v2
+game=divine-divinity
+version=2.1
+kind=graphics
+name.ru=Чистая графика (v2)
+name.en=Clean graphics (v2)
+desc.ru=Нейросетевая очистка 92 899 спрайтов, подписи и линии не тронуты
+desc.en=Neural clean-up of 92,899 sprites, captions and lines untouched
+# files to ship: <src>/<include>, laid out like the game folder; paths relative to the project root
+src=scratch/gfx_full_v2_1
+include=static/imagelists
+# the pristine archives this set was made from (flat folder of file names is fine); more originals (other game builds) can be added with --orig
+orig=scratch/gfx_sets/orig

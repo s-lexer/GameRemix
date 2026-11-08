@@ -1,0 +1,129 @@
+# Help texts of the graphics settings, shared by all games (embedded as resource help_shared). Format: "## key", then title.ru / title.en / ru / en; "\n" in a text = a line break.
+# One place for every text: windows ask for a key (Help.Show(owner, key)), nothing is scattered over the code.
+
+## scale
+title.ru=Размер интерфейса (масштаб кадра)
+title.en=Interface size (picture scale)
+ru=Игра рисуется в МЕНЬШЕМ разрешении, а затем весь кадр растягивается на ваш монитор. Поэтому крупнее становится всё сразу: и окна с текстом, и мир.\nПример: монитор 2560×1440, масштаб 125% — игра рисуется в 2048×1152 и растягивается на весь экран.\nЧем выше процент, тем крупнее текст, но тем меньше видно мира вокруг героя.\nЦелый коэффициент (200%: один пиксель игры = ровно 2×2 пикселя экрана) даёт самую чёткую картинку. Дробный (125%, 150%) пиксели делятся неровно, поэтому нужен сглаживающий фильтр, и картинка чуть мягче.\n«Авто» подбирает масштаб по высоте монитора: до 1300 точек — 100%, от 1300 — 125%, от 2000 — 200%.\nМеняйте, если текст слишком мелкий (повысьте) или мир кажется тесным (понизьте). Работает через gr-draw.
+en=The game is drawn at a SMALLER resolution and the whole frame is then stretched to your monitor, so everything gets bigger at once: the text windows and the world.\nExample: a 2560x1440 monitor at 125% - the game is drawn at 2048x1152 and stretched to the full screen.\nThe higher the percent, the bigger the text, but the less of the world you see around the hero.\nA whole factor (200%: one game pixel = exactly 2x2 screen pixels) gives the sharpest picture. A fractional one (125%, 150%) does not divide evenly, so a smoothing filter is needed and the picture is slightly softer.\n"Auto" picks the scale from the monitor height: under 1300 px - 100%, from 1300 - 125%, from 2000 - 200%.\nChange it if the text is too small (raise it) or the world feels cramped (lower it). Works through gr-draw.
+
+## filter
+title.ru=Фильтр масштабирования
+title.en=Scaling filter
+ru=Как программа растягивает маленький кадр игры на весь монитор.\n«Чётко» — без сглаживания, пиксель в пиксель: лучше всего при целых коэффициентах (200%) и для пиксель-арта; при дробных даёт неровные края.\n«Плавно» — билинейный: края мягкие, чуть размыто, подходит для любых коэффициентов.\n«Мягко» — ещё более плавное сглаживание.\nLanczos — резкое сглаживание без «лесенки»: лучший выбор для 125% и 150%.\nFSR — повышающий масштаб от AMD, нужен режим OpenGL.\nПри «Авто» размера интерфейса программа сама ставит «Чётко» для целых коэффициентов и Lanczos для дробных; здесь это можно переопределить вручную.
+en=How the small game frame is stretched to the whole monitor.\n"Sharp" - no smoothing, pixel for pixel: best for whole factors (200%) and pixel art; with fractional ones the edges look uneven.\n"Smooth" - bilinear: soft edges, slightly blurry, fine for any factor.\n"Soft" - even gentler smoothing.\nLanczos - sharp smoothing without stair-steps: the best pick for 125% and 150%.\nFSR - AMD upscaling, needs the OpenGL renderer.\nWith "Auto" interface size the program picks Sharp for whole factors and Lanczos for fractional ones; here you can override it by hand.
+
+## window_mode
+title.ru=Режим окна
+title.en=Window mode
+ru=«Без рамки» — окно на весь экран без заголовка: быстро переключаться Alt+Tab, лучше всего с gr-draw.\n«Полный экран» — игра занимает экран монопольно, как в старых играх.\n«Окно» — обычное окно с рамкой, удобно, если рядом нужны другие программы.\nНе знаете — оставьте «Без рамки».
+en=Borderless - a full-screen window with no title bar: fast Alt+Tab, best with gr-draw.\nFullscreen - the game owns the screen, like in old games.\nWindowed - a normal window with a frame, handy when you need other programs next to it.\nIf unsure, keep Borderless.
+
+## keep_aspect
+title.ru=Сохранять пропорции
+title.en=Keep aspect ratio
+ru=Если форма монитора не совпадает с формой кадра игры, кадр не растягивается, а по краям появляются чёрные полосы.\nПример: игра 4:3 на экране 16:9 — слева и справа чёрные поля, а картинка не вытянута.\nВыключите, если хотите растянуть кадр на весь экран (картинка исказится).
+en=If the monitor shape differs from the game frame, the frame is not stretched; black bars appear at the edges instead.\nExample: a 4:3 game on a 16:9 screen - black bars left and right, the picture is not distorted.\nTurn it off if you want the frame stretched over the whole screen (the picture gets distorted).
+
+## vsync
+title.ru=Вертикальная синхронизация
+title.en=Vertical sync
+ru=Кадры выводятся строго в такт с обновлением монитора.\nПлюс: нет «разрывов» картинки при движении камеры. Минус: небольшая задержка отклика.\nВключайте, если видите горизонтальные разрывы; в остальных случаях можно оставить выключенной.
+en=Frames are shown strictly in step with the monitor refresh.\nPro: no picture tearing when the camera moves. Con: a little input lag.\nTurn it on if you see horizontal tearing; otherwise leave it off.
+
+## fps_limit
+title.ru=Лимит кадров
+title.en=Frame limit
+ru=Сколько кадров в секунду игра может выдавать.\n«Экран» — по частоте монитора, «60»/«30» — фиксированный предел, «Без лимита» — как можно быстрее (греет видеокарту и процессор).\nСтарая игра рассчитана на небольшую частоту: 60 хватает с запасом, 30 экономит энергию на ноутбуке.
+en=How many frames per second the game may produce.\nScreen - the monitor refresh rate, 60/30 - a fixed cap, Unlimited - as fast as possible (heats up the GPU and CPU).\nThe old game needs little: 60 is plenty, 30 saves power on a laptop.
+
+## renderer
+title.ru=Отрисовка (движок)
+title.en=Renderer (engine)
+ru=Чем gr-draw выводит картинку на экран.\n«Авто» — программа решает сама. OpenGL — нужен для фильтров масштабирования и FSR, работает почти везде. Direct3D 9 — запасной вариант. GDI — самый простой и медленный, на случай, если остальные не работают.\nЕсли выбрали фильтр, отрисовка автоматически ставится на OpenGL.
+en=What gr-draw uses to put the picture on the screen.\nAuto - the program decides. OpenGL - needed for scaling filters and FSR, works almost everywhere. Direct3D 9 - a fallback. GDI - the simplest and slowest, in case the others do not work.\nIf you pick a filter, the renderer switches to OpenGL by itself.
+
+## mouse_sens
+title.ru=Чувствительность мыши
+title.en=Mouse sensitivity
+ru=Пересчитывает движение мыши под масштаб картинки, чтобы курсор попадал туда, куда вы его наводите.\nПример: при размере интерфейса 200% без пересчёта курсор «убегал» бы в два раза.\nОставьте включённой.
+en=Converts the mouse movement to the picture scale so the cursor lands where you point it.\nExample: at 200% interface size, without it the cursor would run twice as far.\nKeep it on.
+
+## cursor_free
+title.ru=Курсор выходит за окно
+title.en=Cursor can leave the window
+ru=Разрешает курсору покидать окно игры, пока оно активно.\nУдобно, если у вас два монитора: можно двигать мышь на второй экран, не сворачивая игру.\nПо умолчанию выключено: курсор заперт в окне игры.
+en=Lets the cursor leave the game window while it is active.\nHandy with two monitors: you can move the mouse to the second screen without minimising the game.\nOff by default: the cursor stays inside the game window.
+
+## dgv_scale
+title.ru=Масштаб dgVoodoo
+title.en=dgVoodoo scale
+ru=Во сколько раз dgVoodoo рисует картинку подробнее, чем исходные 800×600 (1×–4×), а потом уменьшает до монитора.\nПример: 2× — внутренняя картинка 1600×1200, края и 3D выглядят чище.\nБольше — красивее, но нагрузка на видеокарту выше. На современном ПК 2×–3× обычно без проблем.
+en=How many times more detailed than the native 800x600 dgVoodoo draws the picture (1x-4x), before scaling it down to the monitor.\nExample: 2x - the inner picture is 1600x1200, edges and 3D look cleaner.\nMore is prettier but loads the GPU harder. On a modern PC 2x-3x is usually fine.
+
+## dgv_msaa
+title.ru=Сглаживание MSAA
+title.en=MSAA smoothing
+ru=Убирает «лесенку» на краях объектов, рисуя их с несколькими выборками на пиксель (2×, 4×, 8×).\nБольше выборок — глаже края, но тяжелее для видеокарты. 4× — хороший компромисс. Не влияет на плоские рисованные спрайты, только на края полигонов.
+en=Removes the stair-step on object edges by sampling several times per pixel (2x, 4x, 8x).\nMore samples - smoother edges but a heavier load. 4x is a good compromise. It does not touch flat hand-drawn sprites, only polygon edges.
+
+## dgv_vsync
+title.ru=Вертикальная синхронизация (dgVoodoo)
+title.en=Vertical sync (dgVoodoo)
+ru=Кадры выводятся в такт с обновлением монитора: нет разрывов картинки, но возможна небольшая задержка отклика.\nВключайте, если при движении камеры видны горизонтальные разрывы.
+en=Frames are shown in step with the monitor refresh: no tearing, but there may be a little input lag.\nTurn it on if you see horizontal tearing when the camera moves.
+
+## quick_monitor
+title.ru=Класс монитора: HD / 2K / 4K
+title.en=Monitor class: HD / 2K / 4K
+ru=Подбирает все настройки под размер вашего экрана.\nHD — мониторы до 1920×1080; 2K — 2560×1440; 4K — 3840×2160.\nПрограмма сама выбирает по вашему монитору; если играете на другом, выберите вручную. В сводке ниже видно, что именно будет выставлено.
+en=Sets everything for the size of your screen.\nHD - monitors up to 1920x1080; 2K - 2560x1440; 4K - 3840x2160.\nThe program picks by your monitor; if you play on another one, choose by hand. The summary below shows exactly what will be set.
+
+## quick_wrapper
+title.ru=Графическая обёртка
+title.en=Graphics wrapper
+ru=Маленькая программа, которая помогает старой игре работать на новой Windows и выводить картинку на современный монитор.\ngr-draw ★ — рекомендуется: лучшая картинка, окно без рамки, фильтры, размер интерфейса.\ndgVoodoo — запасной путь: аппаратное ускорение и сглаживание MSAA, но без размера интерфейса.\nВместе они работать не могут.
+en=A small program that helps the old game run on a new Windows and show the picture on a modern monitor.\ngr-draw (recommended): the best picture, borderless window, filters, interface size.\ndgVoodoo - the alternative: acceleration and MSAA smoothing, but no interface size.\nThey cannot work together.
+
+## quick_scale
+title.ru=Размер интерфейса в быстрой настройке
+title.en=Interface size in quick setup
+ru=То же, что «Размер интерфейса» на странице «Графика»: игра рисуется в меньшем разрешении и растягивается на монитор, поэтому текст и окна крупнее.\nАвто подберёт масштаб по вашему монитору (для 1440p это 125%).\nМожно поменять позже на странице «Графика».
+en=The same as "Interface size" on the Graphics page: the game is drawn at a lower resolution and stretched to the monitor, so text and windows get bigger.\nAuto picks the scale for your monitor (125% for 1440p).\nYou can change it later on the Graphics page.
+
+## quick_look
+title.ru=Внешний вид (картинка и интерфейс)
+title.en=Look (picture and interface)
+ru=«Картинка игры» — набор очищенных спрайтов (v2): меньше шума и зубцов. Весит сотни мегабайт и скачивается с нашего сервера с вашего согласия.\n«Интерфейс» — оформление окон и кнопок (скины A–D).\n«Не менять» оставляет как есть. Всё это можно позже подобрать на странице «Графика» с превью «До | После».
+en="Game picture" is a set of cleaned-up sprites (v2): less noise and jaggies. It weighs hundreds of megabytes and is downloaded from our server with your consent.\n"Interface" is the look of windows and buttons (skins A-D).\n"Keep" leaves things as they are. You can pick all this later on the Graphics page with a Before | After preview.
+
+## fonts_group
+title.ru=Выбор шрифта
+title.en=Font choice
+ru=Нажмите на карточку с образцом текста — выбранная получает золотую рамку.\n«Оригинал» — шрифты самой игры. «Крупные» и «Сверхкрупные» — увеличенные шрифты, вшитые в программу: читать удобнее на большом мониторе.\nИзменения применяются кнопкой «Применить» и только для тех групп, которые вы тронули.
+en=Click a card with sample text - the chosen one gets a golden frame.\nOriginal - the game's own fonts. Larger / Extra large - enlarged fonts built into the program: easier to read on a big monitor.\nChanges are applied with the Apply button and only for the groups you touched.
+
+## gfx_fx
+title.ru=Эффекты и счётчик FPS
+title.en=Effects and FPS counter
+ru=Подключает нашу сборку gr-draw. В игре работают клавиши: F11 показывает или прячет счётчик FPS (число кадров в секунду), F9 включает и выключает шейдеры эффектов (огонь, свет, магия), F10 открывает меню, где эффекты настраиваются прямо в игре.\nПо умолчанию всё выключено, игра выглядит как раньше. Клавиши можно поменять, если игра использует их сама. Нужен gr-draw (страница «Патчи и фиксы»). Выключите здесь, и вернётся обычный gr-draw.
+en=Turns on our build of gr-draw. In the game: F11 shows or hides the FPS counter (frames per second), F9 turns the effect shaders (fire, light, magic) on and off, F10 opens a menu where the effects are tuned right in the game.\nEverything is off by default, so the game looks as before. The keys can be changed if the game uses them itself. Needs gr-draw (Patches page). Turn it off here and the stock gr-draw comes back.
+
+# FROZEN 07.11.2026 (owner): the frame mode is not shown anywhere (src/Fps.cs, FpsEnabled = false); the text waits for an interpolation without artifacts.
+## fps_mode
+title.ru=Режим кадров (частота кадров)
+title.en=Frame mode (frame rate)
+ru=Игра внутри считает всего 40 шагов в секунду, а раньше показывала примерно столько же кадров (и упиралась в 60). Программа добавляет промежуточные кадры между шагами, поэтому движение плавное, а сама игра не ускоряется.\n«По частоте монитора» — РЕКОМЕНДУЕТСЯ: вертикальная синхронизация, плавно до частоты вашего монитора (например 144), без разрывов картинки и лишней нагрузки.\n«Без ограничения» — сотни кадров в секунду; возможны разрывы картинки, видеокарта работает на полную.\n«Свой лимит» — своё число кадров, например 144 или 165, без вертикальной синхронизации.\n«Как в оригинале (40)» — выключено: как игра шла раньше.\nНужна обёртка gr-draw, она включается сама. Это экспериментальная правка div.exe; вернуть всё можно выбором «Как в оригинале» или кнопкой «Откатить всё».
+en=Inside, the game runs only 40 steps per second and used to show about as many frames (and hit a 60 ceiling). The program adds in-between frames, so the motion is smooth and the game itself does not speed up.\n"Monitor refresh rate" - RECOMMENDED: vertical sync, smooth up to your monitor's rate (e.g. 144), no tearing and no extra load.\n"Unlimited" - hundreds of frames per second; tearing is possible and the video card runs at full load.\n"Own limit" - your own frame rate, e.g. 144 or 165, without vertical sync.\n"As in the original (40)" - off: how the game ran before.\nThe gr-draw wrapper is needed; it turns on by itself. This is an experimental div.exe patch; undo it by choosing "As in the original" or with "Revert all".
+
+## fps80
+title.ru=FPS-мод (такт 80)
+title.en=FPS mod (80 Hz tick)
+ru=Внутри игра считает 40 шагов в секунду, и даже на мониторе 144 Гц движение выглядит ступенчатым. FPS-мод — наша правка div.exe: ходьба героя, NPC и камера показываются 80 раз в секунду, а ИИ, бой, скорость и сохранения остаются как в оригинале. Игра не ускоряется.\nКогда включать: если ходьба и прокрутка карты кажутся дёрганой на быстром мониторе.\nЭкспериментально: на изометрических диагоналях возможны мелкие рывки; если мешают — выключите, файл игры вернётся к исходному.\nПрограмма сама подключает gr-draw (без него частота упирается в 60). Меняйте при закрытой игре.
+en=Inside, the game runs 40 steps a second, so even on a 144 Hz monitor motion looks stepped. The FPS mod is our patch of div.exe: the walking of the hero, NPCs and the camera are shown 80 times a second, while AI, combat, speed and saves stay as in the original. The game does not speed up.\nWhen to use: if walking and map scrolling look jerky on a fast monitor.\nExperimental: small jerks are possible on isometric diagonals; if they bother you, turn it off and the game file goes back to the original.\nThe program turns on gr-draw itself (without it the frame rate stops at 60). Change it with the game closed.
+
+## quick_fx
+title.ru=FPS-мод и подсветка предметов
+title.en=FPS mod and item glow
+ru=FPS-мод (такт 80): движение героя, NPC и камеры показывается 80 раз в секунду вместо 40, игра при этом не ускоряется. Экспериментально, по умолчанию выключен; если на диагоналях мешают мелкие рывки, выключите.\nПодсветка редких предметов: цветной ореол у зелёных, жёлтых и золотых предметов в рюкзаке и цветные подписи на земле (Alt). Включена по умолчанию.\nОба пункта можно изменить позже на вкладке «Графика».
+en=FPS mod (80 Hz tick): the movement of the hero, NPCs and camera is shown 80 times a second instead of 40; the game does not speed up. Experimental, off by default; if small jerks on diagonals bother you, turn it off.\nGlow of rare items: a coloured halo under green, yellow and gold items in the backpack and coloured labels on the ground (Alt). On by default.\nBoth can be changed later on the Graphics tab.

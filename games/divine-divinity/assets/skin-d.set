@@ -1,0 +1,18 @@
+# Descriptor of the downloadable interface skin "Interface: Dark glass" (built by shared/assets/build_asset_set.py, format: docs/asset_sets.md). NOT published to the server.
+id=skin-d
+game=divine-divinity
+version=1.0.1
+kind=ui-skin
+layer=1
+name.ru=Интерфейс: Тёмное стекло
+name.en=Interface: Dark glass
+desc.ru=Плоские графитовые панели, янтарная линия
+desc.en=Flat graphite panels, amber line
+src=scratch/ui_skins/D
+include=static/imagelists
+# the pristine files this skin may replace: the game's own, and the clean-v2 / v2.1 sets (skins were drawn over it, so they also fit on top of it)
+orig=scratch/gfx_sets/orig
+orig=scratch/gfx_sets/v2_1
+orig=scratch/gfx_sets/v2full
+orig=X:/GAMES/Divine Divinity
+preview=inv|previews/inv_D.jpg|600|350

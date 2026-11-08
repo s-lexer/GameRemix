@@ -1,0 +1,17 @@
+# Descriptor of the downloadable item-pictures set "Items: Original HD" (built by shared/assets/build_asset_set.py, format: docs/asset_sets.md). NOT published to the server.
+id=items-hd
+game=divine-divinity
+version=1.0.0
+kind=items
+layer=1
+name.ru=Предметы: Оригинал HD
+name.en=Items: Original HD
+desc.ru=Иконки предметов и оружия: чище и резче, рисунок тот же
+desc.en=Item and weapon icons: cleaner and sharper, same artwork
+src=scratch/sr_lab/set_items_hd
+include=static/imagelists
+orig=scratch/gfx_sets/orig
+orig=scratch/gfx_sets/v2_1
+orig=scratch/gfx_sets/v2full
+orig=X:/GAMES/Divine Divinity
+preview=inv|previews/inv_itemsHD.jpg|600|350
