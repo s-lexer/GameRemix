@@ -66,7 +66,7 @@ namespace DDFixTool
             if (!HasGame || GameRunning() || !ExeSupported) return;
             if (!force && File.Exists(Defaults2File)) return;
             Action<string, Action> one = delegate(string id, Action a) { if (force) FixOptOut(id, false); else if (FixOptedOut(id)) return; try { a(); } catch (Exception ex) { Log("default " + id + ": " + ex.Message); } };
-            one("voice", delegate { if (!VoiceOn) SetVoice(true); });
+            if (VoiceUseful) one("voice", delegate { if (!VoiceOn) SetVoice(true); });
             one("dusk", delegate { if (!DuskOn) SetDusk(true); });
             one("smooth", delegate { if (!Launcher) SetLauncher(true); });   // compat flags; with gr-draw the wrapper pins one core itself - kept on, it is the combination the interpolation was tried with
             if (FpsEnabled) one("fps", delegate { int n; if (FpsMode(out n) == FpsOrig && FpsAvail && (force || Cnc || !Dgv)) SetFpsMode(FpsMonitor, 0); });

@@ -74,7 +74,7 @@ namespace DDFixTool
             catch { }
             StringBuilder s = new StringBuilder();
             s.AppendLine("GameRemix " + App.Version + "  " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            s.AppendLine("OS " + Environment.OSVersion + "  64bit=" + (IntPtr.Size == 8 || Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") != null) + "  .NET " + Environment.Version + "  lang=" + (L.Ru ? "ru" : "en"));
+            s.AppendLine("OS " + Environment.OSVersion + "  64bit=" + (IntPtr.Size == 8 || Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") != null) + "  .NET " + Environment.Version + "  lang=" + (U.R("ru", "en")));
             try { s.AppendLine("game " + (HasGame ? ExeVersionText : "not found")); if (HasGame) s.AppendLine("STATUS " + StatusLine()); } catch (Exception e) { s.AppendLine("status error: " + e.Message); }
             add("status.txt", Encoding.UTF8.GetBytes(Anon(s.ToString())));
             if (HasGame) foreach (string n in new string[] { "dgVoodoo.conf", "config.div" }) { try { if (File.Exists(P(n))) { byte[] fb = File.ReadAllBytes(P(n)); add(n, n.EndsWith(".conf") ? Anon(fb) : fb); } } catch { } }
@@ -114,7 +114,7 @@ namespace DDFixTool
             if (text.Length == 0) { msg.Focus(); return; }
             if (mail.Length > 0 && (mail.IndexOf('@') < 1 || mail.IndexOf(' ') >= 0)) { status.ForeColor = Th.Amber; status.Text = U.R("Проверьте e-mail или очистите поле.", "Check the e-mail or clear the field."); email.Box.Focus(); return; }
             send.Enabled = false; status.ForeColor = Th.Muted; status.Text = U.R("Отправляю…", "Sending…");
-            bool withLogs = logs.Selected == 1; string ver = App.Version, lang = L.Ru ? "ru" : "en";
+            bool withLogs = logs.Selected == 1; string ver = App.Version, lang = U.R("ru", "en");
             Thread t = new Thread(delegate()
             {
                 string err = null;

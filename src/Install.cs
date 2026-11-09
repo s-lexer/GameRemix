@@ -355,8 +355,9 @@ namespace DDFixTool
             if (!HasGame || App.ReadOnly || GameRunning()) return;
             try { if (Cnc) EmbRefresh("grdraw"); } catch (Exception ex) { Log("start-up: gr-draw files: " + ex.Message); }
             try { if (Dgv) EmbRefresh("dgv"); } catch (Exception ex) { Log("start-up: dgVoodoo files: " + ex.Message); }
-            try { EmbRefresh("voice"); } catch (Exception ex) { Log("start-up: voice DLLs: " + ex.Message); }
+            try { if (!VoiceUseful && (VoicePatched || OurDllAny)) { SetVoice(false); Log("start-up: voice fix taken out (this game has no voiced dialogues)"); } else EmbRefresh("voice"); } catch (Exception ex) { Log("start-up: voice DLLs: " + ex.Message); }   // English version: put the original DLLs and exe bytes back
             try { if (FxNeeded) FxApply(FxRead()); } catch (Exception ex) { Log("start-up: effects build: " + ex.Message); }
+            try { KoreanRefresh(); } catch (Exception ex) { Log("start-up: Korean pack: " + ex.Message); }
             try { ExeSync(); } catch (Exception ex) { Log("start-up: div.exe: " + ex.Message); }
         }
     }

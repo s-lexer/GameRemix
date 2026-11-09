@@ -72,7 +72,7 @@ namespace DDFixTool
             try
             {
                 if (!HasGame || !FontsAvail) return "";
-                for (int c = 0; c < 3; c++) { int st = FontStep(c); if ((st > 0 && st != step) || FontIsCustom(c)) return L.Ru ? "Внимание: шрифты, выбранные вручную, будут заменены (свои файлы сохраняются в резервную копию)." : "Note: fonts you chose by hand will be replaced (your own files are kept in the backup)."; }
+                for (int c = 0; c < 3; c++) { int st = FontStep(c); if ((st > 0 && st != step) || FontIsCustom(c)) return U.R("Внимание: шрифты, выбранные вручную, будут заменены (свои файлы сохраняются в резервную копию).", "Note: fonts you chose by hand will be replaced (your own files are kept in the backup)."); }
             }
             catch { }
             return "";
@@ -81,7 +81,7 @@ namespace DDFixTool
         // sets a key of [DirectX] in dgVoodoo.conf; keeps the user's original conf (first edit) and the file's encoding / line endings; adds the key when absent
         public void DgvSet(string key, string val)
         {
-            string f = P("dgVoodoo.conf"); if (!File.Exists(f)) throw new FileNotFoundException(L.Ru ? "Нет файла dgVoodoo.conf в папке игры." : "dgVoodoo.conf is missing in the game folder.");
+            string f = P("dgVoodoo.conf"); if (!File.Exists(f)) throw new FileNotFoundException(U.R("Нет файла dgVoodoo.conf в папке игры.", "dgVoodoo.conf is missing in the game folder."));
             BackupDgvConf(); IniEdit.Set(f, "DirectX", key, val);
         }
         static void CopyOver(string src, string dst)
@@ -96,7 +96,7 @@ namespace DDFixTool
         // plan != null (cnc-ddraw only): the game runs at plan.Game and cnc-ddraw stretches the frame to the monitor (see Scale.cs); null = the class's own size
         public List<string> ApplyPreset(int k, bool cnc, ScalePlan plan)
         {
-            if (!HasGame) throw new InvalidOperationException(L.Ru ? "Игра не найдена." : "Game not found.");
+            if (!HasGame) throw new InvalidOperationException(U.R("Игра не найдена.", "Game not found."));
             if (k < 0 || k >= PresetData.Length) throw new ArgumentOutOfRangeException("k");
             int[] d = (int[])PresetData[k].Clone(); List<string> skipped = new List<string>(); if (!cnc) plan = null;
             if (plan != null) { d[0] = plan.Game.Width; d[1] = plan.Game.Height; d[4] = plan.Game.Height >= 1200 ? 1 : 0; }
@@ -116,7 +116,7 @@ namespace DDFixTool
                 if (!cnc && Cnc) SetCnc(false);   // gives the renderer choice back (slashed.cfg) before we set our own
                 WriteResolution(d[0], d[1]);
                 string sc = P("slashed.cfg"); if (!cnc && File.Exists(sc) && File.Exists(P("slash1.dll"))) File.WriteAllBytes(sc, new byte[] { 0, 0, 0, 0 });   // renderer: Direct3D 6
-                if (sup) { SetVoice(true); SetDusk(true); } else skipped.Add(L.Ru ? "озвучка, закат и рассвет — версия игры не поддерживается" : "voice, dusk and dawn — the game version is not supported");
+                if (sup) { if (VoiceUseful) SetVoice(true); SetDusk(true); } else skipped.Add(U.R("озвучка, закат и рассвет — версия игры не поддерживается", "voice, dusk and dawn — the game version is not supported"));
                 if (cnc)
                 {
                     if (!Cnc) { if (File.Exists(CncSaved)) File.Delete(CncSaved); }   // a fresh start from the bundled defaults, not from whatever was left from earlier use
@@ -160,7 +160,7 @@ namespace DDFixTool
                 try { if (File.Exists(Path.Combine(PresetTx, "cnc_saved.ini"))) CopyOver(Path.Combine(PresetTx, "cnc_saved.ini"), CncSaved); } catch { }
                 try { if (!s0 && ShortcutExists) RemoveShortcut(); } catch { }
                 if (undo.Count == 0) { try { Directory.Delete(PresetTx, true); } catch { } }
-                throw new InvalidOperationException((L.Ru ? "Быстрая настройка не завершена: " : "Quick setup did not finish: ") + ex.Message + (undo.Count == 0 ? (L.Ru ? "\nУже сделанное отменено." : "\nWhat was already done has been undone.") : (L.Ru ? "\nОтменить удалось не всё: " : "\nNot everything could be undone: ") + string.Join("; ", undo.ToArray())), ex);
+                throw new InvalidOperationException((U.R("Быстрая настройка не завершена: ", "Quick setup did not finish: ")) + ex.Message + (undo.Count == 0 ? (U.R("\nУже сделанное отменено.", "\nWhat was already done has been undone.")) : (U.R("\nОтменить удалось не всё: ", "\nNot everything could be undone: ")) + string.Join("; ", undo.ToArray())), ex);
             }
             try { Directory.Delete(PresetTx, true); } catch { }
             foreach (string oid in new string[] { "voice", "dusk", "smooth" }) FixOptOut(oid, false);
@@ -173,18 +173,19 @@ namespace DDFixTool
         {
             List<string> fails = new List<string>();
             Action<string, Action> step = delegate(string name, Action act) { try { act(); } catch (Exception ex) { Log("revert [" + name + "]: " + ex.Message); fails.Add(name + ": " + ex.Message); } };
-            step(L.Ru ? "FPS-мод (такт 80)" : "FPS mod (tick 80)", delegate { string t8 = Fps80State(); if (t8 == "on" || t8 == "mixed" || File.Exists(Fps80File)) SetFps80(false); });
-            step(L.Ru ? "частота кадров" : "frame rate", delegate { if (BytePatchState("interp") == "on" || BytePatchState("interp") == "mixed") SetFpsMode(FpsOrig, 0); });
-            step(L.Ru ? "озвучка" : "voice", delegate { SetVoice(false); });   // on an unsupported div.exe this only takes our DLLs out
-            step(L.Ru ? "закат и рассвет" : "dusk", delegate { SetDusk(false); });
+            step(U.R("FPS-мод (такт 80)", "FPS mod (tick 80)"), delegate { string t8 = Fps80State(); if (t8 == "on" || t8 == "mixed" || File.Exists(Fps80File)) SetFps80(false); });
+            step(U.R("частота кадров", "frame rate"), delegate { if (BytePatchState("interp") == "on" || BytePatchState("interp") == "mixed") SetFpsMode(FpsOrig, 0); });
+            step(U.R("озвучка", "voice"), delegate { SetVoice(false); });   // on an unsupported div.exe this only takes our DLLs out
+            step(U.R("закат и рассвет", "dusk"), delegate { SetDusk(false); });
             step("Lar's Bone", delegate { SetBone(false); });
-            step(L.Ru ? "графическая обёртка" : "graphics wrapper", delegate { RevertDgv(); });
-            step(L.Ru ? "быстрая настройка" : "quick setup", delegate { RevertPreset(); });
-            step(L.Ru ? "плавная работа" : "smooth play", delegate { SetLauncher(false); });
-            step(L.Ru ? "ярлык" : "shortcut", delegate { RemoveShortcut(); });
-            step(L.Ru ? "шрифты" : "fonts", delegate { RevertFonts(); });
-            step(L.Ru ? "улучшенная графика" : "enhanced graphics", delegate { RevertAssets(); });
-            step(L.Ru ? "исправления игры" : "game fixes", delegate { RevertGfxFixes(); });
+            step(U.R("графическая обёртка", "graphics wrapper"), delegate { RevertDgv(); });
+            step(U.R("быстрая настройка", "quick setup"), delegate { RevertPreset(); });
+            step(U.R("плавная работа", "smooth play"), delegate { SetLauncher(false); });
+            step(U.R("ярлык", "shortcut"), delegate { RemoveShortcut(); });
+            step(U.R("корейский язык", "Korean language"), delegate { if (JGet("korean") != null || BytePatchState("korean") == "on") SetKorean(false); });
+            step(U.R("шрифты", "fonts"), delegate { RevertFonts(); });
+            step(U.R("улучшенная графика", "enhanced graphics"), delegate { RevertAssets(); });
+            step(U.R("исправления игры", "game fixes"), delegate { RevertGfxFixes(); });
             step("div.exe", delegate { if (ExeSupported) ExeReset(); });   // whatever state the exe was in: the verified original (src/Install.cs)
             foreach (string oid in new string[] { "voice", "dusk", "smooth", "fps" }) FixOptOut(oid, true);   // "Revert all" is the player's decision: the defaults do not come back by themselves
             return fails;
@@ -214,7 +215,7 @@ namespace DDFixTool
             }
             catch (Exception ex) { fail.Add("cnc settings: " + ex.Message); }
             if (fail.Count > 0)
-                throw new IOException((L.Ru ? "Не все файлы вернулись (занят игрой или антивирусом?). Резервные копии сохранены в " : "Not every file could be restored (busy? antivirus?). The backups are kept in ") + PresetDir + ":\n" + string.Join("\n", fail.ToArray()));
+                throw new IOException((U.R("Не все файлы вернулись (занят игрой или антивирусом?). Резервные копии сохранены в ", "Not every file could be restored (busy? antivirus?). The backups are kept in ")) + PresetDir + ":\n" + string.Join("\n", fail.ToArray()));
             Directory.Delete(PresetDir, true); try { if (File.Exists(ScaleFile)) File.Delete(ScaleFile); FilterAuto = false; } catch { } Log(L.T("reverted") + "preset");
         }
     }

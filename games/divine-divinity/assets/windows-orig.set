@@ -5,7 +5,7 @@
 # flat.cmp: the pristine one of the game; skin A (own flat.cmp) is NOT combinable with this set (the orig list names only the pristine flat.cmp).
 id=windows-orig
 game=divine-divinity
-version=1.0.1
+version=1.0.2
 kind=ui-bag
 layer=2
 name.ru=Крупные окна (на оригинале)

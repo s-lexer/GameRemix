@@ -104,14 +104,14 @@ namespace DDFixTool
         // switching OFF touches only what the mark says is ours. A cnc-ddraw without our mark belongs to the user and stays.
         void CncOff()
         {
-            if (!File.Exists(CncMark)) { if (Cnc) Warn(L.Ru ? "gr-draw в папке игры установлен не этой программой — он остался на месте." : "The gr-draw in the game folder was not installed by this program — it stays where it is."); return; }
+            if (!File.Exists(CncMark)) { if (Cnc) Warn(U.R("gr-draw в папке игры установлен не этой программой — он остался на месте.", "The gr-draw in the game folder was not installed by this program — it stays where it is.")); return; }
             List<string> made; string moved; ReadMark(out made, out moved);
             try { if (File.Exists(P("ddraw.ini")) && made.Contains("ddraw.ini")) { Directory.CreateDirectory(Path.GetDirectoryName(CncSaved)); File.Copy(P("ddraw.ini"), CncSaved, true); } } catch { }   // keep our ini's settings for next time
             bool ours = false; try { ours = IsCncDllStrict(P("ddraw.dll")); } catch (IOException) { ours = made.Contains("ddraw.dll"); }   // unreadable = locked: it is ours if the mark says so, and the delete below fails loudly
             if (ours)   // first the dll: if it is locked, nothing else changes and the mark stays so that a retry works
             {
                 try { File.Delete(P("ddraw.dll")); }
-                catch (Exception ex) { throw new IOException((L.Ru ? "Не удалось убрать ddraw.dll (занят? закройте игру): " : "Could not remove ddraw.dll (in use? close the game): ") + ex.Message); }
+                catch (Exception ex) { throw new IOException((U.R("Не удалось убрать ddraw.dll (занят? закройте игру): ", "Could not remove ddraw.dll (in use? close the game): ")) + ex.Message); }
             }
             List<string> left = new List<string>();
             foreach (string f in made) { if (string.Equals(f, "ddraw.dll", StringComparison.OrdinalIgnoreCase)) continue; try { if (File.Exists(P(f))) File.Delete(P(f)); } catch { left.Add(f); } }
@@ -119,12 +119,12 @@ namespace DDFixTool
             string park = moved != null ? moved : (File.Exists(CncOther) ? "ddraw.dll.ogfbak" : null);
             if (park != null && File.Exists(P(park)))
             {
-                if (!File.Exists(P("ddraw.dll"))) { try { File.Move(P(park), P("ddraw.dll")); } catch (Exception ex) { left.Add("@keep"); Warn((L.Ru ? "Не удалось вернуть прежний ddraw.dll: " : "Could not put the previous ddraw.dll back: ") + ex.Message); } }
+                if (!File.Exists(P("ddraw.dll"))) { try { File.Move(P(park), P("ddraw.dll")); } catch (Exception ex) { left.Add("@keep"); Warn((U.R("Не удалось вернуть прежний ddraw.dll: ", "Could not put the previous ddraw.dll back: ")) + ex.Message); } }
                 else Warn(L.Ru ? "Прежний ddraw.dll сохранён как " + park + " (в папке уже лежит другой ddraw.dll)." : "The previous ddraw.dll is kept as " + park + " (another ddraw.dll is already there).");
             }
-            try { CncGameRenderer(false); } catch (Exception ex) { Log("renderer: " + ex.Message); Warn((L.Ru ? "Не удалось вернуть прежний режим отрисовки игры (slashed.cfg): " : "Could not restore the game's renderer choice (slashed.cfg): ") + ex.Message); }
+            try { CncGameRenderer(false); } catch (Exception ex) { Log("renderer: " + ex.Message); Warn((U.R("Не удалось вернуть прежний режим отрисовки игры (slashed.cfg): ", "Could not restore the game's renderer choice (slashed.cfg): ")) + ex.Message); }
             left.Remove("@keep");
-            if (left.Count == 0) { File.Delete(CncMark); JDrop("grdraw"); } else { WriteMark(left, null); JNote("grdraw", false); Warn((L.Ru ? "Часть файлов gr-draw не удалена: " : "Some gr-draw files were not removed: ") + string.Join(", ", left.ToArray())); }
+            if (left.Count == 0) { File.Delete(CncMark); JDrop("grdraw"); } else { WriteMark(left, null); JNote("grdraw", false); Warn((U.R("Часть файлов gr-draw не удалена: ", "Some gr-draw files were not removed: ")) + string.Join(", ", left.ToArray())); }
             Log(L.T("reverted") + "gr-draw");
         }
         void BackupCncIni()

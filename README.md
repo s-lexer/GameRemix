@@ -13,7 +13,6 @@ Website and application download: **https://gameremix.pro/**.
 ### Source code
 
 - `src/` — C# 3 / .NET Framework 3.5 application using Windows Forms.
-- `stub/` — native 32-bit launcher that packages the application and its configuration into a single executable.
 - `shared/` — shared tools for preparing assets and graphics wrappers.
 - `games/divine-divinity/` — game definitions, patch generators, and tools.
 - `tools/` — checks and helper scripts.
@@ -27,10 +26,9 @@ Requirements: Windows, Python 3, the .NET Framework 3.5 compiler, and MSVC Build
 
 ```text
 python src/build.py
-python stub/build_stub.py
 ```
 
-The first command produces `dist/managed/GameRemix.exe` and its `.config` file; the second creates the single-file `dist/GameRemix.exe`. The application targets Windows 7 and later.
+The command produces `dist/build/GameRemix.exe`, a single file built for the .NET Framework 4 (included in Windows 8–11; Windows 7 SP1 needs the .NET Framework 4.8).
 
 **A clean clone is not sufficient for a complete build:** `src/build.py` also expects binary components and prepared resources in `games/divine-divinity/payload/`, `games/divine-divinity/gfx/`, and `shared/cnc-ddraw/`. These are not included in this snapshot; the build script lists the exact paths. This repository does not include the game itself. Release signing and publishing require the project owner's separate infrastructure.
 
@@ -51,7 +49,6 @@ GameRemix объединяет исправления игры, настройк
 ### Исходники
 
 - `src/` — приложение на C# 3 / .NET Framework 3.5, Windows Forms.
-- `stub/` — нативный 32-битный запускатель, упаковывающий приложение и конфигурацию в один exe.
 - `shared/` — общие механизмы подготовки ассетов и графических обёрток.
 - `games/divine-divinity/` — данные игры, генераторы патчей и инструменты.
 - `tools/` — проверки и вспомогательные скрипты.
@@ -65,10 +62,9 @@ GameRemix объединяет исправления игры, настройк
 
 ```text
 python src/build.py
-python stub/build_stub.py
 ```
 
-Первая команда создаёт `dist/managed/GameRemix.exe` и `.config`, вторая — единый `dist/GameRemix.exe`. Программа рассчитана на Windows 7 и новее.
+Команда создаёт `dist/build/GameRemix.exe` — один файл под .NET Framework 4 (есть в Windows 8–11; для Windows 7 SP1 нужен .NET Framework 4.8).
 
 **Чистого клона недостаточно для полной сборки:** `src/build.py` также ожидает бинарные компоненты и подготовленные ресурсы в `games/divine-divinity/payload/`, `games/divine-divinity/gfx/` и `shared/cnc-ddraw/`. Они не включены в этот снимок; точные пути перечислены в скрипте сборки. Репозиторий не содержит дистрибутив игры. Подпись и публикация релизов требуют отдельной инфраструктуры владельца проекта.
 

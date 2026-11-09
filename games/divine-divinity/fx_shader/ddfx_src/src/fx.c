@@ -21,6 +21,8 @@ static FX_PGLBLENDFUNC fx_glBlendFunc;
 static FX_PGLDRAWARRAYS fx_glDrawArrays;
 
 static float g_v[FX_NP];             /* current values */
+static float g_saved_start[FX_NP];  /* exact [current] snapshot on startup */
+static BOOL g_quick_key_down[5];     /* Ctrl+Shift+1..5 edge detection */
 static GLint g_loc[FX_NP]; static GLint g_loc_filter = -1; static float g_filter = 0.0f;   /* g_filter: the player's scaling filter, see u_filter in fx.glsl */
 static GLuint g_prog = 0, g_ovl_prog = 0, g_ovl_vao = 0, g_ovl_tex = 0, g_hud_tex = 0;
 static GLint g_ovl_rect_loc = -1;
@@ -214,6 +216,7 @@ void fx_game_present(void)
 }
 
 /* render thread: copy of the published list for this frame's uniforms */
+static int pidx(const char* key);
 static void lights_snapshot(void)
 {
     int i;
@@ -224,10 +227,177 @@ static void lights_snapshot(void)
     {
         const FXLIGHT* L = &g_lpub[i];
         g_rs_lp[i * 4 + 0] = L->sx; g_rs_lp[i * 4 + 1] = L->sy; g_rs_lp[i * 4 + 2] = L->rad; g_rs_lp[i * 4 + 3] = L->h;
-        g_rs_lc[i * 4 + 0] = L->r; g_rs_lc[i * 4 + 1] = L->g; g_rs_lc[i * 4 + 2] = L->b; g_rs_lc[i * 4 + 3] = clampf(L->inten, 0.0f, 2.0f) + 10.0f * L->kind;
+        g_rs_lc[i * 4 + 0] = L->r; g_rs_lc[i * 4 + 1] = L->g; g_rs_lc[i * 4 + 2] = L->b;
+        {
+            float it = clampf(L->inten, 0.0f, 2.0f);
+            float vf = g_v[pidx("source_flicker")], vm = g_v[pidx("spell_pulse")];
+            if ((L->kind == 0 && vf > 0.001f) || ((L->kind == 1 || L->kind == 2) && vm > 0.001f))
+            {
+                float time = (float)(GetTickCount() % 1000000) / 1000.0f;
+                float phase = L->sx * 0.009f + L->sy * 0.013f + L->r * 1.83f + L->rad * 0.017f;
+                float modulation;
+                if (L->kind == 0) {
+                    float w = 0.65f * sinf(time * 6.30f + phase) + 0.35f * sinf(time * 11.17f + phase * 1.7f);
+                    modulation = max(0.55f, 1.0f + w * vf);
+                } else {
+                    float w = 0.65f * sinf(time * 3.2f + phase) + 0.35f * sinf(time * 5.1f + phase * 0.61f);
+                    modulation = max(0.4f, 1.0f + w * vm * (L->kind == 2 ? 0.60f : 0.35f));
+                }
+                it *= modulation;
+            }
+            g_rs_lc[i * 4 + 3] = clampf(it, 0.0f, 2.0f) + 10.0f * L->kind;
+        }
     }
     lcs_leave();
     g_rs_fresh = TRUE;
+}
+
+#define FX_WOW_MAX 12
+typedef struct { float x,y,r,g,b,rad; int used, age; } WOW_SOURCE;
+typedef struct { float x,y,r,g,b,rad; DWORD birth; } WOW_ECHO;
+static WOW_SOURCE g_wow_prev[FX_WOW_MAX];
+static WOW_SOURCE g_wow_static_prev[FX_WOW_MAX];static int g_wow_static_n=0;
+static int g_wow_prev_count=0, g_wow_nt=0, g_wow_ne=0;
+static WOW_ECHO g_wow_echo[FX_WOW_MAX];
+static float g_wow_ta[FX_WOW_MAX*4],g_wow_tc[FX_WOW_MAX*4],g_wow_ea[FX_WOW_MAX*4],g_wow_ec[FX_WOW_MAX*4];
+static DWORD g_wow_last=0;
+static void wow_reset(void)
+{
+    g_wow_prev_count=0;g_wow_nt=0;g_wow_ne=0;g_wow_last=0;g_wow_static_n=0;
+    memset(g_wow_echo,0,sizeof(g_wow_echo));
+}
+static void wow_update(void)
+{
+    WOW_SOURCE curr[FX_WOW_MAX], anchors[FX_WOW_MAX]; int nc=0,na=0,i,j,idx;
+    float cameraX=0.f,cameraY=0.f;int cameraN=0;
+    DWORD now=GetTickCount(),dt=now-g_wow_last;
+    BOOL trails=(g_v[pidx("magic_trails")]>0.001f),echo=(g_v[pidx("magic_echo")]>0.001f);
+    g_wow_nt=0;g_wow_ne=0;
+    if (!g_rs_world || g_v[pidx("fx")]<0.5f || (!trails && !echo) || (g_wow_last && dt>180))
+        wow_reset();
+    if (!g_rs_world || g_v[pidx("fx")]<0.5f || (!trails && !echo)) return;
+    /* Estimate camera pan from at least two matching static lamp/world-magic anchors.
+       This prevents every spell being drawn as moving when the player scrolls the map.
+       With <2 consistent anchors, correction stays zero (conservative fallback). */
+    for(i=0;i<g_rs_n && na<FX_WOW_MAX;i++)
+    {
+        int kind=(int)(g_rs_lc[i*4+3]/10.0f+0.01f);
+        if(kind!=0 && kind!=1)continue;
+        anchors[na].x=g_rs_lp[i*4];anchors[na].y=g_rs_lp[i*4+1];
+        anchors[na].r=g_rs_lc[i*4];anchors[na].g=g_rs_lc[i*4+1];anchors[na].b=g_rs_lc[i*4+2];
+        anchors[na].rad=g_rs_lp[i*4+2];anchors[na].used=0;++na;
+    }
+    if(g_wow_last && dt<=180)
+    {
+        for(i=0;i<na;i++)
+        {
+            float best=80.f*80.f;idx=-1;
+            for(j=0;j<g_wow_static_n;j++)
+            {
+                float dx=anchors[i].x-g_wow_static_prev[j].x,dy=anchors[i].y-g_wow_static_prev[j].y;
+                float dc=fabsf(anchors[i].r-g_wow_static_prev[j].r)+fabsf(anchors[i].g-g_wow_static_prev[j].g)+fabsf(anchors[i].b-g_wow_static_prev[j].b);
+                float ds=fabsf(anchors[i].rad-g_wow_static_prev[j].rad);
+                float d2=dx*dx+dy*dy;
+                if(!g_wow_static_prev[j].used && dc<0.15f && ds<5.f && d2<best){best=d2;idx=j;}
+            }
+            if(idx>=0)
+            {
+                float dx=anchors[i].x-g_wow_static_prev[idx].x;
+                float dy=anchors[i].y-g_wow_static_prev[idx].y;
+                g_wow_static_prev[idx].used=1;
+                if(cameraN==0){cameraX=dx;cameraY=dy;cameraN=1;}
+                else if(fabsf(dx-cameraX/cameraN)<4.f && fabsf(dy-cameraY/cameraN)<4.f)
+                    {cameraX+=dx;cameraY+=dy;cameraN++;}
+            }
+        }
+        if(cameraN>=2){cameraX/=cameraN;cameraY/=cameraN;}
+        else{cameraX=0.f;cameraY=0.f;}
+    }
+    /* Only dynamic spell/effect kind 2; static lamp kind 0/1 and marker kind 3 excluded.
+       Motion matching is conservative: max 58px/frame after camera correction. */
+    for(i=0;i<g_rs_n && nc<FX_WOW_MAX;i++)
+    {
+        float a=g_rs_lc[i*4+3],x=g_rs_lp[i*4],y=g_rs_lp[i*4+1];
+        int kind=(int)(a/10.0f+0.01f);
+        if(kind!=2 || a-20.0f < 0.03f) continue;
+        if(x<-20.f || y<-20.f || x>8192.f || y>8192.f) continue;
+        curr[nc].x=x;curr[nc].y=y;
+        curr[nc].r=g_rs_lc[i*4];curr[nc].g=g_rs_lc[i*4+1];curr[nc].b=g_rs_lc[i*4+2];
+        curr[nc].rad=g_rs_lp[i*4+2];curr[nc].used=0;curr[nc].age=1;
+        ++nc;
+    }
+    for(i=0;i<g_wow_prev_count;i++)g_wow_prev[i].used=0;
+    if(g_wow_last && dt<=180)
+    {
+        for(i=0;i<nc;i++)
+        {
+            float closest=58.f*58.f;idx=-1;
+            for(j=0;j<g_wow_prev_count;j++)
+            {
+                float dx=curr[i].x-(g_wow_prev[j].x+cameraX),dy=curr[i].y-(g_wow_prev[j].y+cameraY);
+                float col=fabsf(curr[i].r-g_wow_prev[j].r)+fabsf(curr[i].g-g_wow_prev[j].g)+fabsf(curr[i].b-g_wow_prev[j].b);
+                float d2=dx*dx+dy*dy;
+                if(!g_wow_prev[j].used && col<0.34f && d2<closest){closest=d2;idx=j;}
+            }
+            if(idx>=0)
+            {
+                g_wow_prev[idx].used=1;
+                curr[i].age=g_wow_prev[idx].age<255 ? g_wow_prev[idx].age+1 : 255;
+                if(trails && closest>4.f && g_wow_nt<FX_WOW_MAX)
+                {
+                    int n=g_wow_nt++;
+                    g_wow_ta[n*4]=g_wow_prev[idx].x+cameraX;g_wow_ta[n*4+1]=g_wow_prev[idx].y+cameraY;
+                    g_wow_ta[n*4+2]=curr[i].x;g_wow_ta[n*4+3]=curr[i].y;
+                    g_wow_tc[n*4]=curr[i].r;g_wow_tc[n*4+1]=curr[i].g;g_wow_tc[n*4+2]=curr[i].b;
+                    g_wow_tc[n*4+3]=1.f;
+                }
+            }
+        }
+        /* No real hit event hook yet: a disappeared source leaves a short fading afterimage,
+           not an asserted impact. Do not ring at the viewport edge. */
+        if(echo)
+          for(j=0;j<g_wow_prev_count;j++)if(!g_wow_prev[j].used && g_wow_prev[j].age>=2)
+          {
+              WOW_SOURCE* o=&g_wow_prev[j];
+              if(o->x<25.f||o->y<25.f||o->x>*(int*)DD_FRAME_W-25.f||o->y>*(int*)DD_FRAME_H-25.f)continue;
+              for(idx=0;idx<FX_WOW_MAX;idx++)if(!g_wow_echo[idx].birth)break;
+              if(idx<FX_WOW_MAX){
+                  g_wow_echo[idx].x=o->x+cameraX;g_wow_echo[idx].y=o->y+cameraY;g_wow_echo[idx].r=o->r;g_wow_echo[idx].g=o->g;g_wow_echo[idx].b=o->b;
+                  g_wow_echo[idx].rad=o->rad;g_wow_echo[idx].birth=now;
+              }
+          }
+    }
+    if(echo)
+      for(i=0;i<FX_WOW_MAX;i++)if(g_wow_echo[i].birth)
+      {
+          float age=(now-g_wow_echo[i].birth)/340.f;
+          if(age>=1.f){g_wow_echo[i].birth=0;continue;}
+          if(g_wow_ne>=FX_WOW_MAX)break;
+          idx=g_wow_ne++;
+          g_wow_ea[idx*4]=g_wow_echo[i].x;g_wow_ea[idx*4+1]=g_wow_echo[i].y;
+          g_wow_ea[idx*4+2]=g_wow_echo[i].rad;g_wow_ea[idx*4+3]=age;
+          g_wow_ec[idx*4]=g_wow_echo[i].r;g_wow_ec[idx*4+1]=g_wow_echo[i].g;g_wow_ec[idx*4+2]=g_wow_echo[i].b;g_wow_ec[idx*4+3]=1.f;
+      }
+    for(i=0;i<nc;i++)g_wow_prev[i]=curr[i];
+    for(i=0;i<na;i++)g_wow_static_prev[i]=anchors[i];
+    g_wow_static_n=na;
+    g_wow_prev_count=nc;g_wow_last=now;
+}
+static void wow_uniforms(GLuint prog)
+{
+    GLint l;
+    if((l=glGetUniformLocation(prog,"u_nt"))!=-1)glUniform1i(l,g_wow_nt);
+    if((l=glGetUniformLocation(prog,"u_ne"))!=-1)glUniform1i(l,g_wow_ne);
+    if(g_wow_nt>0)
+    {
+       if((l=glGetUniformLocation(prog,"u_ta"))!=-1)glUniform4fv(l,g_wow_nt,g_wow_ta);
+       if((l=glGetUniformLocation(prog,"u_tc"))!=-1)glUniform4fv(l,g_wow_nt,g_wow_tc);
+    }
+    if(g_wow_ne>0)
+    {
+       if((l=glGetUniformLocation(prog,"u_ea"))!=-1)glUniform4fv(l,g_wow_ne,g_wow_ea);
+       if((l=glGetUniformLocation(prog,"u_ec"))!=-1)glUniform4fv(l,g_wow_ne,g_wow_ec);
+    }
 }
 
 static void set_light_uniforms(GLuint prog)
@@ -322,7 +492,15 @@ static void cfg_save_section(const char* name)
     n += sprintf(out + n, "[%s]\r\n", name);
     for (i = 0; i < FX_NP; i++) n += sprintf(out + n, "%s=%.4g\r\n", FX_PARAMS[i].key, g_v[i]);
     h = CreateFileA(g_cfg_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (h != INVALID_HANDLE_VALUE) { WriteFile(h, out, (DWORD)n, &wr, NULL); CloseHandle(h); }
+    if (h != INVALID_HANDLE_VALUE)
+    {
+        BOOL ok = WriteFile(h, out, (DWORD)n, &wr, NULL);
+        CloseHandle(h);
+        /* Ctrl+Shift+1 must restore the latest explicitly SAVED [current], not
+           an older launch snapshot, while changing quick looks never writes a file. */
+        if (ok && wr == (DWORD)n && strcmp(name, "current") == 0)
+            memcpy(g_saved_start, g_v, sizeof(g_v));
+    }
     free(out); free(b);
 }
 
@@ -360,6 +538,9 @@ BOOL fx_swallow_msg(UINT msg, WPARAM wp)
     switch (msg)
     {
     case WM_KEYDOWN: case WM_KEYUP: case WM_SYSKEYDOWN: case WM_SYSKEYUP:
+        if ((int)wp >= '1' && (int)wp <= '5' &&
+            (real_GetAsyncKeyState(VK_CONTROL) & 0x8000) &&
+            (real_GetAsyncKeyState(VK_SHIFT) & 0x8000)) return TRUE;
         if ((int)wp == g_k_fx || (int)wp == g_k_menu || (int)wp == g_k_fps) return TRUE;
         /* fall through */
     case WM_CHAR: case WM_SYSCHAR: case WM_DEADCHAR:
@@ -382,6 +563,7 @@ static void fx_init(void)
     _snprintf(g_cfg_path, sizeof(g_cfg_path) - 1, "%sdd-fx.cfg", g_config.dll_path);
     set_defaults();
     cfg_load_section("current");
+    memcpy(g_saved_start, g_v, sizeof(g_v));
     g_k_menu = GetPrivateProfileIntA("keys", "menu", VK_F10, g_cfg_path); g_k_fps = GetPrivateProfileIntA("keys", "fps", VK_F11, g_cfg_path); g_k_fx = GetPrivateProfileIntA("keys", "fx", VK_F9, g_cfg_path);
     if (g_k_menu < 1 || g_k_menu > 254) g_k_menu = VK_F10; if (g_k_fps < 1 || g_k_fps > 254) g_k_fps = VK_F11; if (g_k_fx < 1 || g_k_fx > 254) g_k_fx = VK_F9;
     build_rows();
@@ -391,7 +573,7 @@ static void fx_init(void)
 static GLuint build_pass(const char* define);
 static void bl_bind_for_main(void);
 static GLuint g_pre_prog, g_down_prog, g_up_prog, g_luma_prog;
-static GLint g_loc_glow, g_loc_light, g_loc_light2, g_loc_scene, g_loc_bok, g_loc_time;
+static GLint g_loc_glow, g_loc_emit, g_loc_light, g_loc_light2, g_loc_scene, g_loc_bok, g_loc_time;
 static BOOL g_core;
 static char* make_src(const char* define)
 {
@@ -414,7 +596,7 @@ GLuint fx_build_program(BOOL core_profile)
         g_filter = strstr(sh, "catmull") ? 0.0f : strstr(sh, "lanczos") ? 3.0f : strstr(sh, "nearest") ? 1.0f : strstr(sh, "bilinear") ? 2.0f : 0.0f;
     }
     for (i = 0; i < FX_NP; i++) { char nm[64]; _snprintf(nm, sizeof(nm) - 1, "u_%s", FX_PARAMS[i].key); nm[63] = 0; g_loc[i] = glGetUniformLocation(g_prog, nm); }
-    g_loc_glow = glGetUniformLocation(g_prog, "u_glow"); g_loc_light = glGetUniformLocation(g_prog, "u_light"); g_loc_light2 = glGetUniformLocation(g_prog, "u_light2"); g_loc_scene = glGetUniformLocation(g_prog, "u_scene");
+    g_loc_glow = glGetUniformLocation(g_prog, "u_glow"); g_loc_emit = glGetUniformLocation(g_prog, "u_emitter"); g_loc_light = glGetUniformLocation(g_prog, "u_light"); g_loc_light2 = glGetUniformLocation(g_prog, "u_light2"); g_loc_scene = glGetUniformLocation(g_prog, "u_scene");
     g_loc_bok = glGetUniformLocation(g_prog, "u_bloom_ok"); g_loc_time = glGetUniformLocation(g_prog, "u_time");
     g_pre_prog = build_pass("PRE"); g_down_prog = build_pass("DOWN"); g_up_prog = build_pass("UP"); g_luma_prog = build_pass("LUMA");
     {
@@ -471,15 +653,85 @@ static void adjust(int idx, int dir, float mult)
     g_dirty = TRUE;
 }
 
+/* Five quick A/B looks; they never write dd-fx.cfg. Every look starts with the
+   profile captured at startup, so pressing a new shortcut is predictable. */
+static void quick_value(const char* key, float value)
+{
+    int i=pidx(key);
+    if(i>=0)g_v[i]=clampf(value,FX_PARAMS[i].mn,FX_PARAMS[i].mx);
+}
+static void quick_look(int slot)
+{
+    memcpy(g_v,g_saved_start,sizeof(g_v));
+    quick_value("fx",1);
+    quick_value("show_lights",0);
+    quick_value("debug",0);
+    if(slot==0){toast("FX 1: MY SAVED LOOK");g_dirty=TRUE;return;}
+    quick_value("ambient",0);
+    quick_value("vignette",0);
+    quick_value("fire_on",1);
+    quick_value("light_on",1);
+    quick_value("magic_on",1);
+    quick_value("spell_lights",1);
+    if(slot==1)
+    {
+       quick_value("vibrance",1.15f);quick_value("clarity",0.65f);
+       quick_value("saturation",1.28f);quick_value("contrast",0.12f);
+       quick_value("shadow_lift",0.32f);quick_value("exposure",0.08f);
+       quick_value("fire_bloom",1.5f);quick_value("light_str",0.90f);
+       toast("FX 2: VIVID WORLD");
+    }
+    else if(slot==2)
+    {
+       quick_value("vibrance",0.95f);quick_value("clarity",0.5f);
+       quick_value("saturation",1.35f);quick_value("shadow_lift",0.24f);
+       quick_value("magic_bloom",1.65f);quick_value("spell_pulse",0.92f);
+       quick_value("magic_trails",1);quick_value("magic_echo",1);
+       quick_value("magic_splash",1);quick_value("light_str",1.0f);
+       toast("FX 3: MAGIC WOW");
+    }
+    else if(slot==3)
+    {
+       quick_value("vibrance",0.65f);quick_value("clarity",0.5f);
+       quick_value("cinema_tone",0.95f);quick_value("shadow_lift",0.40f);
+       quick_value("saturation",1.23f);quick_value("contrast",0.18f);
+       quick_value("atmo_tint",0.6f);quick_value("light_str",0.85f);
+       quick_value("exposure",0.05f);quick_value("source_flicker",0.23f);
+       toast("FX 4: CINEMA");
+    }
+    else
+    {
+       quick_value("vibrance",1.5f);quick_value("clarity",1.15f);
+       quick_value("cinema_tone",0.8f);quick_value("shadow_lift",0.43f);
+       quick_value("saturation",1.52f);quick_value("contrast",0.23f);
+       quick_value("exposure",0.10f);quick_value("fire_bloom",1.95f);
+       quick_value("halo",1.4f);quick_value("light_str",1.2f);
+       quick_value("light_radius",1.25f);quick_value("magic_bloom",1.85f);
+       quick_value("spell_pulse",0.95f);quick_value("magic_trails",1);
+       quick_value("magic_echo",1);quick_value("magic_splash",1);
+       quick_value("heat_haze",0.65f);quick_value("light_mist",0.7f);
+       quick_value("source_flicker",0.27f);
+       toast("FX 5: ULTRA WOW");
+    }
+    g_dirty=TRUE;
+}
 static void poll_input(void)
 {
-    BOOL fg = fg_ours(); int i; BOOL shift, ctrl; float mult;
+    BOOL fg = fg_ours(); int i; BOOL shift, ctrl, alt; float mult;
     if (!fg) return;
-    shift = kdown(VK_SHIFT); ctrl = kdown(VK_CONTROL); mult = shift ? 5.0f : (ctrl ? 0.2f : 1.0f);
+    shift = kdown(VK_SHIFT); ctrl = kdown(VK_CONTROL); alt = kdown(VK_MENU);
+    mult = shift ? 5.0f : (ctrl ? 0.2f : 1.0f);
+    for(i=0;i<5;i++)
+    {
+        BOOL down=kdown('1'+i), combo=shift && ctrl && !alt;
+        if(combo && down && !g_quick_key_down[i])quick_look(i);
+        g_quick_key_down[i]=down;
+    }
     if (kpress(g_k_fps, FALSE)) { int ix = pidx("show_fps"); g_v[ix] = g_v[ix] > 0.5f ? 0.0f : 1.0f; g_dirty = TRUE; }
     if (kpress(g_k_fx, FALSE)) { int ix = pidx("fx"); g_v[ix] = g_v[ix] > 0.5f ? 0.0f : 1.0f; toast(g_v[ix] > 0.5f ? FXS_FXON : FXS_FXOFF); }
     if (kpress(g_k_menu, FALSE)) { InterlockedExchange(&g_open, !g_open); g_dirty = TRUE; }
     if (!g_open) return;
+    if (shift && ctrl && !alt) return; /* Quick preset combo is not F10 Shift+slot save. */
     if (kpress(VK_ESCAPE, FALSE)) { InterlockedExchange(&g_open, 0); g_dirty = TRUE; return; }
     if (kpress(VK_UP, TRUE)) { g_sel = sel_row_move(-1); g_dirty = TRUE; }
     if (kpress(VK_DOWN, TRUE)) { g_sel = sel_row_move(1); g_dirty = TRUE; }
@@ -569,6 +821,16 @@ static void value_str(int idx, char* out, size_t n)
 static void render_panel(void)
 {
     int vis = visible_rows(), i, y; int H = 22 + 2 * LINE_H + vis * LINE_H + 8;
+    /* One hotkey should display only a small notice, not the full options panel. */
+    if (!g_open)
+    {
+        H=52;g_panel_h=H;memset(g_panel,0,PANEL_W*H*4);
+        fill_rect(g_panel,PANEL_W,H,0,0,PANEL_W,H,RGB_(14,14,20),215);
+        fill_rect(g_panel,PANEL_W,H,0,0,PANEL_W,2,RGB_(220,170,70),255);
+        draw_text(g_panel,PANEL_W,H,10,7,g_toast,RGB_(160,235,145));
+        draw_text(g_panel,PANEL_W,H,10,27,"CTRL+SHIFT+1..5 LOOKS   F9 BEFORE/AFTER",RGB_(175,175,195));
+        return;
+    }
     if (H > MAX_PANEL_H) H = MAX_PANEL_H;
     g_panel_h = H; memset(g_panel, 0, PANEL_W * H * 4);
     fill_rect(g_panel, PANEL_W, H, 0, 0, PANEL_W, H, RGB_(14, 14, 20), 215);
@@ -641,7 +903,9 @@ void fx_frame(GLuint program)
     if (g_loc_time != -1) glUniform1f(g_loc_time, (float)(GetTickCount() % 1000000) / 1000.0f);
     if (!g_rs_fresh) lights_snapshot();   /* fx_bloom did not run this frame: take it here */
     g_rs_fresh = FALSE;
+    wow_update();
     set_light_uniforms(program);
+    wow_uniforms(program);
     bl_bind_for_main();
     g_frames++; now.QuadPart = GetTickCount();
     if (GetTickCount() - g_fps_t >= 500)
@@ -758,7 +1022,7 @@ void fx_bloom(GLuint scene_tex, int w, int h)
     lights_snapshot();
     if (!g_prog || !g_pre_prog || !g_down_prog || !g_up_prog || !g_luma_prog) return;
     if (!g_rs_world) return;   /* menu / journal / map / loading: no effects */
-    if (g_v[pidx("fx")] < 0.5f || (g_v[pidx("fire_on")] < 0.5f && g_v[pidx("magic_on")] < 0.5f && g_v[pidx("spell_lights")] < 0.5f && g_v[pidx("light_on")] < 0.5f && g_v[pidx("debug")] < 2.5f)) return;
+    if (g_v[pidx("fx")] < 0.5f || (g_v[pidx("fire_on")] < 0.5f && g_v[pidx("magic_on")] < 0.5f && g_v[pidx("spell_lights")] < 0.5f && g_v[pidx("light_on")] < 0.5f && g_v[pidx("debug")] < 2.5f && g_v[pidx("show_lights")] < 0.5f)) return;
     if (!bl_alloc(w, h)) return;
     if (!g_bl_vao) glGenVertexArrays(1, &g_bl_vao);
     glBindVertexArray(g_bl_vao);
@@ -766,6 +1030,8 @@ void fx_bloom(GLuint scene_tex, int w, int h)
     glUseProgram(g_pre_prog);
     for (i = 0; i < FX_NP; i++) { char nm[64]; GLint l; _snprintf(nm, sizeof(nm) - 1, "u_%s", FX_PARAMS[i].key); nm[63] = 0; l = glGetUniformLocation(g_pre_prog, nm); if (l != -1) glUniform1f(l, g_v[i]); }
     uni2f(glGetUniformLocation(g_pre_prog, "InputSize"), (float)w, (float)h);
+    /* PRE and final compositing must see the SAME phase for independent lamp flicker. */
+    glUniform1f(glGetUniformLocation(g_pre_prog, "u_time"), (float)(GetTickCount() % 1000000) / 1000.0f);
     set_light_uniforms(g_pre_prog);
     bl_set(g_pre_prog, "Texture", 0, scene_tex);
     bl_target(0); fx_glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -810,6 +1076,7 @@ static void bl_bind_for_main(void)
     glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_2D, g_bl_tex[FX_NL + 2]); if (g_loc_light != -1) glUniform1i(g_loc_light, 3);
     glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_2D, g_bl_tex[FX_NL + 3]); if (g_loc_light2 != -1) glUniform1i(g_loc_light2, 4);
     glActiveTexture(GL_TEXTURE5); glBindTexture(GL_TEXTURE_2D, g_bl_tex[FX_LUMA]); if (g_loc_scene != -1) glUniform1i(g_loc_scene, 5);
+    glActiveTexture(GL_TEXTURE6); glBindTexture(GL_TEXTURE_2D, g_bl_tex[0]); if (g_loc_emit != -1) glUniform1i(g_loc_emit, 6);
     glActiveTexture(GL_TEXTURE0);
 }
 

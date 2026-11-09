@@ -32,7 +32,7 @@ namespace DDFixTool
         public static void Get(string key, out string title, out string body)
         {
             Load(); Entry e; if (!db.TryGetValue(key, out e)) { title = key; body = ""; return; }
-            title = L.Ru ? e.TitleRu : e.TitleEn; body = L.Ru ? e.Ru : e.En; if (title.Length == 0) title = key;
+            title = L.Ru ? e.TitleRu : L.Kor(e.TitleEn); body = L.Ru ? e.Ru : L.Kor(e.En); if (title.Length == 0) title = key;
         }
         public static void Show(IWin32Window owner, string key) { using (HelpTextForm f = new HelpTextForm(key)) f.ShowDialog(owner); }
         // the small "?" button of a row (same look as the one on cnc-ddraw / dgVoodoo rows)

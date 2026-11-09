@@ -522,14 +522,21 @@ namespace DDFixTool
         // Installed sets with a newer version on the server, for any game (its gfx.txt + the sets server). After start-up / game switch: ONE question, "No" is remembered
         // for exactly these versions (settings.ini setsupd_later). On "Play" (owner 07.11.2026): asked EVERY time while an update exists, "No" just starts the game.
         Dictionary<string, AssetManifest> setsMan;   // the server's manifests from the last start-up check (null: offline / not checked yet -> "Play" does not wait for the network)
+        // While that check runs "Play" is greyed and reads "Checking…" (owner 08.11.2026: people pressed it before the question came). No answer (offline) or no answer
+        // within 6 s -> "Play" frees up at once and the line under the header says the sets server is not available (setsOffline, RefreshState)
+        bool setsChecking, setsOffline; int setsGen;
+        void SetsCheckDone(int gen, bool offline) { if (gen != setsGen) return; bool ch = setsChecking || setsOffline != offline; setsChecking = false; setsOffline = offline; if (ch) RefreshState(); }
+        void PlayState() { bPlay.Enabled = core.HasGame && !setsChecking; bPlay.Text = setsChecking ? U.R("Проверка…", "Checking…") : "▶  " + U.R("Играть", "Play"); bPlay.Invalidate(); }
         void OfferSetUpdates()
         {
             if (!core.HasGame || Core.GameRunning()) return; AssetSets a = core.Assets;
+            int gen = ++setsGen; setsChecking = true; PlayState();
+            System.Windows.Forms.Timer cap = new System.Windows.Forms.Timer(); cap.Interval = 6000; cap.Tick += delegate { cap.Dispose(); if (setsChecking) SetsCheckDone(gen, true); }; cap.Start();
             Thread t = new Thread(delegate()
             {
-                Dictionary<string, AssetManifest> man = new Dictionary<string, AssetManifest>(); List<AssetQuick> qs;
-                try { string note; foreach (AssetManifest m in a.LoadCatalog(out note)) man[m.Id] = m; qs = a.Quick(); } catch (Exception) { return; }   // offline / no sets: nothing to offer
-                try { BeginInvoke((MethodInvoker)delegate { setsMan = man; AskSetUpdates(man, qs, false); }); } catch (InvalidOperationException) { }   // the window was closed meanwhile
+                Dictionary<string, AssetManifest> man = new Dictionary<string, AssetManifest>(); List<AssetQuick> qs = null; bool off = false;
+                try { string note; foreach (AssetManifest m in a.LoadCatalog(out note)) man[m.Id] = m; off = a.Offline; qs = a.Quick(); } catch (Exception) { man = null; off = true; }   // offline / no sets: nothing to offer
+                try { BeginInvoke((MethodInvoker)delegate { SetsCheckDone(gen, off); if (man != null) { setsMan = man; AskSetUpdates(man, qs, false); } }); } catch (InvalidOperationException) { }   // the window was closed meanwhile
             });
             t.IsBackground = true; t.Start();
         }

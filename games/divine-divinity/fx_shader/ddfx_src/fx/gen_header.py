@@ -25,7 +25,7 @@ o.append('static const char* FX_PRESET_NAMES[FX_NPRESET] = { %s };' % ', '.join(
 o.append('static const char* FX_PRESET_DEFS[FX_NPRESET] = {')
 for p in P.PRESETS: o.append('    %s,' % cstr(','.join('%s=%g' % (k, v) for k, v in p[2].items())))
 o.append('};')
-UI = dict(TITLE='Divine Divinity FX   F10 закрыть', HELP1='Вверх/Вниз выбор  Влево/Вправо знач.  Shift x5  Ctrl /5', HELP2='1-5 пресет  Shift+1-5 в слот  S сохр.  R сброс  Bksp умолч.',
+UI = dict(TITLE='Divine Divinity FX   F10 закрыть', HELP1='Вверх/Вниз выбор  Влево/Вправо знач.  Shift x5  Ctrl /5', HELP2='Ctrl+Shift+1..5 стили вне меню | 1..5 пресет | S сохранить',
           PRESET='Пресеты (1-5)', SAVE='Сохранить в dd-fx.cfg (S)', RESET='Сбросить всё (R)', ON='ВКЛ', OFF='выкл', SAVED='Сохранено', LOADED='Пресет', RESETMSG='Сброшено', SLOT='Слот сохранён', FXON='FX включён', FXOFF='FX выключен (до/после)',
           NOFPS='', DBG0='нет', DBG1='огонь', DBG2='магия', DBG3='свет')
 for k, v in UI.items(): o.append('#define FXS_%s %s' % (k, cstr(v)))

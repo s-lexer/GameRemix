@@ -17,19 +17,20 @@ namespace DDFixTool
         protected abstract string TitleEn { get; }
         protected abstract void Build(Panel body);
         protected virtual void BuildFoot() { }
-        protected string T(string r, string e) { return ru ? r : e; }
+        protected string T(string r, string e) { return ru ? r : (ko ? L.KoText(e) : e); }
+        bool ko;
         protected bool IsRu { get { return ru; } }
 
         protected ToolForm(Core game, Size client)
         {
-            Game = game; ru = L.Ru;
+            Game = game; ru = L.Ru; ko = L.Ko;
             FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false; MinimizeBox = false; ShowInTaskbar = true;
             StartPosition = FormStartPosition.CenterScreen; Fit.To(this, client); BackColor = Th.Bg; ForeColor = Th.Text; Font = Th.Body;
             Body = new Panel(); Body.SetBounds(M, M, client.Width - 2 * M, client.Height - 3 * M - 56); Body.BackColor = Th.Bg;
             Foot = new RPanel(); Foot.SetBounds(M, client.Height - M - 56, client.Width - 2 * M, 56);
             status = new Label(); status.AutoSize = false; status.SetBounds(16, 8, 10, 40); status.ForeColor = Th.Muted; status.BackColor = Th.Surf; status.Font = Th.F("Segoe UI", 8.5f, FontStyle.Regular); status.UseMnemonic = false; status.TextAlign = ContentAlignment.MiddleLeft;
-            lang = new Seg(); lang.Under = Th.Surf; lang.Items = new string[] { "RU", "EN" }; lang.SetBounds(Foot.Width - 14 - 66, 16, 66, 24); lang.Selected = ru ? 0 : 1;
-            lang.Changed += delegate { ru = lang.Selected == 0; Rebuild(); };
+            lang = new Seg(); lang.Under = Th.Surf; lang.Items = new string[] { "RU", "EN", "KO" }; lang.SetBounds(Foot.Width - 14 - 96, 16, 96, 24); lang.Selected = ko ? 2 : (ru ? 0 : 1);
+            lang.Changed += delegate { ru = lang.Selected == 0; ko = lang.Selected == 2; Rebuild(); };
             Foot.Controls.Add(status); Foot.Controls.Add(lang); Controls.Add(Body); Controls.Add(Foot);
             KeyPreview = true; KeyDown += delegate(object s, KeyEventArgs e) { if (e.KeyCode == Keys.Escape) Close(); };
         }
@@ -38,11 +39,12 @@ namespace DDFixTool
         protected void Reload() { Rebuild(); }
         void Rebuild()
         {
-            SuspendLayout(); Text = ru ? TitleRu : TitleEn;
+            SuspendLayout(); Text = ru ? TitleRu : (ko ? L.KoText(TitleEn) : TitleEn);
             List<Control> old = new List<Control>(); foreach (Control c in Body.Controls) old.Add(c);
             foreach (Control c in old) { Body.Controls.Remove(c); c.Dispose(); }
             foreach (Control c in footTools) { Foot.Controls.Remove(c); c.Dispose(); } footTools.Clear(); footRight = 0;
-            Build(Body); BuildFoot(); LayFoot(); ResumeLayout();
+            status.ForeColor = Th.Muted; Build(Body); BuildFoot(); LayFoot(); ResumeLayout();
+            if (doneRu != null) { status.Text = T(doneRu, doneEn); status.ForeColor = doneOk ? Th.Green : Th.Red; doneRu = null; }   // the result of the last action wins over the hint Build() writes
         }
         // footer buttons are placed right to left, left of the RU/EN switch; the status text takes the rest
         int footRight;
@@ -77,6 +79,9 @@ namespace DDFixTool
         }
         protected Seg Sg(string[] items, int selected, EventHandler changed) { Seg s = new Seg(); s.Under = Th.Inset; s.Items = items; s.Size = new Size(Math.Max(84, 42 * items.Length), 28); s.Selected = selected; s.Changed += changed; return s; }
         protected void Status(string ruText, string enText) { status.Text = T(ruText, enText); }
+        // the result of an action (green "✓ saved …" or red error) for an action that rebuilds the window right after: it must survive Reload(), otherwise the hint text hides it
+        string doneRu, doneEn; bool doneOk;
+        protected void Done(bool ok, string ruText, string enText) { doneOk = ok; doneRu = (ok ? "✓ " : "") + ruText; doneEn = (ok ? "✓ " : "") + enText; status.Text = T(doneRu, doneEn); status.ForeColor = ok ? Th.Green : Th.Red; }
     }
 
     // "Classic or New" chooser: shown when a tool has both versions. Returns true = new, false = classic, null = cancelled.

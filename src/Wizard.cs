@@ -1,4 +1,4 @@
-// Quick setup as a STEP-BY-STEP wizard in one window (owner 07.11.2026): monitor -> interface -> upscaling -> items -> large windows -> fonts -> FPS mod + item glow -> effect shaders -> Apply (9 steps, order by the owner 07.11 night; the old frame-mode interpolation stays FROZEN, see Fps.cs; the FPS mod is the tick-80 patch, src/Tick80.cs).
+﻿// Quick setup as a STEP-BY-STEP wizard in one window (owner 07.11.2026): monitor -> interface -> upscaling -> items -> large windows -> fonts -> FPS mod + item glow -> effect shaders -> Apply (9 steps, order by the owner 07.11 night; the old frame-mode interpolation stays FROZEN, see Fps.cs; the FPS mod is the tick-80 patch, src/Tick80.cs).
 // Every step shows what changes (pictures of each variant, Before | After, or an honest scheme); defaults are picked beforehand, "Next" all the way is a complete setup.
 // The wizard only COLLECTS the choice (WizResult); the work is done by MainForm.WizardApply in one progress window. Design rules: docs/design.md ("Быстрая настройка - мастер").
 using System;
@@ -147,12 +147,14 @@ namespace DDFixTool
         {
             R.UseCnc = !(core.Dgv && !core.Cnc); int sv; Size sg; R.ScalePct = core.ScaleSaved(out sv, out sg) ? sv : 0;
             R.Ui = "c"; R.Items = "redrawn"; R.Pic = "orig"; R.Fps80 = core.Fps80Avail && R.UseCnc;   // owner 07.11.2026: the FPS mod is ON by default in quick setup (a dgVoodoo user keeps it off: the renderer is not swapped by "Next")
+            R.Shaders = false;   // owner 08.11.2026: each quick setup starts with effects off; enabling them requires an explicit choice in this wizard
             R.Preset = Core.PresetForScreen(Screen.PrimaryScreen.Bounds.Width); MonitorChanged(true);
             GfxSel now = core.GfxCurrent(); if (now.Slot.ContainsKey("pic") && now.Slot["pic"] != "orig") R.Pic = now.Slot["pic"];
             LoadPrefs(now);
         }
         // the wizard remembers what the person chose (owner 07.11.2026): once it has been applied, the next opening starts from the REAL state on disk (what is applied now), plus the
-        // monitor class / wrapper choice that cannot be read back from disk. No file yet (first run) = the recommended defaults above.
+        // monitor class / wrapper choice that cannot be read back from disk. Experimental shaders stay off until explicitly chosen in this wizard.
+        // No file yet (first run) = the recommended defaults above.
         static string PrefsFile(Core core) { return Path.Combine(core.GameData, "wizard_prefs.txt"); }
         void LoadPrefs(GfxSel now)
         {
@@ -167,7 +169,7 @@ namespace DDFixTool
                 if (now.Slot.TryGetValue("items", out v) && (v == "redrawn" || v == "orig") && core.Gfx.Slot("items").Find(v) != null) R.Items = v;
                 if (now.Slot.TryGetValue("pic", out v)) R.Pic = v;
                 if (now.Slot.TryGetValue("bag", out v)) { R.Bag = v == "big"; bagTouched = true; }
-                bool g; if (now.Fix.TryGetValue("glow", out g)) R.Glow = g; if (core.FxAvail) R.Shaders = core.FxRead().Shaders;
+                bool g; if (now.Fix.TryGetValue("glow", out g)) R.Glow = g;
                 if (core.FontsAvail) { R.Fonts = core.FontStep(0) == Core.FontLarge; fontsTouched = R.Fonts; }   // original fonts on disk do not pin the choice: 2K and 4K still get the larger ones
             }
             catch (Exception) { }
@@ -379,23 +381,23 @@ namespace DDFixTool
         }
         void StepFx()
         {
-            Head(U.R("FPS-мод и подсветка предметов", "FPS mod and item glow"), U.R("Две необязательные вещи на одной странице: движение вдвое плавнее (экспериментально) и цветной ореол у редких предметов. Обе меняются потом на вкладке «Графика».", "Two optional things on one page: motion twice as smooth (experimental) and a coloured halo under rare items. Both can be changed later on the Graphics tab."));
+            Head(U.R("FPS-мод и подсветка предметов", "FPS mod and item glow"), U.R("Две необязательные вещи на одной странице: движение вдвое плавнее и цветной ореол у редких предметов. Обе меняются потом на вкладке «Графика».", "Two optional things on one page: motion twice as smooth and a coloured halo under rare items. Both can be changed later on the Graphics tab."));
             bool av = core.Fps80Avail;
-            Info(0, U.R("FPS-мод (такт 80)", "FPS mod (80 Hz tick)"), U.R("Игра считает 40 шагов в секунду, поэтому ходьба на быстром мониторе выглядит ступенчато. FPS-мод показывает движение героя, NPC и камеры 80 раз в секунду, а ИИ, бой и скорость остаются прежними: игра не ускоряется.\n\nЭкспериментально: на изометрических диагоналях возможны мелкие рывки. Включён по умолчанию. Счётчик кадров в игре — клавиша F11.", "The game runs 40 steps a second, so walking looks stepped on a fast monitor. The FPS mod shows the movement of the hero, NPCs and camera 80 times a second, while AI, combat and speed stay the same: the game does not speed up.\n\nExperimental: small jerks are possible on isometric diagonals. On by default. The frame counter in the game: the F11 key.")
+            Info(0, U.R("FPS-мод (такт 80)", "FPS mod (80 Hz tick)"), U.R("FPS-мод убирает рывки при движении героя, NPC и камеры на быстрых мониторах, в том числе с VA-матрицей. Движение отображается 80 раз в секунду, а ИИ, бой и скорость остаются прежними: игра не ускоряется.\n\nВключён по умолчанию. Счётчик кадров в игре — клавиша F11.", "The FPS mod removes stutter when the hero, NPCs and camera move on high refresh rate monitors, including VA panels. Movement is displayed 80 times a second, while AI, combat and game speed stay the same: the game does not speed up.\n\nOn by default. The frame counter in the game: the F11 key.")
                 + (R.UseCnc ? "" : U.R("\n\nПонадобится gr-draw: программа подключит его вместо dgVoodoo.", "\n\nNeeds gr-draw: the program turns it on instead of dgVoodoo.")) + (av ? "" : U.R("\n\nНедоступно для вашей версии игры.", "\n\nNot available for your game version.")));
             Info(BarX2, U.R("Подсветка редких предметов", "Glow of rare items"), U.R("Цветной ореол у редких предметов в рюкзаке: зелёные, жёлтые и золотые видны сразу. Подписи предметов на земле (Alt) тоже цветные.\n\nВключена по умолчанию.", "A coloured halo under rare items in the backpack: green, yellow and gold ones stand out at once. The item labels on the ground (Alt) are coloured too.\n\nOn by default."));
             Seg f = ChooseOnOff(0, R.Fps80 && av, delegate(bool on) { R.Fps80 = on; }); f.Enabled = av; if (!av) R.Fps80 = false;
             ChooseOnOff(BarX2, R.Glow, delegate(bool on) { R.Glow = on; });
             Lab(U.R("FPS-мод", "FPS mod"), 0, ChoiceY + ChoiceH + 10, 300, 20, true); Lab(U.R("ПОДСВЕТКА", "GLOW"), BarX2, ChoiceY + ChoiceH + 10, 300, 20, true);
         }
-        // ---- step 8: effect shaders (our gr-draw build): experimental, OFF by default; on = the "Ambient" preset at game start (owner 07.11.2026)
+        // ---- step 8: effect shaders (our gr-draw build): OFF by default; on = the owner-approved profile (warm light from the game's real light sources, owner 08.11.2026)
         void StepShaders()
         {
-            Head(U.R("Шейдеры эффектов (экспериментально)", "Effect shaders (experimental)"), U.R("Свечение огня и магии, тёплый свет вокруг огня, атмосфера в подземельях. В игре: F9 — включить или выключить, F10 — меню шейдеров (пресеты 1–5), F11 — счётчик кадров.", "Glow of fire and magic, warm light around fire, mood in dungeons. In the game: F9 turns them on or off, F10 opens the shader menu (presets 1-5), F11 shows the frame counter."));
+            Head(U.R("Шейдеры эффектов", "Effect shaders"), U.R("Тёплый свет от факелов, ламп и магии: вокруг огней светлее, в стороне чуть темнее. В игре: F9 — включить или выключить, F10 — тонкая настройка, F11 — счётчик кадров.", "Warm light from torches, lamps and magic: brighter around the fires, a little darker away from them. In the game: F9 turns them on or off, F10 opens fine tuning, F11 shows the frame counter."));
             int pw = 456; BeforeAfter ba = new BeforeAfter(); ba.SetBounds((BW - pw) / 2, 0, pw, pw * 350 / 600 + BeforeAfter.BarH + BeforeAfter.InfoH); ba.Before = new Image[] { Img("fx_off") }; ba.After = new Image[] { Img("fx_on") };
-            ba.PaneTitles = new string[] { U.R("Подземелье с факелами", "A dungeon with torches") }; ba.CapBefore = U.R("До · без шейдеров", "Before · no shaders"); ba.CapAfter = U.R("После · пресет «Эмбиент»", "After · \"Ambient\" preset"); host.Controls.Add(ba);
+            ba.PaneTitles = new string[] { U.R("Подземелье с факелами", "A dungeon with torches") }; ba.CapBefore = U.R("До · без шейдеров", "Before · no shaders"); ba.CapAfter = U.R("После · тёплый свет", "After · warm light"); host.Controls.Add(ba);
             Seg s = ChooseOnOff(0, R.Shaders && R.UseCnc, delegate(bool on) { R.Shaders = on; }); s.Enabled = R.UseCnc; if (!R.UseCnc) R.Shaders = false;
-            Note(R.UseCnc ? U.R("Экспериментально: свечение иногда находит «огонь» не там (яркое золото, текст). По умолчанию выключено; включённые шейдеры работают сразу с пресетом «Эмбиент».", "Experimental: the glow sometimes finds \"fire\" in the wrong place (bright gold, text). Off by default; when on, they start with the \"Ambient\" preset.")
+            Note(R.UseCnc ? U.R("По умолчанию выключено. Свет берётся из настоящих источников света игры, интерфейс не трогается. Настройку можно поменять в игре клавишей F10.", "Off by default. The light comes from the game's real light sources; the interface is left alone. You can change it in the game with F10.")
                 : U.R("Шейдеры работают только с gr-draw (шаг «Монитор и игра»).", "The shaders work with gr-draw only (the Monitor and game step)."));
         }
         // ---- step 4: items
@@ -453,7 +455,7 @@ namespace DDFixTool
                 // when on: always re-set (the preset above may have rewritten ddraw.ini / the wrapper)
                 if (c.Fps80Avail && (r.Fps80 || c.Fps80State() == "on")) { try { c.SetFps80(r.Fps80); } catch (Exception ex) { skipped.Add(ex.Message); } }
                 else if (r.Fps80 && !c.Fps80Avail) skipped.Add(U.R("FPS-мод не включён: он недоступен для вашей версии игры.", "The FPS mod was not turned on: it is not available for your game version."));
-                // effect shaders (our gr-draw build): on = the "Ambient" preset at game start; off = off at game start (the menu stays, F9 still works)
+                // effect shaders (our gr-draw build): on = the owner-approved profile at game start (a new dd-fx.cfg is that profile; an older one only gets the missing keys); off = off at game start (the menu stays, F9 still works)
                 if (c.FxAvail && (r.Shaders || c.FxRead().Shaders)) { try { FxState fs = c.FxRead(); fs.Shaders = r.Shaders; c.FxApply(fs); if (r.Shaders) c.FxStartPreset(); } catch (Exception ex) { skipped.Add(ex.Message); } }
                 if (w.Cancelled) throw new CancelledEx();
                 w.Report(U.R("Получаю список наборов…", "Getting the list of sets…"), 0, 0);

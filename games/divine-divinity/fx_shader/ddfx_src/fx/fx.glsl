@@ -60,7 +60,11 @@ uniform float u_fire_on, u_fire_bloom, u_fire_v, u_fire_s, u_fire_radius, u_flic
 uniform float u_light_on, u_light_str, u_light_radius, u_light_tone, u_light_sparse, u_ambient;
 uniform float u_magic_on, u_magic_bloom, u_magic_v, u_magic_s, u_magic_green;
 uniform float u_exposure, u_gamma, u_contrast, u_saturation, u_warmth, u_vignette, u_sharpen;
+uniform float u_vibrance, u_clarity, u_cinema_tone, u_shadow_lift;
 uniform float u_ui_height;
+uniform float u_source_flicker, u_spell_pulse, u_heat_haze, u_atmo_tint, u_light_mist;
+uniform float u_magic_trails, u_magic_echo, u_magic_splash;
+uniform float u_time;       /* seconds; shared with PRE to keep each lamp in phase */
 uniform float u_debug;
 uniform float u_halo, u_light_shape, u_light_drop, u_day_level, u_spell_lights, u_color_mask, u_show_lights;
 uniform vec2 InputSize;
@@ -76,6 +80,8 @@ uniform float u_world;       /* 1 world frame, 0 menu / journal / map / loading:
 int lkind(int i) { return int(u_lc[i].a / 10.0 + 0.01); }
 float linten(int i) { return u_lc[i].a - 10.0 * float(lkind(i)); }
 float lstrength() { return mix(u_day_level, 1.0, u_night); }
+/* Flicker and spell pulse are computed ONCE per light per frame on the CPU,
+   encoded into u_lc.a intensity. Avoid costly trig in each pixel/each source. */
 float glowOn(int k) { return k == 0 ? u_fire_on * u_fire_bloom : (k == 1 ? u_magic_on * u_magic_bloom : (k == 2 ? u_spell_lights * u_magic_bloom : 0.0)); }
 float lightOn(int k) { return u_light_on * (k == 0 ? 1.0 : (k == 1 ? u_magic_on : (k == 2 ? u_spell_lights : 0.0))); }
 vec3 lcolour(int i, int k)
@@ -95,14 +101,17 @@ float poolDist(vec2 p, int i)
     return sqrt(mix(dc, de, u_light_shape)) / max(u_lp[i].z * u_light_radius, 1.0);
 }
 
-/* the game's bottom panel only (centred, fixed size in game pixels: ~670 x ~103 at ui_height 0.115), not the whole bottom band:
-   a full-width band left a visible edge across the screen when the picture is darkened (owner 07.11.2026) */
+/* The game's UI occupies a bottom-centred ~670 x 103px panel. Do not use a hard
+   8px fade on its top edge: ambient/vignette grading then creates a bright horizontal
+   strip above the panel (owner screenshots 08.11.2026). Fade in over ~48px of WORLD
+   instead, reaching full protection by the panel's own border; also feather X edges. */
 float uiZone(vec2 uv01)
 {
     vec2 p = uv01 * InputSize;
     float ph = u_ui_height * 900.0;
-    float inY = smoothstep(InputSize.y - ph - 6.0, InputSize.y - ph + 2.0, p.y);
-    float inX = 1.0 - smoothstep(330.0, 342.0, abs(p.x - InputSize.x * 0.5));
+    float panelTop = InputSize.y - ph;
+    float inY = smoothstep(panelTop - 48.0, panelTop, p.y);
+    float inX = 1.0 - smoothstep(340.0, 390.0, abs(p.x - InputSize.x * 0.5));
     return inY * inX;
 }
 
@@ -154,27 +163,55 @@ void main()
     {
         /* light list: only bright pixels at a real light's core emit (lamp flame, candle, fireplace); everything else is dark */
         vec2 pc = vec2(p) + 1.0;
-        vec3 wsum = vec3(0.0); float near = 0.0;
+        vec3 wsum = vec3(0.0); float near = 0.0; int sourceKind = 3;
         for (int i = 0; i < FXL; i++)
         {
             if (i >= u_ln) break;
             int k = lkind(i); float g = glowOn(k) * linten(i);
             if (g <= 0.0) continue;
-            float d = length(pc - u_lp[i].xy) / (coreR(i) * 2.0);
-            float w = (1.0 - smoothstep(0.5, 1.0, d)) * g;
-            if (w > near) { near = w; wsum = lcolour(i, k); }
+            /* light.lib often locates a streetlamp at its base/pivot, not at either flame sprite.
+               Search above the pivot, but only a narrow distance below it: do not bloom the illuminated pole/ground. */
+            vec2 delta = pc - u_lp[i].xy;
+            float rx = max(coreR(i) * 2.0, min(u_lp[i].z * 0.50, 75.0));
+            float ry = delta.y < 0.0 ? max(coreR(i) * 2.0, min(u_lp[i].z * 0.90, 135.0)) : coreR(i) * 1.4;
+            float d = length(vec2(delta.x / rx, delta.y / ry));
+            /* The library anchor is often at the foot of a standing prop. An emissive ornament
+               right at the anchor must not bloom like a flame; allow the flame pixels above it. */
+            float abovePivot = 1.0 - smoothstep(-10.0, -1.0, delta.y);
+            float w = (1.0 - smoothstep(0.65, 1.0, d)) * g * abovePivot;
+            if (w > near) { near = w; wsum = lcolour(i, k); sourceKind = k; }
         }
         if (near > 0.0)
+        {
+            /* Bloom only compact flame cores. The ornament at the foot of the post is a broad
+               hot-colour region; the two real flames are compact (219 pixel-mask measurements).
+               Two 8-point circles distinguish those shapes without fixed map/sprite offsets. */
+            float dense = 0.0;
+            for (int ring = 0; ring < 2; ring++)
+                for (int k = 0; k < 8; k++)
+                {
+                    float a = float(k) * 0.78539816339;
+                    float radius = ring == 0 ? 10.0 : 16.0;
+                    ivec2 q = clamp(ivec2(pc + vec2(cos(a), sin(a)) * radius), ivec2(0), lim);
+                    vec3 dc = texelFetch(Texture, q, 0).rgb;
+                    dense += smoothstep(0.30, 0.60, fireMask(dc)) * smoothstep(0.50, 0.85, max(dc.r, max(dc.g, dc.b)));
+                }
+            float isolated = 1.0 - smoothstep(0.8, 1.8, dense);
             for (int j = 0; j < 2; j++)
                 for (int i = 0; i < 2; i++)
                 {
                     ivec2 q = min(p + ivec2(i, j), lim);
                     vec3 c = texelFetch(Texture, q, 0).rgb;
                     float em = 1.0 - uiZone((vec2(q) + 0.5) / InputSize);
-                    float hot = smoothstep(u_fire_v - 0.15, u_fire_v + 0.15, max(c.r, max(c.g, c.b)));
+                    /* A light record alone is not evidence that every bright roof/pole pixel is a flame.
+                       Require a fire/magic chroma signature for the emitted bloom. */
+                    float emitter = sourceKind == 0 ? max(fireMask(c), fireSeed(c))
+                                  : max(max(fireMask(c), fireSeed(c)), max(magicMask(c), magicSeed(c)));
+                    float hot = isolated * emitter * smoothstep(u_fire_v - 0.15, u_fire_v + 0.15, max(c.r, max(c.g, c.b)));
                     acc.rgb += mix(c, wsum * luma(c), 0.35) * hot * near * em;
                     acc.a += hot * em;
                 }
+        }
         FragColor = acc * 0.25 * lstrength();
         return;
     }
@@ -263,11 +300,19 @@ uniform vec2 OutputSize;
 uniform vec2 TextureSize;
 uniform sampler2D Texture;
 uniform sampler2D u_glow;    /* bloom chain, level 0 after the up passes (1/2 size) */
+uniform sampler2D u_emitter; /* RAW PRE bloom mask, half-resolution, before blur: debug anchors follow actual flames */
 uniform sampler2D u_light;   /* bloom chain, a wide level (1/8 size) */
 uniform sampler2D u_light2;  /* bloom chain, the widest level used (1/16 size) */
 uniform sampler2D u_scene;  /* 1x1: mean brightness of the frame (LUMA pass) */
+/* CPU-tracked short-lived magic motion segments and vanishing glows (not fake impacts).
+   The location and colour originate from real kind=2 game light records. */
+#define FX_WOW_MAX 12
+uniform int u_nt, u_ne;
+uniform vec4 u_ta[FX_WOW_MAX]; /* x0,y0 -> x1,y1 */
+uniform vec4 u_tc[FX_WOW_MAX]; /* rgb, intensity */
+uniform vec4 u_ea[FX_WOW_MAX]; /* x,y, radius, elapsed fraction */
+uniform vec4 u_ec[FX_WOW_MAX]; /* rgb, intensity */
 uniform float u_bloom_ok;    /* 0 = the chain could not be made (no float FBO): glow and light are off */
-uniform float u_time;        /* seconds, wraps every ~17 min */
 uniform float u_filter;      /* the scaling filter the player chose (from ddraw.ini shader=): 0 catmull-rom, 1 nearest, 2 bilinear, 3 lanczos2 */
 COMPAT_VARYING vec4 TEX0;
 
@@ -343,6 +388,21 @@ void main()
     float notui = 1.0 - ui;
     vec2 pp = uv01 * InputSize;
 
+    /* Local hot-air refraction 8-28px ABOVE real flame cores in the RAW PRE mask.
+       Only a few pixels, no fullscreen displacement, and never on HUD/menus. */
+    if (u_heat_haze > 0.001 && u_fire_on > 0.5 && u_bloom_ok > 0.5 && notui > 0.05)
+    {
+        float hot1 = COMPAT_TEXTURE(u_emitter, clamp(uv01 + vec2(0.0, 12.0) / InputSize, vec2(0.0), vec2(1.0))).a;
+        float hot2 = COMPAT_TEXTURE(u_emitter, clamp(uv01 + vec2(0.0, 23.0) / InputSize, vec2(0.0), vec2(1.0))).a;
+        float plume = clamp(max(hot1, hot2 * 0.65) * 4.0, 0.0, 1.0);
+        if (plume > 0.01)
+        {
+            float wave = sin(pp.y * 0.27 + u_time * 5.0 + pp.x * 0.07);
+            vec2 displaced = clamp(uv + vec2(wave * 1.7 * u_heat_haze * plume / TextureSize.x, 0.0), vec2(0.0), vec2(1.0));
+            col = base = mix(base, scaled(displaced), u_heat_haze * plume * notui);
+        }
+    }
+
     if (u_sharpen > 0.001)
     {
         vec3 lap = 4.0 * base - catmull(uv + vec2(inv.x, 0.0)) - catmull(uv - vec2(inv.x, 0.0)) - catmull(uv + vec2(0.0, inv.y)) - catmull(uv - vec2(0.0, inv.y));
@@ -362,19 +422,15 @@ void main()
     float lightPool;
     if (u_ln > 0)
     {
-        /* real lights: halo at each light core + bloom of its flame pixels (PRE), warm radial pool on the ground around it */
+        /* Bloom follows actual flame pixels from PRE, never a synthetic point at light.lib's
+           object pivot (a streetlamp pivot may be a full post-height below its two flames).
+           The light record still controls the separate, gentler environmental light pool. */
         float ls = lstrength();
-        vec3 halo = vec3(0.0), pool = vec3(0.0); float poolA = 0.0;
+        vec3 pool = vec3(0.0); float poolA = 0.0;
         for (int i = 0; i < FXL; i++)
         {
             if (i >= u_ln) break;
             int k = lkind(i); float it = linten(i); vec3 c = lcolour(i, k);
-            float g = glowOn(k) * it;
-            if (g > 0.0)
-            {
-                float d = length(pp - u_lp[i].xy) / coreR(i);
-                halo += c * g * (0.55 * exp(-0.5 * d * d) + 0.12 * exp(-0.6 * d));
-            }
             float lo = lightOn(k) * it;
             if (lo > 0.0)
             {
@@ -383,12 +439,25 @@ void main()
                 pool += c * lo * a; poolA += lo * a;
             }
         }
-        vec3 glow = ((1.0 - exp(-gl0.rgb * 4.0)) + halo * u_halo * ls) * fl * notui;
+        /* PRE emission is only a few pixels wide; stronger bloom is needed to make the
+           flame halo visibly distinct even with ambient=0 (without darkening the scene).
+           Still constrained to genuine emitters, not arbitrary bright textures. */
+        vec3 glow = (1.0 - exp(-gl0.rgb * (7.0 + 4.0 * u_halo))) * fl * notui;
         col = 1.0 - (1.0 - col) * (1.0 - clamp(glow, 0.0, 1.0));
-        vec3 pl = pool * u_light_str * ls * fl * notui;
-        col *= 1.0 + pl * (1.6 - luma(base));
-        col += pl * 0.03;
-        lightPool = clamp(poolA, 0.0, 1.0);
+        /* Two lamps on one post (or nearby lamps) should add light, not blow a roof out to white.
+           Saturate overlapping contributions; reduce added light on surfaces that are already bright. */
+        vec3 boundedPool = 1.0 - exp(-max(pool, vec3(0.0)));
+        float alreadyLit = smoothstep(0.35, 0.90, luma(base));
+        vec3 pl = boundedPool * u_light_str * ls * fl * notui * (1.0 - 0.65 * alreadyLit);
+        /* A bright existing flame / decorative highlight is not a diffuse receiving surface.
+           Without this guard the shader amplifies the game's pre-lit ornament at the lamp pivot. */
+        float basePeak = max(base.r, max(base.g, base.b));
+        pl *= 1.0 - smoothstep(0.72, 0.95, basePeak);
+        /* Reflective textures keep their detail and headroom: additive/multiplicative light alone clips bright roofs. */
+        /* Raise DARK receiving surfaces locally; avoid whitening already-lit stone or wood.
+           Unlike global exposure/ambient this term is zero outside the light radius. */
+        col += (vec3(0.20) + col * 0.30) * (1.0 - clamp(col, 0.0, 1.0)) * pl;
+        lightPool = 1.0 - exp(-max(poolA, 0.0));
     }
     else
     {
@@ -404,6 +473,73 @@ void main()
         float pool = lightPool * u_light_str * fl * notui * u_light_on;
         col *= 1.0 + tint * pool * (1.6 - luma(base));
         col += tint * pool * 0.03;
+    }
+    /* WOW magic: short streaks only on motion of actual dynamic kind=2 lights. No screen
+       history texture and no trails for static lamps. Max 12 segments; branch entirely off
+       for approved configs, and bound each segment with a cheap screen-space AABB. */
+    if (u_magic_trails > 0.001 && u_nt > 0 && notui > 0.001)
+    {
+        vec3 streak = vec3(0.0);
+        for (int i=0; i<FX_WOW_MAX; i++)
+        {
+            if (i>=u_nt) break;
+            vec2 a=u_ta[i].xy, b=u_ta[i].zw;
+            float pad=13.0;
+            if (pp.x<min(a.x,b.x)-pad || pp.x>max(a.x,b.x)+pad ||
+                pp.y<min(a.y,b.y)-pad || pp.y>max(a.y,b.y)+pad) continue;
+            vec2 ab=b-a;
+            float progress=clamp(dot(pp-a,ab)/max(dot(ab,ab),1.0),0.0,1.0);
+            float distance=length(pp-(a+ab*progress));
+            float core=exp(-0.5*pow(distance/2.7,2.0));
+            float halo=exp(-0.5*pow(distance/8.5,2.0));
+            float tail=0.25+0.75*progress;
+            streak+=u_tc[i].rgb*(core*0.48+halo*0.10)*u_tc[i].a*tail;
+        }
+        col+=streak*u_magic_trails*(1.0-clamp(col,0.0,1.0))*notui;
+    }
+    /* Source disappearance is only a heuristic: a fading ring, NOT a confirmed hit.
+       Single short pulse (about 0.3s), no explosion if scene/menu switches. */
+    if (u_magic_echo > 0.001 && u_ne > 0 && notui > 0.001)
+    {
+        vec3 flashes=vec3(0.0);
+        for (int i=0; i<FX_WOW_MAX; i++)
+        {
+            if (i>=u_ne) break;
+            float age=clamp(u_ea[i].w,0.0,1.0), d=length(pp-u_ea[i].xy);
+            float radius=7.0+30.0*age;
+            if (d>radius+18.0) continue;
+            float ring=exp(-0.5*pow((d-radius)/max(2.5,4.0+age*3.0),2.0));
+            float soft=exp(-0.5*pow(d/(11.0+age*12.0),2.0));
+            flashes+=u_ec[i].rgb*u_ec[i].a*(1.0-age)*(ring*0.45+soft*0.13);
+        }
+        col+=flashes*u_magic_echo*(1.0-clamp(col,0.0,1.0))*notui;
+    }
+    /* Local coloured diffuse light, tied to real active kind=2 records only.
+       No constant full-screen bloom and no light cast through unknown occluders. */
+    if (u_magic_splash > 0.001 && u_ln > 0 && notui > 0.001)
+    {
+        vec3 splash=vec3(0.0);
+        for (int i=0; i<FXL; i++)
+        {
+            if(i>=u_ln)break;
+            if(lkind(i)!=2)continue;
+            vec2 delta=pp-u_lp[i].xy;
+            float radius=clamp(u_lp[i].z*0.43,25.0,72.0);
+            if(abs(delta.x)>radius || abs(delta.y)>radius) continue;
+            float d=length(delta)/radius;
+            float cover=pow(max(1.0-d*d,0.0),2.0)*linten(i);
+            splash+=u_lc[i].rgb*cover*0.28;
+        }
+        col+=splash*u_magic_splash*(1.0-clamp(col,0.0,1.0))*notui;
+    }
+    /* Optional faint airborne motes only where a REAL light pool exists, never a full-screen fog.
+       Small moving warm variation, bounded by original local-light coverage. */
+    if (u_light_mist > 0.001 && u_ln > 0 && lightPool > 0.06)
+    {
+        float drift = (0.5 + 0.5 * sin(pp.x * 0.028 + pp.y * 0.019 + u_time * 0.36)) *
+                      (0.5 + 0.5 * sin(pp.y * 0.044 - u_time * 0.22));
+        float local = smoothstep(0.06, 0.52, lightPool) * (1.0 - smoothstep(0.45, 0.87, luma(base)));
+        col += vec3(0.055, 0.040, 0.021) * u_light_mist * local * drift * notui;
     }
     /* ambient: at night (and underground) the world away from the lights gets darker, so the light pools read as light; daylight is left as it is */
     col *= 1.0 - u_ambient * u_night * (1.0 - clamp(lightPool * 1.5, 0.0, 1.0)) * notui;
@@ -423,6 +559,53 @@ void main()
     vec2 d = (uv01 - 0.5) * vec2(1.0, 0.85);
     g *= 1.0 - u_vignette * smoothstep(0.35, 0.85, length(d));
     col = mix(g, col, ui);
+    /* Optional temperature shift, not an ambient darkening pass. Original colour is the
+       neutral reference. Never tint the status panel or unrendered world screens. */
+    if (u_atmo_tint > 0.001)
+    {
+        vec3 nightTone = vec3(0.977, 0.993, 1.028);
+        vec3 dayTone = vec3(1.020, 1.006, 0.988);
+        vec3 tint = mix(dayTone, nightTone, u_night);
+        col = mix(col, col * tint, clamp(u_atmo_tint * notui, 0.0, 1.0));
+    }
+
+    /* Adaptive colour affects the scene even without registered lights.
+       Reduce amplification for already saturated pixels and keep game HUD intact. */
+    if (u_vibrance > 0.001)
+    {
+        float mid = luma(col);
+        float sat = max(col.r,max(col.g,col.b))-min(col.r,min(col.g,col.b));
+        float headroom = 1.0-smoothstep(0.25,0.82,sat);
+        vec3 vivid = mix(vec3(mid),col,1.0+u_vibrance*headroom*0.75);
+        col = mix(col, clamp(vivid,0.0,1.0),notui);
+    }
+    /* Brighter shadow detail without lowering exposure elsewhere. */
+    if (u_shadow_lift > 0.001)
+    {
+        float low = 1.0-smoothstep(0.12,0.70,luma(col));
+        col += vec3(0.16,0.17,0.18)*low*u_shadow_lift*(1.0-clamp(col,0.0,1.0))*notui;
+    }
+    /* Cinematic split-tone: cool dark stone, warm light; protected UI. */
+    if (u_cinema_tone > 0.001)
+    {
+        float lum = luma(col);
+        float dark = 1.0-smoothstep(0.14,0.56,lum);
+        float bright = smoothstep(0.42,0.88,lum);
+        vec3 shift = vec3(-0.072,0.012,0.13)*dark+vec3(0.07,0.025,-0.052)*bright;
+        col = clamp(col+shift*u_cinema_tone*notui,0.0,1.0);
+    }
+    /* Texture clarity uses nearby source luminance; only strong edges and non-HUD pixels. */
+    if (u_clarity > 0.001 && notui > 0.01)
+    {
+        vec2 px = 1.0/TextureSize;
+        float north=luma(scaled(clamp(uv+vec2(0.0,-px.y),vec2(0.0),vec2(1.0))));
+        float south=luma(scaled(clamp(uv+vec2(0.0,px.y),vec2(0.0),vec2(1.0))));
+        float west=luma(scaled(clamp(uv+vec2(-px.x,0.0),vec2(0.0),vec2(1.0))));
+        float east=luma(scaled(clamp(uv+vec2(px.x,0.0),vec2(0.0),vec2(1.0))));
+        float edge=luma(base)-0.25*(north+south+west+east);
+        float mask=smoothstep(0.018,0.095,abs(edge))*(1.0-smoothstep(0.52,0.94,luma(base)));
+        col=clamp(col+vec3(edge*3.2*u_clarity*mask*notui),0.0,1.0);
+    }
 
     if (u_debug > 0.5)
     {
@@ -430,21 +613,47 @@ void main()
         col = mix(base * 0.35, vec3(m1), 0.65) + vec3(m1 * 0.3, 0.0, 0.0);
     }
 
-    /* markers: a ring + cross at every recorded light, a thin ring at the pool edge; yellow lamp, cyan world magic, magenta spell, grey hero / gold / gems */
+    /* Debug: an amber contour surrounds the *actual emitter pixels* in PRE, not the
+       game's object pivot. This naturally shows two separate flames for a twin-lamp post.
+       Grey dots are light.lib pivots (ground-pool origins); muted outlines show pool extents.
+       Keeping them visually distinct avoids mistaking the pivot for a flame centre. */
     if (u_show_lights > 0.5)
     {
+        float emitterRim = 0.0;
+        float clearPivotGlow = 1.0;
+        if (u_bloom_ok > 0.5)
+        {
+            vec2 s = 1.0 / InputSize;
+            float core = COMPAT_TEXTURE(u_emitter, uv01).a;
+            float near4 = 0.0, near8 = 0.0;
+            for (int k = 0; k < 8; k++)
+            {
+                float a = float(k) * 0.78539816339;
+                vec2 dir = vec2(cos(a), sin(a));
+                near4 = max(near4, COMPAT_TEXTURE(u_emitter, clamp(uv01 + dir * 4.0 * s, vec2(0.0), vec2(1.0))).a);
+                near8 = max(near8, COMPAT_TEXTURE(u_emitter, clamp(uv01 + dir * 8.0 * s, vec2(0.0), vec2(1.0))).a);
+            }
+            float rim = smoothstep(0.025, 0.15, near8) * (1.0 - smoothstep(0.025, 0.15, max(core, near4)));
+            /* Gold traces indicate visible flames; not a guessed fixed offset from the post. */
+            emitterRim = clamp(rim * 0.9, 0.0, 1.0);
+        }
         for (int i = 0; i < FXL; i++)
         {
             if (i >= u_ln) break;
             int k = lkind(i);
-            vec3 mc = k == 0 ? vec3(1.0, 0.9, 0.1) : (k == 1 ? vec3(0.2, 0.9, 1.0) : (k == 2 ? vec3(1.0, 0.3, 1.0) : vec3(0.6)));
-            vec2 q = pp - u_lp[i].xy; float d = length(q);
-            float m = (1.0 - smoothstep(0.6, 1.4, abs(d - 6.0)));
-            m = max(m, (1.0 - smoothstep(0.4, 1.0, min(abs(q.x), abs(q.y)))) * step(d, 12.0) * step(2.5, d));
+            vec3 mc = k == 0 ? vec3(0.45, 0.52, 0.60) : (k == 1 ? vec3(0.18, 0.55, 0.65) : (k == 2 ? vec3(0.50, 0.27, 0.55) : vec3(0.35)));
+            vec2 q = pp - u_lp[i].xy;
+            float d = length(q);
+            /* Wide hot ornaments can leave a few bloom edge pixels right at the pivot.
+               Show the root only as grey, not as a second invented flame. */
+            if (k == 0) clearPivotGlow *= smoothstep(34.0, 58.0, d);
+            /* Small grey plus: debug pivot; never a yellow fake flame. */
+            float pivot = (1.0 - smoothstep(0.3, 1.1, min(abs(q.x), abs(q.y)))) * step(d, 5.0);
             float e = poolDist(pp, i);
-            m = max(m, 0.6 * (1.0 - smoothstep(0.0, 1.2 / max(u_lp[i].z * u_light_radius, 1.0), abs(e - 1.0))));
-            col = mix(col, mc, m);
+            float edge = (1.0 - smoothstep(0.0, 1.2 / max(u_lp[i].z * u_light_radius, 1.0), abs(e - 1.0)));
+            col = mix(col, mc, clamp(pivot * 0.8 + edge * 0.24, 0.0, 1.0));
         }
+        col = mix(col, vec3(1.0, 0.95, 0.1), emitterRim * clearPivotGlow);
     }
 
     FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);

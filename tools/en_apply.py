@@ -5,5 +5,5 @@ spec = importlib.util.spec_from_file_location('st', os.path.join(ROOT, 'tools', 
 srv = st.make_srv_class(os.path.join(ROOT, 'dist'))()
 env = dict(os.environ, OGF_ASSETS_URL='http://127.0.0.1:%d/assets/divine-divinity/' % srv.port, OGF_DATA=os.path.join(E, 'data'), OGF_DESKTOP=os.path.join(E, 'desk'), OGF_CACHE=os.path.join(E, 'cache'), OGF_LOCAL=os.path.join(E, 'local'), OGF_TEST_NOGUARD='1')
 log = os.path.join(E, 'apply.log')
-r = subprocess.run([os.path.join(ROOT, 'dist', 'managed', 'GameRemix.exe'), '--game', sys.argv[1]] + sys.argv[2:] + ['--log', log], env=env, cwd=E)
+r = subprocess.run([os.path.join(ROOT, 'dist', 'build', 'GameRemix.exe'), '--game', sys.argv[1]] + sys.argv[2:] + ['--log', log], env=env, cwd=E)
 print('rc', r.returncode); print(open(log, encoding='utf-8-sig').read()[:3000])

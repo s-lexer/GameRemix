@@ -150,7 +150,7 @@ namespace DDFixTool
         {
             get
             {
-                try { foreach (TextRecPatch t in GfxDef.Dd.TextRecs) foreach (string f in TextCmpFiles(t.Glob)) if (TextCmp.Parse(File.ReadAllBytes(f)).IsRussian()) return true; } catch (Exception) { }
+                try { foreach (TextRecPatch t in GfxDef.Dd.TextRecs) foreach (string f in TextCmpFiles(t.Glob)) { TextCmp tcr = TextCmp.Parse(File.ReadAllBytes(f)); if (RuText(tcr)) return true; } } catch (Exception) { }
                 return false;
             }
         }
@@ -168,7 +168,7 @@ namespace DDFixTool
                     try
                     {
                         TextCmp tc = TextCmp.Parse(File.ReadAllBytes(f)); TextCmp.Rec r = tc.Get((uint)t.Table, (uint)t.Id);
-                        if (r == null) off++; else if (CmpFile.Same(r.S1, TextBytes(t, tc.IsRussian()))) on++; else bad++;
+                        if (r == null) off++; else if (CmpFile.Same(r.S1, TextBytes(t, RuText(tc)))) on++; else bad++;
                     }
                     catch (Exception) { bad++; }
                 }
@@ -191,7 +191,7 @@ namespace DDFixTool
                     byte[] raw = File.ReadAllBytes(f); TextCmp tc;
                     try { tc = TextCmp.Parse(raw); if (!CmpFile.Same(tc.ToBytes(), raw)) throw new InvalidDataException("round trip"); }
                     catch (Exception ex) { if (on) throw new InvalidOperationException(U.R("Файл текстов не распознан (подсказка кнопки сортировки не добавлена): ", "The text file is not recognised (the tooltip of the Sort button was not added): ") + f + " (" + ex.Message + ")"); continue; }
-                    TextCmp.Rec r = tc.Get((uint)t.Table, (uint)t.Id); byte[] mine = TextBytes(t, tc.IsRussian());
+                    TextCmp.Rec r = tc.Get((uint)t.Table, (uint)t.Id); byte[] mine = TextBytes(t, RuText(tc));
                     string bak = Path.Combine(WinPackDir, Path.GetFileName(Path.GetDirectoryName(f)) + "_" + Path.GetFileName(f) + ".orig");
                     if (on)
                     {

@@ -1,4 +1,22 @@
-# GameRemix change log. Important things only: new games, new features, milestones. Small fixes and corrections are not listed (AGENTS.md, item 13).
+﻿# GameRemix change log. Important things only: new games, new features, milestones. Small fixes and corrections are not listed (AGENTS.md, item 13).
+## 1.0.38 - 2026-11-09
+- Korean language: the program now has RU | EN | KO, and for the English version of the game a Korean translation (texts, dialogues, items, Hangul font) with the "Korean language" row on Patches & fixes; it is not installed on the Russian version
+
+## 1.0.37 - 2026-11-08
+- Play waits for the set update check; without a connection you can play at once and the app says the server is not available
+- English edition of the game: the "Voice and music" row is hidden - it has no voiced dialogues
+
+## 1.0.36 - 2026-11-08
+- The app is one file for the .NET Framework 4: it starts right away on Windows 8, 10 and 11; Windows 7 needs the .NET Framework 4.8
+- Light theme by default (a chosen dark theme is kept)
+- Effect shaders: one clear setting - warm light from torches, lamps and magic
+
+## 1.0.35 — 2026-11-08
+- FPS mod: updated description of smooth motion on high refresh rate monitors, including VA panels
+
+## 1.0.34 — 2026-11-08
+- Quick setup: shader effects require an explicit choice to turn them on
+
 ## 1.0.33 — 2026-11-07
 - Quick setup: items right after upscaling, a new "Effect shaders" step (experimental, off by default) with the F9, F10, F11 keys
 

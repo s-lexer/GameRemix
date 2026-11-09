@@ -1,13 +1,13 @@
 # Matrix check of every GameRemix variant on a COPY of the Steam (English) Divine Divinity. Never touches the Steam folder or the owner's copies.
 #   python tools/en_matrix.py [GAMEDIR] [--run]   (--run: also start the game for ~20 s per exe variant and watch error.txt)
-# Needs: dist/managed/GameRemix.exe, dist/assets/divine-divinity (sets are served from a local loopback server, like tools/selftest.py).
+# Needs: dist/build/GameRemix.exe, dist/assets/divine-divinity (sets are served from a local loopback server, like tools/selftest.py).
 # Result: scratch/en_env/matrix.json + a table on stdout. Report: docs/recon/2026-11-07_steam_en_check.md
 import os, sys, io, json, time, hashlib, shutil, subprocess, importlib.util, re, concurrent.futures as cf
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 GAME = next((a for a in sys.argv[1:] if not a.startswith('--')), os.path.join(r'C:\ARM\WORK\MODDING\GAMES\DivineDivinity', 'steam_en_test'))
 RUN = '--run' in sys.argv
 STEAM = r'C:\Program Files (x86)\Steam\steamapps\common\divine_divinity'
-EXE = os.path.join(ROOT, 'dist', 'managed', 'GameRemix.exe')
+EXE = os.path.join(ROOT, 'dist', 'build', 'GameRemix.exe')
 E = os.path.join(ROOT, 'scratch', 'en_env')
 spec = importlib.util.spec_from_file_location('st', os.path.join(ROOT, 'tools', 'selftest.py')); st = importlib.util.module_from_spec(spec); spec.loader.exec_module(st)
 srv = st.make_srv_class(os.path.join(ROOT, 'dist'))()

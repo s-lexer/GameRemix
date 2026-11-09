@@ -1,0 +1,781 @@
+Open the original on Steam	Steam에서 원본 열기
+Close	닫기
+The set description is damaged or was not accepted (	세트 설명이 손상되었거나 승인되지 않았습니다 (
+This is not an asset-set manifest.	에셋 세트 매니페스트가 아닙니다.
+The manifest is newer than this program: update the program.	매니페스트가 이 프로그램보다 최신 버전입니다. 프로그램을 업데이트하세요.
+Empty manifest.	빈 매니페스트입니다.
+The set has a file outside the allowed game folder: 	세트에 허용된 게임 폴더 밖의 파일이 포함되어 있습니다: 
+ GB	 GB
+ MB	 MB
+A file address in the manifest points to a foreign server, rejected.	매니페스트의 파일 주소가 외부 서버를 가리켜 거부되었습니다.
+Asset sets come only from gameremix.pro.	에셋 세트는 gameremix.pro에서만 제공됩니다.
+The set was made for another game.	이 세트는 다른 게임용입니다.
+Some sets could not be fetched.	일부 세트를 가져오지 못했습니다.
+The sets server is not reachable - showing what was fetched before. 	세트 서버에 연결할 수 없어 이전에 가져온 항목을 표시합니다. 
+Checking 	확인 중 
+ (another file is already there)	 (다른 파일이 이미 있습니다)
+The backup of the original is damaged or from another game version: 	원본 백업이 손상되었거나 다른 게임 버전의 백업입니다: 
+\r\nNothing was changed. Restore the originals (Steam: "Verify integrity of game files"), delete that folder and try again.	\r\n아무것도 변경되지 않았습니다. 원본을 복원하고(Steam: "게임 파일 무결성 검사"), 해당 폴더를 삭제한 뒤 다시 시도하세요.
+ (changed after the set was applied)	 (세트 적용 후 변경됨)
+ (missing)	 (없음)
+ (the set is there but we have no backup of the original)	 (세트는 있지만 원본 백업이 없음)
+ (another version of the file)	 (다른 버전의 파일)
+The set does not fit your game files (another version or the files were changed):\r\n	세트가 게임 파일과 맞지 않습니다(버전이 다르거나 파일이 변경됨):\r\n
+\r\n\r\nNothing was changed or downloaded.	\r\n\r\n변경되거나 다운로드된 항목이 없습니다.
+The set's files are already there but there is no backup of the originals to revert to.	세트 파일은 이미 있지만 되돌릴 원본 백업이 없습니다.
+Downloading 	다운로드 중 
+The checksum of the downloaded file does not match, it was discarded: 	다운로드한 파일의 체크섬이 일치하지 않아 파일을 폐기했습니다: 
+The unpacked file is larger than declared, rejected.	압축 해제된 파일이 명시된 크기보다 커서 거부되었습니다.
+Preparing 	준비 중 
+The unpacked file does not match its checksum: 	압축 해제된 파일의 체크섬이 일치하지 않습니다: 
+Backing up 	백업 중 
+The backup does not match the original (the file changed while copying?): 	백업이 원본과 일치하지 않습니다(복사 중 파일이 변경되었나요?): 
+Installing…	설치 중…
+ (changed after the set was applied, left alone)	 (세트 적용 후 변경되어 그대로 둠)
+ (no backup)	 (백업 없음)
+ (the backup is damaged)	 (백업 손상)
+Restoring 	복원 중 
+The copy of the original failed verification: 	원본 복사본의 검증에 실패했습니다: 
+\r\n\r\nThe backups are kept. Restore the originals with the integrity check (Steam) or a reinstall.	\r\n\r\n백업은 보관됩니다. Steam의 무결성 검사 또는 재설치로 원본을 복원하세요.
+Enhanced graphics	향상된 그래픽
+Checking the game files…	게임 파일 확인 중…
+Could not check the files: 	파일을 확인할 수 없습니다: 
+Ready-made sets from our server. Originals are kept, one-click revert	서버에서 제공하는 완성형 세트입니다. 원본을 보관하며 클릭 한 번으로 되돌릴 수 있습니다
+Revert	되돌리기
+Original	원본
+The game's own graphics, unchanged	변경되지 않은 게임 기본 그래픽
+current	현재
+Apply	적용
+applied	적용됨
+partly	일부만
+downloaded	다운로드됨
+not downloaded	다운로드되지 않음
+No sets	세트 없음
+The list was not received, check the connection	목록을 가져오지 못했습니다. 연결을 확인하세요
+A set replaces the graphics files in the game folder (static\\imagelists). The originals stay in the program's folder and "Revert" brings them back. A download can be cancelled and continued later. Close the game first.	세트를 적용하면 게임 폴더(static\\imagelists)의 그래픽 파일이 교체됩니다. 원본은 프로그램 폴더에 보관되며 "되돌리기"로 복원할 수 있습니다. 다운로드는 취소한 뒤 나중에 이어받을 수 있습니다. 먼저 게임을 종료하세요.
+Cancelled. What was downloaded is kept and continues from there.	취소되었습니다. 다운로드한 파일은 보관되며 다음에 이어받습니다.
+Did not work. See the message.	작업에 실패했습니다. 메시지를 확인하세요.
+To download: 	다운로드할 항목: 
+Everything is already downloaded.\r\n	모든 항목이 이미 다운로드되었습니다.\r\n
+The set is applied. Start the game as usual.	세트가 적용되었습니다. 평소처럼 게임을 실행하세요.
+Preparing…	준비 중…
+The original graphics are back.	원본 그래픽이 복원되었습니다.
+Restoring the originals…	원본 복원 중…
+What's new	새 소식
+The gr-draw in the game folder was not installed by this program — it stays where it is.	게임 폴더의 gr-draw는 이 프로그램으로 설치한 것이 아니므로 그대로 유지됩니다.
+Could not remove ddraw.dll (in use? close the game): 	ddraw.dll을 삭제할 수 없습니다(사용 중인가요? 게임을 종료하세요): 
+Could not put the previous ddraw.dll back: 	이전 ddraw.dll을 복원할 수 없습니다: 
+Could not restore the game's renderer choice (slashed.cfg): 	게임의 렌더러 설정(slashed.cfg)을 복원할 수 없습니다: 
+Some gr-draw files were not removed: 	일부 gr-draw 파일을 삭제하지 못했습니다: 
+Saved. Applies on the next game start.	저장되었습니다. 다음에 게임을 실행하면 적용됩니다.
+Could not write: 	기록할 수 없습니다: 
+Off	끔
+On	켬
+gr-draw settings	gr-draw 설정
+Alternative wrapper instead of dgVoodoo	dgVoodoo 대신 사용하는 대체 래퍼
+Game not found	게임을 찾을 수 없음
+Not turned on in the game	게임에서 활성화되지 않음
+Turn on “gr-draw” on the Patches page and reopen this window.	패치 및 수정 페이지에서 “gr-draw”를 켠 뒤 이 창을 다시 여세요.
+Borderless	테두리 없는 창
+Fullscreen	전체 화면
+Windowed	창 모드
+Auto	자동
+Sharp	선명하게
+Smooth	매끄럽게
+Soft	부드럽게
+The scaling filter only works on OpenGL — pick OpenGL if you want the filter.	스케일링 필터는 OpenGL에서만 작동합니다. 필터를 사용하려면 OpenGL을 선택하세요.
+Interface size saved. Applies on the next game start.	인터페이스 크기가 저장되었습니다. 다음에 게임을 실행하면 적용됩니다.
+Could not apply: 	적용할 수 없습니다: 
+Screen	화면
+Unlimited	무제한
+Window and image	창 및 이미지
+Mode	모드
+Game window	게임 창
+Interface size	인터페이스 크기
+Smaller frame, stretched	작은 프레임을 늘려 표시
+Scaling filter	스케일링 필터
+Auto: by size	자동
+Keep aspect ratio	화면 비율 유지
+Black bars instead of stretching	늘리는 대신 검은 여백 표시
+Performance	성능
+Vertical sync	수직 동기화
+No tearing; adds a little input lag	화면 찢어짐을 방지하지만 입력 지연이 약간 늘어납니다
+Frame limit	프레임 제한
+By monitor	모니터에 맞춤
+Renderer	렌더러
+Engine	엔진
+Mouse	마우스
+Sensitivity	감도
+Follows the picture scale	화면 배율에 맞춤
+Free cursor	자유 커서
+Handy with a second monitor	보조 모니터 사용 시 편리합니다
+Recommended	권장
+Could not apply the size: 	크기를 적용할 수 없습니다: 
+Changes apply immediately and take effect on the next game start.	변경 사항은 즉시 적용되며 다음 게임 실행 시 반영됩니다.
+This tool is built for .NET 8 and runs on Windows 10 and newer only.	이 도구는 .NET 8 기반이며 Windows 10 이상에서만 실행됩니다.
+Download failed: 	다운로드 실패: 
+The “.NET Desktop Runtime” 8 or newer (x64) is required. Open the Microsoft download page?	“.NET Desktop Runtime” 8 이상(x64)이 필요합니다. Microsoft 다운로드 페이지를 여시겠습니까?
+Graphics quality	그래픽 품질
+Not installed in the game	게임에 설치되지 않음
+Turn on “dgVoodoo” on the Patches page and reopen this window.	패치 및 수정 페이지에서 “dgVoodoo”를 켠 후 이 창을 다시 여세요.
+Image	이미지
+Render scale	렌더링 배율
+Sharper on 4K; Full HD: 2x	4K에서 더 선명하게 표시; Full HD: 2x
+Anti-aliasing	앤티앨리어싱
+MSAA: removes jaggies	MSAA: 계단 현상을 줄입니다
+No tearing; turn off if it lags	화면 찢어짐 방지; 지연이 발생하면 끄세요
+A “.NET Desktop Runtime” 8 or newer (x64) is required. Open the Microsoft download page?	“.NET Desktop Runtime” 8 이상(x64)이 필요합니다. Microsoft 다운로드 페이지를 여시겠습니까?
+Copying the game world (main\\startup)…	게임 월드 복사 중(main\\startup)…
+Could not back up the world: 	월드를 백업할 수 없습니다: 
+DivEdit writes its changes straight into the game (main\\startup). A copy from before any edits is kept here:\n\n	DivEdit는 변경 사항을 게임(main\\startup)에 직접 기록합니다. 편집 전 복사본은 다음 위치에 보관됩니다:\n\n
+\n\nStart-up takes about a minute (the window stays white and "not responding", about 1 GB of memory) — this is normal, please wait.	\n\n실행에는 약 1분이 걸립니다(창이 하얗게 표시되고 "응답 없음" 상태가 되며 메모리를 약 1 GB 사용함). 정상적인 현상이므로 기다려 주세요.
+Not enough free space for the world backup (need 	월드 백업을 위한 여유 공간이 부족합니다(필요 용량: 
+ MB).	 MB).
+Unpacking needs Windows 10 (1909+) or 11: tar.exe is missing.	압축을 풀려면 Windows 10 (1909+) 또는 11이 필요합니다: tar.exe 파일이 없습니다.
+Unpacking did not finish in 3 minutes and was stopped.	3분 내에 압축 해제가 완료되지 않아 중단했습니다.
+Could not unpack the archive (a recent Windows 10/11 build is needed): 	압축 파일을 풀 수 없습니다(최신 Windows 10/11 빌드 필요): 
+Feedback	피드백
+Found a bug or have an idea? Write it down — the author reads everything.	버그를 발견했거나 아이디어가 있으신가요? 의견을 남겨 주세요. 개발자가 모든 의견을 읽습니다.
+E-MAIL FOR A REPLY (OPTIONAL)	답장받을 이메일(선택 사항)
+Attach logs (optional)	로그 첨부(선택 사항)
+The archive holds: the program log, Windows and game versions, fix states, dgVoodoo.conf and config.div. No personal data.	압축 파일에는 프로그램 로그, Windows 및 게임 버전, 수정 적용 상태, dgVoodoo.conf, config.div가 포함됩니다. 개인 정보는 포함되지 않습니다.
+Send	보내기
+Check the e-mail or clear the field.	이메일 주소를 확인하거나 입력란을 비우세요.
+Sending…	전송 중…
+Sent. Thank you!	전송했습니다. 감사합니다!
+Could not send: 	전송할 수 없습니다: 
+. You can write to 	. 다음 주소로도 문의할 수 있습니다: 
+too often, try again in a few minutes	너무 자주 전송했습니다. 몇 분 후 다시 시도하세요
+the server did not accept the e-mail address	서버에서 이메일 주소를 허용하지 않았습니다
+the message is empty or too long	메시지가 비어 있거나 너무 깁니다
+the log archive is too large or damaged	로그 압축 파일이 너무 크거나 손상되었습니다
+the request was rejected by the server	서버에서 요청을 거부했습니다
+the server cannot store the message right now	서버에서 현재 메시지를 저장할 수 없습니다
+unexpected server reply	예기치 않은 서버 응답
+the server redirected the request, sending refused	서버에서 요청을 리디렉션하여 전송을 거부했습니다
+Not every font was restored, the backups are kept in 	일부 글꼴을 복원하지 못했습니다. 백업은 다음 위치에 보관되어 있습니다: 
+No saves found.	세이브 파일을 찾을 수 없습니다.
+monitor refresh rate	모니터 주사율
+unlimited	무제한
+own limit 	사용자 지정 제한 
+as in the original (40)	원본과 동일(40)
+unavailable	사용할 수 없음
+Frame mode	프레임 모드
+The game runs 40 steps per second; the program adds in-between frames. Needs the gr-draw wrapper — it turns on by itself.	게임은 초당 40단계로 동작하며 프로그램이 중간 프레임을 추가합니다. gr-draw 래퍼가 필요하며 자동으로 켜집니다.
+Unavailable: div.exe 1.0.0.62 is needed	사용할 수 없음: div.exe 1.0.0.62 필요
+Monitor refresh rate  ★	모니터 주사율 ★
+Own limit	사용자 지정 제한
+As in the original (40)	원본과 동일(40)
+Smooth, no tearing (vsync); recommended	부드럽고 화면 찢어짐 없음(수직 동기화); 권장
+Hundreds of FPS; tearing and load are possible	수백 FPS; 화면 찢어짐과 부하가 발생할 수 있습니다
+Your own FPS, no vertical sync	사용자 지정 FPS, 수직 동기화 없음
+No smooth frames, default ddraw.ini	부드러운 프레임 없음, 기본 ddraw.ini
+Choose	선택
+chosen · 	선택됨 · 
+chosen	선택됨
+Value of your own limit	사용자 지정 제한값
+Frames per second	초당 프레임 수
+Any number 20-1000; then press Choose on Own limit	20-1000 사이의 숫자를 입력한 다음 사용자 지정 제한에서 선택을 누르세요
+Quick pick	빠른 선택
+Common values: 60, 120, 144, 165, 240	일반적인 값: 60, 120, 144, 165, 240
+The gr-draw wrapper is needed: it turns on by itself when you pick a mode (dgVoodoo steps aside).	gr-draw 래퍼가 필요합니다. 모드를 선택하면 자동으로 켜집니다(dgVoodoo는 비활성화됩니다).
+Game not found.	게임을 찾을 수 없습니다.
+Turn on gr-draw on the Patches page first.	먼저 패치 및 수정 페이지에서 gr-draw를 켜세요.
+The gr-draw in the game folder was not installed by this program, so it cannot be swapped. Turn gr-draw off and on again on the Patches page.	게임 폴더의 gr-draw는 이 프로그램으로 설치된 것이 아니므로 교체할 수 없습니다. 패치 및 수정 페이지에서 gr-draw를 껐다가 다시 켜세요.
+Key	키
+Press the key you want (Esc cancels)	원하는 키를 누르세요(Esc를 누르면 취소)
+Saved: 	저장됨: 
+Effects and FPS	효과 및 FPS
+That key is already used by another action.	이 키는 이미 다른 동작에 할당되어 있습니다.
+FPS mod	FPS 모드
+Effects and FPS counter	효과 및 FPS 카운터
+Hero, NPC and camera move twice as often; the game does not speed up	영웅, NPC, 카메라가 두 배 자주 움직이지만 게임 속도는 빨라지지 않습니다
+Works together with the chosen scaling filter; everything is off in the game until you press a key	선택한 스케일링 필터와 함께 작동합니다. 게임에서는 키를 누르기 전까지 모든 효과가 꺼져 있습니다
+Needs gr-draw	gr-draw 필요
+Effects	효과
+Effect shaders	효과 셰이더
+Warm light from fires and magic; off by default	불과 마법의 따뜻한 조명; 기본적으로 꺼져 있습니다
+FPS counter	FPS 카운터
+Frames per second in the corner	화면 구석에 초당 프레임 수 표시
+Shader menu	셰이더 메뉴
+Shaders: on / off	셰이더: 켜기 / 끄기
+FPS counter: show / hide	FPS 카운터: 표시 / 숨기기
+When the game starts	게임 시작 시
+In-game keys (press the button, then the new key)	게임 내 단축키 (버튼을 누른 다음 새 키를 누르세요)
+Tune the effects in the game	게임 내 효과 조정
+Shaders on / off	셰이더 켜기 / 끄기
+Compare before and after	적용 전후 비교
+Show or hide the counter	카운터 표시 또는 숨기기
+Everything is saved at once and works from the next game start. Default keys: F9, F10, F11.	모든 설정은 한 번에 저장되며 다음 게임 실행부터 적용됩니다. 기본 키: F9, F10, F11.
+on	켜짐
+off	꺼짐
+Not available for your game version	현재 게임 버전에서는 사용할 수 없습니다
+On: 80 frames of motion a second	켜짐: 초당 80프레임으로 움직임
+Off: 40 frames, as in the original	꺼짐: 원본과 동일한 초당 40프레임
+80 Hz tick	80 Hz 틱
+The FPS mod removes stutter when the hero, NPCs and camera move on high refresh rate monitors, including VA panels. Movement is displayed 80 times a second, while AI, combat and game speed stay the same: the game does not speed up.\n\nTurn it on with the game closed. Turning it off brings the game file back to the original.\n\nIf needed the program turns on gr-draw itself: without it the frame rate stops at 60.	FPS 모드는 VA 패널을 포함한 고주사율 모니터에서 주인공, NPC, 카메라 이동 시 발생하는 끊김을 줄여 줍니다. 움직임은 초당 80번 표시되지만 AI, 전투 및 게임 진행 속도는 그대로 유지됩니다. 게임이 빨라지지는 않습니다.\n\n게임을 종료한 상태에서 켜세요. 끄면 게임 파일이 원본으로 복원됩니다.\n\n필요하면 프로그램이 gr-draw를 자동으로 켭니다. gr-draw가 없으면 프레임 속도가 60으로 제한됩니다.
+Default keys	기본 키
+default keys F9, F10, F11.	기본 키 F9, F10, F11.
+The interface size works through gr-draw: turn it on first.	인터페이스 크기 조정에는 gr-draw가 필요합니다. 먼저 켜세요.
+Unknown fix: 	알 수 없는 수정 항목: 
+turn off 	끄기 
+interface size 	인터페이스 크기 
+\r\n\r\nThe previous state was restored.	\r\n\r\n이전 상태로 복원했습니다.
+\r\n\r\nThe previous state could not be fully restored: 	\r\n\r\n이전 상태를 완전히 복원하지 못했습니다: 
+The choice is incompatible or unavailable; nothing was changed.	선택한 옵션이 호환되지 않거나 사용할 수 없습니다. 아무것도 변경되지 않았습니다.
+no picture	이미지 없음
+Interface size 100%: as in the original, the whole game view is visible	인터페이스 크기 100%: 원본과 동일하며 게임 화면 전체가 표시됩니다
+interface	인터페이스
+items	아이템
+windows	창
+Step 2 of 2 · Highlighted: 	2단계 중 2단계 · 강조 표시: 
+. Press Apply.	. 적용을 누르세요.
+Graphics	그래픽
+Picture, interface and fixes in one place. Choosing changes nothing until you press Apply	화면, 인터페이스, 수정 항목을 한곳에서 설정하세요. 적용을 누르기 전까지는 선택해도 변경되지 않습니다
+Items	아이템
+Upscaling	업스케일링
+Fonts	글꼴
+Item glow	아이템 광채
+Large windows	큰 창
+Restore original	원본 복원
+Needs gr-draw: turn it on on the Patches & fixes page.	gr-draw가 필요합니다. 패치 및 수정 페이지에서 켜세요.
+Not available for your game version or files.	현재 게임 버전이나 파일에서는 사용할 수 없습니다.
+Installed	설치됨
+checking…	확인 중…
+offline	오프라인
+not yet	아직 없음
+Checking what the sets server has. Preview and choice already work.	세트 서버에서 제공하는 항목을 확인하고 있습니다. 미리보기와 선택은 이미 사용할 수 있습니다.
+The sets server is not reachable: the preview works but the set cannot be downloaded now. Apply will tell you so.	세트 서버에 연결할 수 없습니다. 미리보기는 가능하지만 지금은 세트를 다운로드할 수 없습니다. 적용을 누르면 관련 안내가 표시됩니다.
+The set is not on the server yet: the preview works, the download is not possible yet.	아직 서버에 세트가 없습니다. 미리보기는 가능하지만 다운로드는 아직 할 수 없습니다.
+Outdated	업데이트 필요
+Mixed	혼합됨
+Downloaded	다운로드됨
+original	원본
+backpack and trade	배낭 및 거래
+normal	보통
+★ for you	★ 맞춤 추천
+★ picked	★ 선택됨
+✓ applied	✓ 적용됨
+Inventory	인벤토리
+NPC dialogue	NPC 대화
+Before · original	적용 전 · 원본
+After · unchanged	적용 후 · 변경 없음
+After · your choice	적용 후 · 선택한 설정
+your own fonts	사용자 지정 글꼴
+larger than original	원본보다 크게
+halo, colour	후광, 색상
+No changes. Choose a picture or a skin, then press Apply.	변경 사항이 없습니다. 이미지나 스킨을 선택한 다음 적용을 누르세요.
+Changes: 	변경 사항: 
+download 	다운로드 
+The look was not applied: the game is running. Repeat it on the Graphics tab.	외형을 적용하지 못했습니다. 게임이 실행 중입니다. 그래픽 탭에서 다시 시도하세요.
+Look	외형
+Getting the list of sets…	세트 목록을 가져오는 중…
+The look was not applied: 	외형을 적용하지 못했습니다: 
+the sets server is not reachable.	세트 서버에 연결할 수 없습니다.
+ Repeat it on the Graphics tab.	 그래픽 탭에서 다시 시도하세요.
+Apply the look?\r\n\r\n	외형을 적용하시겠습니까?\r\n\r\n
+Everything is already downloaded.	모든 항목이 이미 다운로드되어 있습니다.
+The look installation was cancelled; you can continue on the Graphics tab.	외형 설치가 취소되었습니다. 그래픽 탭에서 계속할 수 있습니다.
+Checking…	확인 중…
+Play	플레이
+New versions of the installed sets are out:\r\n\r\n	설치된 세트의 새 버전이 나왔습니다:\r\n\r\n
+Update before playing? "No" plays with the current versions.	플레이하기 전에 업데이트하시겠습니까? "아니요"를 선택하면 현재 버전으로 플레이합니다.
+Update now? Nothing else changes. On a failure everything goes back as it was.	지금 업데이트하시겠습니까? 다른 항목은 변경되지 않습니다. 실패하면 모든 항목이 이전 상태로 복원됩니다.
+Set updates	세트 업데이트
+Nothing to change.	변경할 항목이 없습니다.
+Restore the original?\r\n\r\n	원본을 복원하시겠습니까?\r\n\r\n
+Apply the changes?\r\n\r\n	변경 사항을 적용하시겠습니까?\r\n\r\n
+The game must be closed. On a failure everything goes back as it was.	게임을 종료해야 합니다. 실패하면 모든 항목이 이전 상태로 복원됩니다.
+Cancelled. Steps already done stay; what was downloaded is kept - you can continue later.	취소했습니다. 이미 완료한 단계는 유지되고 다운로드한 파일도 보관되므로 나중에 계속할 수 있습니다.
+The file does not fit the patch (another version or foreign bytes): 	파일이 패치와 일치하지 않습니다(다른 버전이거나 예상과 다른 바이트가 있음): 
+The map does not fit the fix (another map or foreign values): 	맵이 수정 항목과 일치하지 않습니다(다른 맵이거나 예상과 다른 값이 있음): 
+The map does not fit the fix: 	맵이 수정 항목과 일치하지 않습니다: 
+The map file was not found in the game folder.	게임 폴더에서 맵 파일을 찾을 수 없습니다.
+Got it	확인
+These div.exe patches cannot be on together (they change the same bytes): 	다음 div.exe 패치는 동일한 바이트를 변경하므로 동시에 사용할 수 없습니다: 
+The Korean translation is made for the English version of the game (localizations\\english). Yours is the Russian one: its texts and dialogues are built differently, so the translation does not fit — nothing was changed.	한국어 번역은 게임의 영어 버전(localizations\\english)을 기준으로 제작되었습니다. 현재 게임은 러시아어 버전입니다. 텍스트와 대화 구조가 달라 번역을 적용할 수 없습니다. 아무것도 변경되지 않았습니다.
+File not found: 	파일을 찾을 수 없습니다: 
+Korean files are already in the game folder (put in by hand): restore the English ones first, otherwise the program could not revert them.	게임 폴더에 한국어 파일이 이미 있습니다(수동으로 설치됨). 먼저 영어 파일을 복원해야 프로그램에서 변경 사항을 되돌릴 수 있습니다.
+The file was changed outside the program: 	프로그램 외부에서 파일이 변경되었습니다: 
+Your game missing?	찾는 게임이 없나요?
+Patches & fixes	패치 및 수정
+Secrets	비밀
+Tools	도구
+Game request	게임 요청
+♥ Support	♥ 후원
+About	정보
+Update	업데이트
+Versions in the log you have not looked at: 	아직 확인하지 않은 로그의 버전: 
+A new version is available: 	새 버전이 있습니다: 
+Click to check	클릭하여 확인
+Colour theme	색상 테마
+Dark on the left, light on the right	왼쪽은 어둡게, 오른쪽은 밝게
+Create shortcut with all fixes	모든 수정이 적용된 바로 가기 만들기
+Quick setup	빠른 설정
+Voice & music	음성 및 음악
+Voice and music no longer drop after a dialogue	대화 후에도 음성과 음악이 끊기지 않도록 수정
+Korean language	한국어
+Korean texts and dialogues, Hangul font	한국어 텍스트와 대사, 한글 글꼴
+Dusk & dawn	황혼과 새벽
+Smooth day and night, no sudden jumps	갑작스러운 변화 없이 부드럽게 전환되는 낮과 밤
+Another wrapper: acceleration and MSAA	다른 래퍼: 가속 및 MSAA
+Recommended: better picture, borderless	권장: 향상된 화질, 테두리 없는 창
+Adjust	조정
+Scale, smoothing, window mode, sync	크기 조절, 부드럽게 처리, 창 모드, 동기화
+Larger text, books, dialogues, preview	더 큰 글자, 책, 대화, 미리보기
+Ready sets: clean sprites and interface	준비된 세트: 선명한 스프라이트와 인터페이스
+Smooth play	부드러운 플레이
+Single core and compatibility flags, no stutter	단일 코어 및 호환성 옵션으로 끊김 방지
+Details	자세히 보기
+Game version	게임 버전
+Sound and performance	사운드 및 성능
+Language and performance	언어 및 성능
+Revert all	모두 되돌리기
+Hidden modes and data of the game	게임의 숨겨진 모드와 데이터
+Hidden hard difficulty mode	숨겨진 어려움 난이도 모드
+Difficulty	난이도
+Articles and secrets	문서 및 비밀
+Read	읽기
+Divinity Wiki	Divinity Wiki
+Series encyclopedia: quests, items, maps	시리즈 백과사전: 퀘스트, 아이템, 지도
+Open	열기
+built in	내장
+Built in, nothing to install	내장되어 있어 별도 설치가 필요 없습니다
+Editors	편집기
+Save editor	세이브 파일 편집기
+Gold, stats, inventory · iZakaroN	골드, 능력치, 인벤토리 · iZakaroN
+Items editor	아이템 편집기
+Weapons, armour, potions · Igel	무기, 방어구, 물약 · Igel
+Items editor 2	아이템 편집기 2
+DDIE: item data, 2025 version	DDIE: 아이템 데이터, 2025 버전
+Font editor	글꼴 편집기
+Edit .fnt font files · Sormy	.fnt 글꼴 파일 편집 · Sormy
+Text compiler	텍스트 컴파일러
+Build localisation texts · Sormy	현지화 텍스트 빌드 · Sormy
+Dialog compiler	대화 컴파일러
+Build quest and NPC dialogues · Sormy	퀘스트 및 NPC 대사 빌드 · Sormy
+Game graphics (DGE)	게임 그래픽 (DGE)
+Sprites: export and replace · Raan	스프라이트: 내보내기 및 교체 · Raan
+from GitHub	GitHub에서 제공
+World editor (DivEdit)	월드 편집기 (DivEdit)
+Maps, NPCs · slow to load · Raan	지도, NPC · 로딩이 느림 · Raan
+Setup, folders and data	설정, 폴더 및 데이터
+Game config	게임 구성
+Resolution, sound and controls	해상도, 사운드 및 조작
+from game	게임에 포함
+dgVoodoo panel	dgVoodoo 설정 패널
+Fine graphics tuning	세부 그래픽 조정
+Game folders	게임 폴더
+Open the game folder in Explorer	탐색기에서 게임 폴더 열기
+Create	만들기
+Back up saves	세이브 파일 백업
+Copies savegames to a dated folder	세이브 파일을 날짜별 폴더에 복사합니다
+One line: what to fix and where	한 줄로 입력: 수정할 내용과 위치
+E.g.: Gothic 2 — crashes on Win11, needs a resolution fix	예: Gothic 2 — Win11에서 충돌 발생, 해상도 수정 필요
+My requests	내 요청 목록
+My request	내 요청
+sent	전송됨
+in a mail	메일로
+not sent	전송되지 않음
+Done	완료
+done	완료
+Planned	예정
+Same voice and resolution bugs	동일한 음성 및 해상도 오류
+Modern resolution and graphics	최신 해상도 및 그래픽
+Widescreen and crashes on new Windows	와이드스크린 및 최신 Windows에서 발생하는 충돌
+Graphics and crashes on Win10/11	Win10/11에서 발생하는 그래픽 문제 및 충돌
+Sound and mouse on Win10/11	Win10/11에서 발생하는 사운드 및 마우스 문제
+Request	요청
+planned	예정
+Update to 	다음 버전으로 업데이트 
+Version available: 	사용 가능한 버전: 
+partial	부분 적용
+Voice files are in a mixed state: switch it on and off again	음성 파일 상태가 혼재되어 있습니다: 기능을 켰다가 다시 끄세요
+needs a wrapper	래퍼 필요
+custom	사용자 지정
+larger	크게
+Applied set: 	적용된 세트: 
+unfinished	미완료
+changed	변경됨
+fits	맞음
+does not fit	호환되지 않음
+Folder not available: 	폴더에 접근할 수 없음: 
+The game is in the base but not found on this PC — click and pick its folder	게임이 목록에 있지만 이 PC에서 찾을 수 없습니다 — 클릭하여 게임 폴더를 선택하세요
+unsupported version (1.0.0.62 needed)	지원되지 않는 버전 (1.0.0.62 필요)
+The sets server is not available — updates were not checked. You can play.	세트 서버에 연결할 수 없어 업데이트를 확인하지 못했습니다. 게임은 플레이할 수 있습니다.
+The "with fixes" desktop shortcut exists. Play and the shortcut start the game with every enabled fix.	"수정 적용" 바탕 화면 바로 가기가 있습니다. 플레이와 바로 가기 모두 활성화된 모든 수정을 적용해 게임을 실행합니다.
+No "with fixes" shortcut yet. Play starts the game with every enabled fix.	"수정 적용" 바로 가기가 아직 없습니다. 플레이를 누르면 활성화된 모든 수정을 적용해 게임을 실행합니다.
+Selected game:	선택한 게임:
+Saves backup	세이브 파일 백업
+Copying the saves…	세이브 파일 복사 중…
+Saves backed up to:\r\n	세이브 파일 백업 위치:\r\n
+Revert is incomplete. Failed:\r\n\r\n	되돌리기가 완료되지 않았습니다. 실패 항목:\r\n\r\n
+Administrator rights are needed to start it. Start as administrator?	실행하려면 관리자 권한이 필요합니다. 관리자 권한으로 실행할까요?
+Could not start:\r\n	실행할 수 없음:\r\n
+Fetching the list of sets…	세트 목록 가져오는 중…
+Choose a game · click it to pick or change its folder	게임을 선택하세요 · 클릭하여 폴더를 선택하거나 변경하세요
+fix	수정
+fixes	수정 항목
+in base · pick folder	목록에 있음 · 폴더 선택
+soon	곧 제공
+request	요청
+game request	게임 요청
+TLS 1.2 needed (Win7: KB3140245, .NET 4.5)	TLS 1.2 필요 (Win7: KB3140245, .NET 4.5)
+could not check	확인할 수 없음
+up to date	최신 상태
+The program is updated. Please start it again by hand.	프로그램이 업데이트되었습니다. 직접 다시 실행해 주세요.
+Found:  	발견됨:  
+Needed:  	필요함:  
+1.0.0.62 (div.exe 2,461,696 B, 2013-04-19) — the Steam and GOG build\n\n	1.0.0.62 (div.exe 2,461,696 B, 2013-04-19) — Steam 및 GOG 빌드\n\n
+What the fixes do\n	수정 내용\n
+They change a few bytes in div.exe and replace two DLLs. The addresses are known for 1.0.0.62 only; other builds differ, so the program leaves the file alone rather than break the game. An original copy is made before any change and Revert all restores it.\n\n	div.exe의 일부 바이트를 변경하고 DLL 두 개를 교체합니다. 수정할 주소는 1.0.0.62에서만 확인되었습니다. 다른 빌드는 주소가 다르므로 게임 손상을 방지하기 위해 파일을 변경하지 않습니다. 변경 전 원본을 백업하며, 모두 되돌리기를 선택하면 복원됩니다.\n\n
+The version fits — nothing to do.	버전이 호환됩니다 — 별도 조치가 필요하지 않습니다.
+What to do\n	해결 방법\n
+Update the game to the latest version: Steam — verify file integrity, GOG — GOG Galaxy or the update installer; other editions — the publisher's last patch. If that is not possible, e-mail the author the version and size of div.exe and your build will be added.	게임을 최신 버전으로 업데이트하세요. Steam은 파일 무결성 검사를, GOG는 GOG Galaxy 또는 업데이트 설치 프로그램을 이용하세요. 다른 에디션은 배급사의 마지막 패치를 적용하세요. 업데이트할 수 없다면 div.exe의 버전과 크기를 개발자에게 이메일로 보내주세요. 해당 빌드의 지원이 추가됩니다.
+E-mail the author	개발자에게 이메일 보내기
+game version	게임 버전
+Game folder	게임 폴더
+Divine Divinity installs were found. Pick one or choose another folder.	Divine Divinity 설치 항목을 찾았습니다. 하나를 선택하거나 다른 폴더를 지정하세요.
+No install was found automatically. Choose the folder with div.exe.	자동으로 설치 항목을 찾지 못했습니다. div.exe가 있는 폴더를 선택하세요.
+Another folder…	다른 폴더…
+Cancel	취소
+effects menu	효과 메뉴
+Cannot enable the secure TLS 1.2 connection. Windows 7 needs update KB3140245 and .NET Framework 4.5 or newer.	보안 TLS 1.2 연결을 활성화할 수 없습니다. Windows 7에는 KB3140245 업데이트와 .NET Framework 4.5 이상이 필요합니다.
+Only https addresses are allowed: 	https 주소만 허용됩니다: 
+Empty redirect.	리디렉션 주소가 비어 있습니다.
+Too many redirects.	리디렉션 횟수가 너무 많습니다.
+The server returned the wrong part of the file.	서버에서 파일의 잘못된 부분을 반환했습니다.
+The file size on the server does not match the manifest.	서버의 파일 크기가 매니페스트와 일치하지 않습니다.
+The file is larger than expected, download rejected.	파일이 예상보다 커 다운로드를 거부했습니다.
+The download was interrupted (received 	다운로드가 중단되었습니다 (수신 
+ of 	 / 
+ MB). Try again - it continues from here.	 MB). 다시 시도하면 여기서 이어받습니다.
+The address is not on the trusted list: 	주소가 신뢰 목록에 없습니다: 
+The server reply is too large.	서버 응답이 너무 큽니다.
+The file was not downloaded completely.	파일 다운로드가 완료되지 않았습니다.
+Downloading… 	다운로드 중… 
+The file checksum does not match, download rejected.	파일 체크섬이 일치하지 않아 다운로드를 거부했습니다.
+Unpacking…	압축 해제 중…
+Not found in the archive: 	압축 파일에서 찾을 수 없음: 
+Cancelling…	취소 중…
+Note: fonts you chose by hand will be replaced (your own files are kept in the backup).	참고: 직접 선택한 글꼴이 교체됩니다 (사용자 파일은 백업에 보관됩니다).
+dgVoodoo.conf is missing in the game folder.	게임 폴더에 dgVoodoo.conf가 없습니다.
+voice, dusk and dawn — the game version is not supported	음성, 황혼과 새벽 — 지원되지 않는 게임 버전
+Quick setup did not finish: 	빠른 설정을 완료하지 못했습니다: 
+\nWhat was already done has been undone.	\n이미 적용된 변경 사항은 되돌렸습니다.
+\nNot everything could be undone: 	\n일부 변경 사항을 되돌리지 못했습니다: 
+FPS mod (tick 80)	FPS 모드 (틱 80)
+frame rate	프레임 속도
+voice	음성
+dusk	황혼
+graphics wrapper	그래픽 래퍼
+quick setup	빠른 설정
+smooth play	부드러운 플레이
+shortcut	바로 가기
+fonts	글꼴
+enhanced graphics	향상된 그래픽
+game fixes	게임 수정
+Not every file could be restored (busy? antivirus?). The backups are kept in 	일부 파일을 복원하지 못했습니다 (사용 중이거나 백신이 차단했나요?). 백업은 다음 위치에 보관됩니다: 
+A light wrapper for DirectDraw (2D) only. The game then runs in its "Software" mode — software rendering.\n\n	DirectDraw (2D)만 지원하는 경량 래퍼입니다. 게임이 "Software" 모드, 즉 소프트웨어 렌더링으로 실행됩니다.\n\n
+Replaces the game's DirectDraw and Direct3D with modern Windows rendering. The game runs in its normal Direct3D 6 mode, as intended, on new Windows.\n\n	게임의 DirectDraw와 Direct3D를 최신 Windows 렌더링으로 대체합니다. 최신 Windows에서도 게임이 원래 설계대로 일반 Direct3D 6 모드로 실행됩니다.\n\n
+Pros\n	장점\n
+• better picture: soft shader scaling (sharp, smooth, soft, FSR)\n• borderless and windowed mode\n• frame limiter, fast Alt+Tab, mouse fixes\n• works with many other 2D games\n\n	더 나은 화질: 부드러운 셰이더 스케일링 (선명, 매끄러움, 부드러움, FSR)\n테두리 없는 창 모드 및 창 모드\n프레임 제한, 빠른 Alt+Tab, 마우스 수정\n다른 여러 2D 게임과 호환\n\n
+• hardware acceleration, MSAA, render scale\n• stable on Windows 10/11\n• the game's mode is unchanged, just like the original\n\n	하드웨어 가속, MSAA, 렌더링 배율\nWindows 10/11에서 안정적으로 작동\n원본처럼 게임의 모드가 변경되지 않음\n\n
+Cons\n	단점\n
+• no Direct3D: the game is switched to Software mode\n• the game's gamma slider does not work\n• higher CPU load\n\n	Direct3D 미지원: 게임이 Software 모드로 전환됨\n게임의 감마 슬라이더가 작동하지 않음\nCPU 사용량 증가\n\n
+• no borderless window: the game is fullscreen\n• no upscaling shaders\n• Alt+Tab can be slow\n\n	테두리 없는 창 모드 미지원: 전체 화면으로 실행됨\n업스케일링 셰이더 없음\nAlt+Tab 전환이 느릴 수 있음\n\n
+When to pick it\n	선택 기준\n
+★ Recommended by default: better picture, borderless window, shaders.	★ 기본 추천: 더 나은 화질, 테두리 없는 창 모드, 셰이더.
+If gr-draw does not suit you, or you want hardware acceleration and MSAA.	gr-draw가 맞지 않거나 하드웨어 가속 및 MSAA를 원할 때 선택하세요.
+They cannot work together: both replace ddraw.dll. Turning one on turns the other off.	둘 다 ddraw.dll을 교체하므로 함께 사용할 수 없습니다. 하나를 켜면 다른 하나는 꺼집니다.
+FIXES & TWEAKS	수정 및 조정
+GAME FOLDER	게임 폴더
+Browse	찾아보기
+Find	찾기
+LOG	로그
+ON	켬
+OFF	끔
+Run	실행
+RU ONLY	RU 전용
+ANY VERSION	모든 버전
+SECRET	비밀
+TOOL	도구
+Voice & music + dusk	음성 및 음악 + 황혼
+NPCs speak on every conversation (not just once) and music switches by location. Replaces OsirisDLL.dll and DivDialogSystem.dll and patches div.exe. Includes the dusk fix.	NPC가 대화할 때마다 음성이 재생되고(처음 한 번만이 아님), 장소에 따라 음악이 바뀝니다. OsirisDLL.dll과 DivDialogSystem.dll을 교체하고 div.exe를 패치합니다. 황혼 수정도 포함됩니다.
+Smooth dusk & dawn	부드러운 황혼과 새벽
+Smooth fade at dusk and dawn instead of an abrupt day/night switch. Patches one byte in div.exe, nothing else is touched.	낮과 밤이 갑자기 바뀌지 않고 황혼과 새벽에 부드럽게 전환됩니다. div.exe의 1바이트만 패치하며 다른 파일은 건드리지 않습니다.
+"Lar's Bone" difficulty	"Lar's Bone" 난이도
+Hidden difficulty mode, enabled by an empty file dat\\bone.000 — this card creates and removes it.	빈 파일 dat\\bone.000을 만들어 활성화하는 숨겨진 난이도 모드입니다 — 이 카드에서 파일을 만들거나 삭제할 수 있습니다.
+Smooth performance	원활한 실행
+Single-core launch and Windows compatibility mode cleared from div.exe (Steam community advice): fewer stutters, faster loads. Creates a "Divine Divinity (smooth)" desktop shortcut.	div.exe에서 단일 코어 실행 설정과 Windows 호환성 모드를 해제합니다(Steam 커뮤니티 권장). 끊김이 줄고 로딩이 빨라집니다. 바탕 화면에 "Divine Divinity (smooth)" 바로 가기를 만듭니다.
+dgVoodoo graphics	dgVoodoo 그래픽
+Enables the dgVoodoo wrapper (DDraw.dll and D3D*.dll in the game folder): modern rendering on current Windows. Turning it off only renames those files, nothing is deleted. Together with Smooth performance it creates a desktop shortcut — play through it or the Start button.	dgVoodoo 래퍼를 활성화합니다(게임 폴더의 DDraw.dll 및 D3D*.dll). 최신 Windows에서 향상된 렌더링을 사용할 수 있습니다. 비활성화하면 파일 이름만 변경하며 삭제하지 않습니다. 원활한 실행과 함께 사용하면 바탕 화면 바로 가기가 생성됩니다 — 해당 바로 가기 또는 시작 버튼으로 플레이하세요.
+TOOLS	도구
+Divine Divinity — Fix Pack\r\n\r\nDeveloper: Lex Volkov\r\n5@1221.by / speectra.com	Divine Divinity — 수정 팩\r\n\r\n개발자: Lex Volkov\r\n5@1221.by / speectra.com
+  ⚠ dgVoodoo (DDraw.dll) not found in the folder.	 ⚠ 폴더에서 dgVoodoo (DDraw.dll)을 찾을 수 없습니다.
+Start the game	게임 시작
+Starts Divine Divinity. Uses DD.cmd when Smooth performance is on.	Divine Divinity를 실행합니다. 원활한 실행이 켜져 있으면 DD.cmd를 사용합니다.
+Game config tool	게임 설정 도구
+Official configtool.exe: Direct3D mode, resolution, smoothing.	공식 configtool.exe: Direct3D 모드, 해상도, 화면 부드럽게 처리.
+dgVoodoo settings	dgVoodoo 설정
+dgVoodooCpl.exe — DirectDraw/Direct3D wrapper for modern Windows: scaling, MSAA, watermark.	dgVoodooCpl.exe — 최신 Windows용 DirectDraw/Direct3D 래퍼: 크기 조절, MSAA, 워터마크.
+Saves folder	세이브 파일 폴더
+Opens savegames in Explorer — handy for making a copy before experiments.	탐색기에서 savegames 폴더를 엽니다 — 실험 전에 복사본을 만들어 두기 좋습니다.
+Opens the game folder in Explorer. Backups live in _DD_FixTool_backup.	탐색기에서 게임 폴더를 엽니다. 백업은 _DD_FixTool_backup에 저장됩니다.
+Revert everything	모두 되돌리기
+Restores the original div.exe and DLLs, removes Lar's Bone and DD.cmd. The game goes back to how it was before this tool.	원본 div.exe와 DLL을 복원하고 Lar's Bone 및 DD.cmd를 제거합니다. 게임을 이 도구를 사용하기 전 상태로 되돌립니다.
+Extra program from the tools folder. It receives the game folder path.	도구 폴더의 추가 프로그램입니다. 게임 폴더 경로를 전달받습니다.
+No game folder selected — press Find or Browse.	게임 폴더를 선택하지 않았습니다 — 찾기 또는 찾아보기를 누르세요.
+Unsupported div.exe: need version 1.0.0.62 (2013-04-19, 2,461,696 bytes). Fixes are unavailable.	지원하지 않는 div.exe 버전입니다: 1.0.0.62(2013-04-19, 2,461,696바이트)가 필요합니다. 수정을 적용할 수 없습니다.
+Game found, div.exe v1.0.0.62 — supported.	게임을 찾았습니다. div.exe v1.0.0.62 — 지원됩니다.
+Files were changed manually (partial state) — pick an option to normalise.	파일이 수동으로 변경되었습니다(일부만 적용된 상태) — 정상화할 옵션을 선택하세요.
+  ·  running as administrator	 · 관리자 권한으로 실행 중
+The game (div.exe) is running. Close it and try again.	게임(div.exe)이 실행 중입니다. 게임을 닫고 다시 시도하세요.
+Russian localisation (ddrus.*) not found in this folder.\r\nThe voice fix is intended for the Russian translation only. Apply anyway?	이 폴더에서 러시아어 현지화 파일(ddrus.*)을 찾을 수 없습니다.\r\n음성 수정은 러시아어 번역판 전용입니다. 그래도 적용할까요?
+Revert all fixes and restore the original files?	모든 수정을 되돌리고 원본 파일을 복원할까요?
+This folder cannot be written to without administrator rights.\r\nRestart the program as administrator?	관리자 권한 없이는 이 폴더에 쓸 수 없습니다.\r\n프로그램을 관리자 권한으로 다시 실행할까요?
+Warning	경고
+Error	오류
+Applied: 	적용됨: 
+Reverted: 	되돌림: 
+no backup, file left as is: 	백업이 없어 파일을 그대로 둡니다: 
+Backup: 	백업: 
+Game found: 	게임 발견: 
+Game not found automatically — please choose the folder.	게임을 자동으로 찾지 못했습니다 — 폴더를 선택하세요.
+Select the Divine Divinity folder (containing div.exe)	Divine Divinity 폴더를 선택하세요(div.exe가 있는 폴더)
+div.exe not found in the selected folder.	선택한 폴더에서 div.exe를 찾을 수 없습니다.
+Could not create the shortcut: 	바로 가기를 만들 수 없습니다: 
+An unexpected error occurred:\r\n\r\n	예기치 않은 오류가 발생했습니다:\r\n\r\n
+\r\n\r\nDetails are in the program log ("About" → open the log). If it keeps happening, send it to the author with "Feedback".\r\n\r\n	\r\n\r\n자세한 내용은 프로그램 로그에 있습니다("정보" → 로그 열기). 문제가 반복되면 "피드백"을 통해 개발자에게 보내 주세요.\r\n\r\n
+The program will close.	프로그램이 종료됩니다.
+You can keep working.	계속 작업할 수 있습니다.
+Skills	스킬
+Browse…	찾아보기…
+Choose data.000	data.000 선택
+Save game	세이브 파일
+Save	저장
+From the game's savegames folder	게임의 savegames 폴더에서
+Another file	다른 파일
+Pick a data.000 by hand	data.000 직접 선택
+Attributes	능력치
+Base value; the current one moves with it	기본값이며 현재 값도 함께 변경됩니다
+Points and experience	포인트 및 경험치
+Attribute points	능력치 포인트
+Free points to distribute	분배 가능한 포인트
+Skill points	스킬 포인트
+Free points for skills	스킬에 사용할 수 있는 포인트
+Experience	경험치
+Total experience of the hero	영웅의 총 경험치
+Find a skill	스킬 찾기
+Skill level	스킬 레벨
+0 to 5	0~5
+Reload	다시 불러오기
+No saves found. Press “Browse…”.	세이브 파일을 찾지 못했습니다. “찾아보기…”를 누르세요.
+ skills	개 스킬
+Loaded. A data.000.bak_date copy is made next to the file before saving.	불러왔습니다. 저장 전에 파일 옆에 data.000.bak_date 복사본을 만듭니다.
+Could not open: 	열 수 없습니다: 
+now 	현재 
+Saved (.bak copy next to it).	저장했습니다(옆에 .bak 복사본 생성).
+Write error: 	쓰기 오류: 
+The picture scale works through gr-draw: turn it on first.	이미지 배율 조정은 gr-draw를 통해 작동합니다. 먼저 활성화하세요.
+The scale was not applied: 	배율이 적용되지 않았습니다: 
+Which version to open? The new one is rewritten: Russian and English UI, program theme.	어떤 버전을 열까요? 새 버전은 러시아어 및 영어 UI와 프로그램 테마를 새롭게 구성했습니다.
+New	새 버전
+Classic	클래식
+Support the author	개발자 후원
+Thanks for using the program! Choose where to support the development:	프로그램을 이용해 주셔서 감사합니다! 개발을 후원할 곳을 선택하세요:
+Fixes and tweaks for old games in one program  ·  v	오래된 게임의 수정과 조정을 하나의 프로그램에서 · v
+Developer:  	개발자: 
+E-mail:  	이메일: 
+Site:  	웹사이트: 
+Support the author:\n	개발자 후원:\n
+For support:  	지원 문의: 
+open the program log	프로그램 로그 열기
+Credits\n	기여자\n
+dgVoodoo2 — Dege · editors and compilers — Sormy, Igel, iZakaroN · font patch idea — Losti · FPS fix — Steam community · 	dgVoodoo2 — Dege · 편집기 및 컴파일러 — Sormy, Igel, iZakaroN · 글꼴 패치 아이디어 — Losti · FPS 수정 — Steam 커뮤니티 · 
+our fork of cnc-ddraw	cnc-ddraw의 자체 포크
+Program updates	프로그램 업데이트
+Ask	문의
+Install	설치
+preview unavailable	미리보기를 사용할 수 없음
+GENERAL FONTS (interface, items)	일반 글꼴(인터페이스, 아이템)
+BOOK AND DIARY FONTS	책 및 일기 글꼴
+DIALOG FONTS	대화 글꼴
+Hello, friend!	안녕하세요, 친구!
+Click a card to choose. Original: the game's own fonts; Larger / Extra large: bigger fonts from the program.	카드를 클릭하여 선택하세요. 원본은 게임 기본 글꼴이며, 크게 / 매우 크게는 프로그램에서 제공하는 더 큰 글꼴입니다.
+YOUR OWN FONTS	사용자 지정 글꼴
+Install cancelled: the running program is not signed (a debug build), so there is nothing to compare the publisher with.	설치가 취소되었습니다. 실행 중인 프로그램에 디지털 서명이 없어(디버그 빌드) 게시자를 비교할 수 없습니다.
+The publisher of the new file differs from the program's publisher.	새 파일의 게시자가 현재 프로그램의 게시자와 다릅니다.
+Cannot install: the version list has no checksum. Download the file manually.	설치할 수 없습니다. 버전 목록에 체크섬이 없습니다. 파일을 수동으로 다운로드하세요.
+The update address is not on the trusted list.	업데이트 주소가 신뢰할 수 있는 목록에 없습니다.
+An update is already running.	업데이트가 이미 진행 중입니다.
+The program file to replace was not found.	교체할 프로그램 파일을 찾을 수 없습니다.
+Install cancelled: the running program is not signed (a debug build).	설치가 취소되었습니다. 실행 중인 프로그램에 디지털 서명이 없습니다(디버그 빌드).
+The program folder is write-protected. Download the new version manually: 	프로그램 폴더가 쓰기 금지 상태입니다. 새 버전을 수동으로 다운로드하세요: 
+Downloading version 	버전 다운로드 중: 
+The checksum of the downloaded file does not match. The file was rejected.	다운로드한 파일의 체크섬이 일치하지 않아 파일이 거부되었습니다.
+Replacing the program…	프로그램 교체 중…
+Could not write the update file next to the program: 	프로그램이 있는 폴더에 업데이트 파일을 저장할 수 없습니다: 
+The downloaded file does not look like the program (size).	다운로드한 파일의 크기가 예상한 프로그램 파일과 다릅니다.
+The downloaded file does not look like the program.	다운로드한 파일이 올바른 프로그램 파일이 아닌 것 같습니다.
+The downloaded file changed after the check. It was rejected.	검사 후 다운로드한 파일이 변경되어 거부되었습니다.
+Could not replace the program, the previous version was put back: 	프로그램을 교체하지 못해 이전 버전으로 복원했습니다: 
+The administrator prompt was declined.	관리자 권한 요청이 거부되었습니다.
+You have 	현재 버전: 
+ · automatic install is not available for this version	 · 이 버전은 자동 설치를 지원하지 않습니다
+Loading the description…	설명 불러오는 중…
+Download manually	수동 다운로드
+Later	나중에
+You can download the file manually: 	파일을 수동으로 다운로드할 수 있습니다: 
+No change description is published for this version.	이 버전의 변경 사항 설명이 없습니다.
+The file does not fit the entry edit: 	이 파일은 항목 수정에 적합하지 않습니다: 
+The text file is not recognised (the tooltip of the Sort button was not added): 	텍스트 파일을 인식할 수 없습니다(정렬 버튼의 툴팁이 추가되지 않음): 
+Normal windows	일반 창
+Stats and backpack open on top of each other	능력치 창과 배낭 창이 겹쳐서 열림
+Stats at the left, backpack at the right, Close | Sort	왼쪽에 능력치, 오른쪽에 배낭, 닫기 | 정렬
+←  Back	← 뒤로
+Step 	단계 
+Next  →	다음 →
+· download ~	· 다운로드 약 
+Monitor and game	모니터 및 게임
+The program detected your monitor. The game resolution, the wrapper, the interface size and the fonts depend on it. If it is right, press Next.	프로그램이 모니터를 감지했습니다. 게임 해상도, 래퍼, 인터페이스 크기, 글꼴이 모니터에 따라 결정됩니다. 감지된 정보가 맞으면 다음을 누르세요.
+GRAPHICS WRAPPER	그래픽 래퍼
+gr-draw ★ recommended	gr-draw ★ 권장
+INTERFACE SIZE (PICTURE SCALE)	인터페이스 크기(화면 배율)
+Your monitor	사용 중인 모니터
+ — picked automatically	 — 자동 선택됨
+Interface: window frames and buttons	인터페이스: 창 테두리 및 버튼
+Pick a style below and drag the slider under the pictures: your style on the left, the original on the right. The same 6 styles as on the Graphics tab.	아래에서 스타일을 선택하고 이미지 아래의 슬라이더를 드래그하세요. 왼쪽은 선택한 스타일, 오른쪽은 원본입니다. 그래픽 탭과 동일한 6가지 스타일을 제공합니다.
+After · 	적용 후 · 
+★ recommended	★ 권장
+As in the box: nothing changes.	원본 그대로: 아무것도 변경되지 않습니다.
+The same look, sharper: frames and buttons in high resolution.	원래 모습은 유지하면서 더 선명하게: 고해상도 창 테두리와 버튼.
+Fully redrawn windows in one style.	하나의 스타일로 완전히 새로 그린 창.
+Light parchment frames.	밝은 양피지 스타일의 테두리.
+Dark metal with rivets.	리벳이 박힌 어두운 금속.
+Dark glass, a modern look.	어두운 유리의 현대적인 디자인.
+After · if turned on	적용 후 · 활성화한 경우
+Upscaling: clean sprites	업스케일링: 선명한 스프라이트
+A neural network cleans all the game sprites: crisper edges, less noise and jaggies. On the pictures the result is on the left, the original on the right: drag the slider. The right frame is the same fragment enlarged 3 times.	신경망으로 게임의 모든 스프라이트를 개선합니다. 가장자리가 더 선명해지고 노이즈와 계단 현상이 줄어듭니다. 왼쪽은 개선 결과, 오른쪽은 원본입니다. 슬라이더를 드래그하여 비교하세요. 오른쪽 프레임은 동일한 부분을 3배 확대한 모습입니다.
+Inventory window	인벤토리 창
+The same fragment ×3	동일한 부분 ×3
+Upscaling "Clean v2"	업스케일링 "Clean v2"
+. Off — the original sprites. Default: off (the set is big).	. 끄면 원본 스프라이트가 사용됩니다. 기본값: 꺼짐(세트 용량이 큼).
+Default fonts are the game's own; "Larger" is bigger text in dialogues, books and menus (handy on a big monitor). Drag the slider: larger on the left, default on the right. Other font sets are in the Fonts window on the Graphics tab.	기본 글꼴은 게임 원본입니다. "크게"를 선택하면 대화, 책, 메뉴의 글자가 커집니다(큰 모니터에서 유용). 슬라이더를 드래그하여 비교하세요. 왼쪽은 크게, 오른쪽은 기본값입니다. 다른 글꼴 세트는 그래픽 탭의 글꼴 창에서 선택할 수 있습니다.
+Game text: dialogue, book, menu	게임 텍스트: 대화, 책, 메뉴
+Default	기본값
+Larger	크게
+Default fonts	기본 글꼴
+Preview unavailable: the game fonts were not found. The choice still applies.	미리보기를 사용할 수 없습니다. 게임 글꼴을 찾지 못했지만 선택한 설정은 적용할 수 있습니다.
+The pictures are the game's real fonts, 1:1.	이미지는 게임에서 실제 사용하는 글꼴을 1:1로 보여줍니다.
+Large windows: backpack, trade, stats	큰 창: 배낭, 거래, 능력치
+One kit: a bigger backpack with the mouse wheel, trading with tiles and tabs, a wider stats window and a new Sort button (Ctrl+C).	하나의 패키지로 모두 적용합니다. 마우스 휠로 크기를 조절하는 큰 배낭, 타일과 탭을 사용하는 거래 창, 더 넓어진 능력치 창, 새로운 정렬 버튼(Ctrl+C)이 포함됩니다.
+FPS mod and item glow	FPS 모드 및 아이템 광채
+Two optional things on one page: motion twice as smooth and a coloured halo under rare items. Both can be changed later on the Graphics tab.	한 페이지에서 두 가지 옵션을 설정할 수 있습니다. 움직임을 2배 더 부드럽게 하고 희귀 아이템 아래에 색상 후광을 표시합니다. 두 설정 모두 나중에 그래픽 탭에서 변경할 수 있습니다.
+FPS mod (80 Hz tick)	FPS 모드(80 Hz 틱)
+The FPS mod removes stutter when the hero, NPCs and camera move on high refresh rate monitors, including VA panels. Movement is displayed 80 times a second, while AI, combat and game speed stay the same: the game does not speed up.\n\nOn by default. The frame counter in the game: the F11 key.	FPS 모드는 VA 패널을 포함한 고주사율 모니터에서 주인공, NPC, 카메라 이동 시 발생하는 끊김을 줄여줍니다. 움직임은 초당 80회 표시되지만 AI, 전투, 게임 속도는 그대로 유지됩니다. 게임이 빨라지지는 않습니다.\n\n기본적으로 켜져 있습니다. 게임에서 F11 키를 누르면 프레임 카운터가 표시됩니다.
+\n\nNeeds gr-draw: the program turns it on instead of dgVoodoo.	\n\ngr-draw가 필요합니다. 프로그램이 dgVoodoo 대신 gr-draw를 활성화합니다.
+\n\nNot available for your game version.	\n\n현재 게임 버전에서는 사용할 수 없습니다.
+Glow of rare items	희귀 아이템 광채
+A coloured halo under rare items in the backpack: green, yellow and gold ones stand out at once. The item labels on the ground (Alt) are coloured too.\n\nOn by default.	배낭의 희귀 아이템 아래에 색상 후광을 표시합니다. 녹색, 노란색, 금색 아이템을 한눈에 구분할 수 있습니다. 바닥에 놓인 아이템의 이름표(Alt)에도 색상이 적용됩니다.\n\n기본적으로 켜져 있습니다.
+GLOW	광채
+Warm light from torches, lamps and magic: brighter around the fires, a little darker away from them. In the game: F9 turns them on or off, F10 opens fine tuning, F11 shows the frame counter.	횃불, 램프, 마법에서 퍼지는 따뜻한 빛을 표현합니다. 불빛 주변은 더 밝아지고 멀어질수록 조금 어두워집니다. 게임에서 F9 키로 효과를 켜거나 끄고, F10 키로 세부 설정을 열고, F11 키로 프레임 카운터를 표시할 수 있습니다.
+A dungeon with torches	횃불이 있는 던전
+Before · no shaders	적용 전 · 셰이더 없음
+After · warm light	적용 후 · 따뜻한 조명
+Off by default. The light comes from the game's real light sources; the interface is left alone. You can change it in the game with F10.	기본적으로 꺼져 있습니다. 빛은 게임의 실제 광원에서 나오며 인터페이스에는 영향을 주지 않습니다. 게임에서 F10 키로 조절할 수 있습니다.
+The shaders work with gr-draw only (the Monitor and game step).	셰이더는 gr-draw에서만 작동합니다(모니터 및 게임 단계).
+Items: weapons, armour and things	아이템: 무기, 방어구 및 기타 물품
+How the items look in the backpack. Click a picture to choose.	배낭에 표시되는 아이템의 외형을 설정합니다. 이미지를 클릭하여 선택하세요.
+As in the box.	원본 그대로.
+Items redrawn by a neural network, slightly toned down to fit the game.	신경망으로 다시 그린 아이템입니다. 게임 분위기에 맞도록 색감을 약간 차분하게 조정했습니다.
+The sets are downloaded from our server on Apply. You can bring the old items back on the Graphics tab. The glow of rare items is on one of the next pages.	적용을 누르면 서버에서 세트를 다운로드합니다. 그래픽 탭에서 기존 아이템으로 되돌릴 수 있습니다. 희귀 아이템 광채는 다음 페이지 중 하나에서 설정할 수 있습니다.
+interface 	인터페이스 
+Interface: 	인터페이스: 
+Upscaling: 	업스케일링: 
+Fonts: 	글꼴: 
+Large windows: 	큰 창: 
+Items: 	아이템: 
+, glow 	, 광채 
+FPS mod (80 Hz tick): 	FPS 모드(80 Hz 틱): 
+, effect shaders: 	, 효과 셰이더: 
+Voice, dusk and dawn, smooth play, small fixes: on	음성, 황혼과 새벽, 부드러운 플레이, 작은 수정: 켜짐
+All set — apply?	설정 준비 완료 — 적용할까요?
+This is what will be set up. The program does it in one go and shows the progress; picture sets are downloaded from our server (internet needed; resume and cancel work). The game must be closed. Everything can be undone with "Revert all".	다음 항목이 설정됩니다. 프로그램이 모든 작업을 한 번에 처리하고 진행 상황을 표시합니다. 이미지 세트는 서버에서 다운로드합니다(인터넷 연결 필요, 이어받기 및 취소 가능). 게임을 종료해야 합니다. "모두 되돌리기"로 모든 변경 사항을 되돌릴 수 있습니다.
+Nothing to download.	다운로드할 항목이 없습니다.
+Monitor, wrapper, sound and fixes…	모니터, 래퍼, 사운드 및 수정 사항…
+The FPS mod was not turned on: it is not available for your game version.	현재 게임 버전에서 지원하지 않아 FPS 모드를 켜지 않았습니다.
+Quick setup is done.\r\n\r\n	빠른 설정이 완료되었습니다.\r\n\r\n
+\r\n\r\nThe previous settings come back with "Revert all".	\r\n\r\n"모두 되돌리기"를 사용하면 이전 설정으로 돌아갑니다.
+A neural network cleans all the game sprites	신경망으로 모든 게임 스프라이트의 화질을 개선합니다
+Clean v2	클린 v2
+Interface	인터페이스
+Windows, frames and buttons: one skin at a time	창, 프레임 및 버튼: 한 번에 하나의 스킨만 적용
+Redrawn	새로 그리기
+Parchment	양피지
+Dark metal	어두운 금속
+Original HD	원본 HD
+Dark glass	어두운 유리
+Pictures of weapons, armour and things	무기, 방어구 및 기타 아이템 이미지
+Backpack, trade and stats windows bigger, sort button	가방, 거래 및 능력치 창 확대, 정렬 버튼 추가
+Normal	보통
+Large	크게
+Larger text, books, dialogues	글자, 책 및 대화창 확대
+Scale of the whole picture (needs gr-draw)	전체 화면 배율 조정(gr-draw 필요)
+gr-draw or dgVoodoo	gr-draw 또는 dgVoodoo
+Cellar floor hole	지하실 바닥 구멍
+The black patch next to the crates (new game)	상자 옆 검은 부분(새 게임)
+…and in my saves	…기존 세이브 파일에도 적용
+The same map fix inside the saves you already have	기존 세이브 파일에도 동일한 지도 수정 적용
+Map panel at the bottom	하단 지도 패널
+Automap buttons at the bottom edge of the screen	화면 하단 가장자리의 자동 지도 버튼
+Halo on rare items in the backpack and coloured Alt labels	가방의 희귀 아이템 후광 및 색상별 Alt 레이블
+Interface size (picture scale)	인터페이스 크기(화면 배율)
+The game is drawn at a SMALLER resolution and the whole frame is then stretched to your monitor, so everything gets bigger at once: the text windows and the world.\nExample: a 2560x1440 monitor at 125% - the game is drawn at 2048x1152 and stretched to the full screen.\nThe higher the percent, the bigger the text, but the less of the world you see around the hero.\nA whole factor (200%: one game pixel = exactly 2x2 screen pixels) gives the sharpest picture. A fractional one (125%, 150%) does not divide evenly, so a smoothing filter is needed and the picture is slightly softer.\n"Auto" picks the scale from the monitor height: under 1300 px - 100%, from 1300 - 125%, from 2000 - 200%.\nChange it if the text is too small (raise it) or the world feels cramped (lower it). Works through gr-draw.	게임을 더 낮은 해상도로 렌더링한 다음 전체 화면을 모니터 크기에 맞게 확대합니다. 따라서 글자, 창, 게임 세계가 모두 함께 커집니다.\n예: 2560x1440 모니터에서 125%를 선택하면 게임을 2048x1152로 렌더링한 뒤 전체 화면으로 확대합니다.\n비율이 높을수록 글자가 커지지만, 주인공 주변에 보이는 게임 세계의 범위는 좁아집니다.\n정수 배율(200%: 게임 픽셀 하나가 화면의 정확히 2x2픽셀이 됨)이 가장 선명합니다. 소수 배율(125%, 150%)은 픽셀이 정확히 나뉘지 않으므로 보간 필터가 필요하며 화면이 약간 부드러워집니다.\n"자동"은 모니터 높이에 따라 배율을 선택합니다. 1300 px 미만은 100%, 1300부터는 125%, 2000부터는 200%입니다.\n글자가 너무 작으면 배율을 높이고, 시야가 너무 좁으면 낮추세요. gr-draw를 통해 작동합니다.
+How the small game frame is stretched to the whole monitor.\n"Sharp" - no smoothing, pixel for pixel: best for whole factors (200%) and pixel art; with fractional ones the edges look uneven.\n"Smooth" - bilinear: soft edges, slightly blurry, fine for any factor.\n"Soft" - even gentler smoothing.\nLanczos - sharp smoothing without stair-steps: the best pick for 125% and 150%.\nFSR - AMD upscaling, needs the OpenGL renderer.\nWith "Auto" interface size the program picks Sharp for whole factors and Lanczos for fractional ones; here you can override it by hand.	작은 게임 화면을 모니터 전체로 확대하는 방식입니다.\n"선명" - 보간 없이 픽셀 그대로 표시합니다. 정수 배율(200%)과 픽셀 아트에 적합하지만 소수 배율에서는 가장자리가 고르지 않게 보입니다.\n"부드럽게" - 쌍선형 보간을 사용합니다. 가장자리가 부드럽지만 약간 흐릿하며 모든 배율에 적합합니다.\n"더 부드럽게" - 더욱 부드럽게 보간합니다.\nLanczos - 계단 현상을 줄이면서 선명도를 유지합니다. 125%와 150%에 가장 적합합니다.\nFSR - AMD 업스케일링 기술로, OpenGL 렌더러가 필요합니다.\n인터페이스 크기를 "자동"으로 설정하면 정수 배율에는 선명을, 소수 배율에는 Lanczos를 선택합니다. 여기서 직접 변경할 수도 있습니다.
+Window mode	창 모드
+Borderless - a full-screen window with no title bar: fast Alt+Tab, best with gr-draw.\nFullscreen - the game owns the screen, like in old games.\nWindowed - a normal window with a frame, handy when you need other programs next to it.\nIf unsure, keep Borderless.	테두리 없음 - 제목 표시줄이 없는 전체 화면 창입니다. Alt+Tab 전환이 빠르며 gr-draw에 가장 적합합니다.\n전체 화면 - 오래된 게임처럼 게임이 화면을 독점합니다.\n창 모드 - 테두리가 있는 일반 창입니다. 다른 프로그램을 옆에 띄워 놓을 때 편리합니다.\n잘 모르겠다면 테두리 없음을 유지하세요.
+If the monitor shape differs from the game frame, the frame is not stretched; black bars appear at the edges instead.\nExample: a 4:3 game on a 16:9 screen - black bars left and right, the picture is not distorted.\nTurn it off if you want the frame stretched over the whole screen (the picture gets distorted).	모니터와 게임 화면의 가로세로 비율이 다르면 화면을 늘리지 않고 가장자리에 검은 여백을 표시합니다.\n예: 16:9 화면에서 4:3 게임을 실행하면 좌우에 검은 여백이 생기지만 화면은 왜곡되지 않습니다.\n화면이 왜곡되더라도 모니터 전체에 맞게 늘리고 싶다면 이 기능을 끄세요.
+Frames are shown strictly in step with the monitor refresh.\nPro: no picture tearing when the camera moves. Con: a little input lag.\nTurn it on if you see horizontal tearing; otherwise leave it off.	모니터 주사율에 맞춰 프레임을 표시합니다.\n장점: 카메라가 움직일 때 화면 찢어짐이 없습니다. 단점: 입력 지연이 약간 발생할 수 있습니다.\n화면이 가로로 찢어져 보이면 켜고, 그렇지 않으면 꺼 두세요.
+How many frames per second the game may produce.\nScreen - the monitor refresh rate, 60/30 - a fixed cap, Unlimited - as fast as possible (heats up the GPU and CPU).\nThe old game needs little: 60 is plenty, 30 saves power on a laptop.	게임이 초당 생성할 수 있는 프레임 수를 설정합니다.\n화면 - 모니터 주사율에 맞춥니다. 60/30 - 지정된 값으로 제한합니다. 무제한 - 가능한 한 빠르게 렌더링합니다(GPU와 CPU의 발열 증가).\n오래된 게임이므로 60이면 충분하며, 노트북에서는 30으로 설정하면 전력을 절약할 수 있습니다.
+Renderer (engine)	렌더러(엔진)
+What gr-draw uses to put the picture on the screen.\nAuto - the program decides. OpenGL - needed for scaling filters and FSR, works almost everywhere. Direct3D 9 - a fallback. GDI - the simplest and slowest, in case the others do not work.\nIf you pick a filter, the renderer switches to OpenGL by itself.	gr-draw가 게임 화면을 표시하는 방식을 선택합니다.\n자동 - 프로그램이 결정합니다. OpenGL - 화면 확대 필터와 FSR에 필요하며 대부분의 환경에서 작동합니다. Direct3D 9 - 대체 옵션입니다. GDI - 가장 단순하고 느리지만 다른 방식이 작동하지 않을 때 사용할 수 있습니다.\n필터를 선택하면 렌더러가 자동으로 OpenGL로 전환됩니다.
+Mouse sensitivity	마우스 감도
+Converts the mouse movement to the picture scale so the cursor lands where you point it.\nExample: at 200% interface size, without it the cursor would run twice as far.\nKeep it on.	마우스 움직임을 화면 배율에 맞게 변환하여 커서가 가리킨 위치에 정확히 놓이도록 합니다.\n예: 인터페이스 크기가 200%일 때 이 기능이 없으면 커서가 두 배 멀리 움직입니다.\n켜 두는 것이 좋습니다.
+Cursor can leave the window	커서의 창 밖 이동 허용
+Lets the cursor leave the game window while it is active.\nHandy with two monitors: you can move the mouse to the second screen without minimising the game.\nOff by default: the cursor stays inside the game window.	게임 창이 활성화된 상태에서도 커서를 창 밖으로 이동할 수 있습니다.\n모니터가 두 대라면 게임을 최소화하지 않고도 마우스를 두 번째 화면으로 옮길 수 있어 편리합니다.\n기본적으로 꺼져 있으며, 이 경우 커서는 게임 창 안에 머뭅니다.
+dgVoodoo scale	dgVoodoo 배율
+How many times more detailed than the native 800x600 dgVoodoo draws the picture (1x-4x), before scaling it down to the monitor.\nExample: 2x - the inner picture is 1600x1200, edges and 3D look cleaner.\nMore is prettier but loads the GPU harder. On a modern PC 2x-3x is usually fine.	dgVoodoo가 기본 800x600 해상도보다 몇 배 더 높은 해상도로 화면을 렌더링할지 설정합니다(1x-4x). 이후 모니터 크기에 맞게 축소합니다.\n예: 2x에서는 내부 화면을 1600x1200으로 렌더링하여 가장자리와 3D 그래픽이 더 깔끔해집니다.\n배율이 높을수록 화질은 좋아지지만 GPU 부하도 증가합니다. 최신 PC에서는 보통 2x-3x가 적당합니다.
+MSAA smoothing	MSAA 안티앨리어싱
+Removes the stair-step on object edges by sampling several times per pixel (2x, 4x, 8x).\nMore samples - smoother edges but a heavier load. 4x is a good compromise. It does not touch flat hand-drawn sprites, only polygon edges.	픽셀당 여러 번 샘플링하여 오브젝트 가장자리의 계단 현상을 줄입니다(2x, 4x, 8x).\n샘플 수가 많을수록 가장자리는 부드러워지지만 부하도 커집니다. 4x가 적절한 절충안입니다. 평면으로 그려진 스프라이트에는 영향을 주지 않으며 다각형 가장자리에만 적용됩니다.
+Vertical sync (dgVoodoo)	수직 동기화(dgVoodoo)
+Frames are shown in step with the monitor refresh: no tearing, but there may be a little input lag.\nTurn it on if you see horizontal tearing when the camera moves.	모니터 주사율에 맞춰 프레임을 표시합니다. 화면 찢어짐은 방지하지만 입력 지연이 약간 발생할 수 있습니다.\n카메라가 움직일 때 화면이 가로로 찢어져 보이면 켜세요.
+Monitor class: HD / 2K / 4K	모니터 등급: HD / 2K / 4K
+Sets everything for the size of your screen.\nHD - monitors up to 1920x1080; 2K - 2560x1440; 4K - 3840x2160.\nThe program picks by your monitor; if you play on another one, choose by hand. The summary below shows exactly what will be set.	화면 해상도에 맞춰 모든 설정을 조정합니다.\nHD - 최대 1920x1080 모니터, 2K - 2560x1440, 4K - 3840x2160.\n프로그램이 현재 모니터에 맞게 선택합니다. 다른 모니터에서 플레이한다면 직접 선택하세요. 아래 요약에 적용될 설정이 정확히 표시됩니다.
+Graphics wrapper	그래픽 래퍼
+A small program that helps the old game run on a new Windows and show the picture on a modern monitor.\ngr-draw (recommended): the best picture, borderless window, filters, interface size.\ndgVoodoo - the alternative: acceleration and MSAA smoothing, but no interface size.\nThey cannot work together.	오래된 게임을 최신 Windows에서 실행하고 현대적인 모니터에 화면을 표시하도록 도와주는 작은 프로그램입니다.\ngr-draw(권장): 우수한 화질, 테두리 없는 창, 필터 및 인터페이스 크기 조절을 지원합니다.\ndgVoodoo - 대체 옵션으로, 그래픽 가속과 MSAA 안티앨리어싱을 지원하지만 인터페이스 크기 조절은 지원하지 않습니다.\n두 래퍼를 동시에 사용할 수는 없습니다.
+Interface size in quick setup	빠른 설정의 인터페이스 크기
+The same as "Interface size" on the Graphics page: the game is drawn at a lower resolution and stretched to the monitor, so text and windows get bigger.\nAuto picks the scale for your monitor (125% for 1440p).\nYou can change it later on the Graphics page.	그래픽 페이지의 "인터페이스 크기"와 동일합니다. 게임을 낮은 해상도로 렌더링한 뒤 모니터 크기에 맞게 확대하여 글자와 창을 크게 표시합니다.\n자동은 모니터에 맞는 배율을 선택합니다(1440p에서는 125%).\n나중에 그래픽 페이지에서 변경할 수 있습니다.
+Look (picture and interface)	외형(게임 화면 및 인터페이스)
+"Game picture" is a set of cleaned-up sprites (v2): less noise and jaggies. It weighs hundreds of megabytes and is downloaded from our server with your consent.\n"Interface" is the look of windows and buttons (skins A-D).\n"Keep" leaves things as they are. You can pick all this later on the Graphics page with a Before | After preview.	"게임 화면"은 노이즈와 계단 현상을 줄인 스프라이트 세트(v2)입니다. 용량은 수백 MB이며 동의하면 서버에서 다운로드합니다.\n"인터페이스"는 창과 버튼의 디자인입니다(스킨 A-D).\n"유지"를 선택하면 현재 상태를 그대로 유지합니다. 나중에 그래픽 페이지에서 이전 | 이후 미리보기를 보며 모두 선택할 수 있습니다.
+Font choice	글꼴 선택
+Click a card with sample text - the chosen one gets a golden frame.\nOriginal - the game's own fonts. Larger / Extra large - enlarged fonts built into the program: easier to read on a big monitor.\nChanges are applied with the Apply button and only for the groups you touched.	예시 문구가 있는 카드를 클릭하세요. 선택한 카드에 금색 테두리가 표시됩니다.\n원본 - 게임의 기본 글꼴입니다. 크게 / 매우 크게 - 프로그램에 포함된 확대 글꼴로, 큰 모니터에서 읽기 편합니다.\n적용 버튼을 누르면 변경한 글꼴 그룹에만 설정이 적용됩니다.
+Turns on our build of gr-draw. The effect shaders add warm light from torches, lamps and magic: brighter around the fires, a little darker away from them; the light comes from the game's real light sources, the interface is left alone.\nIn the game: F9 turns the shaders on and off, F10 opens fine tuning, F11 shows or hides the FPS counter (frames per second).\nEverything is off by default, so the game looks as before. The switches in the Effects and FPS window are saved at once (the bottom line says what was saved) and work from the next game start. The keys can be changed if the game uses them itself. Needs gr-draw (Patches page).	사용자 지정 gr-draw 빌드를 활성화합니다. 효과 셰이더는 횃불, 램프, 마법에서 따뜻한 빛을 만들어 냅니다. 불 주변은 더 밝아지고 멀리 떨어진 곳은 약간 어두워집니다. 게임의 실제 광원을 사용하며 인터페이스에는 영향을 주지 않습니다.\n게임에서 F9는 셰이더를 켜거나 끄고, F10은 세부 설정을 열며, F11은 FPS 카운터(초당 프레임 수)를 표시하거나 숨깁니다.\n모든 기능은 기본적으로 꺼져 있어 게임 화면이 이전과 동일하게 보입니다. 효과 및 FPS 창의 스위치 설정은 즉시 저장되며(하단에 저장된 항목이 표시됨), 다음 게임 실행부터 적용됩니다. 게임에서 해당 키를 사용한다면 단축키를 변경할 수 있습니다. gr-draw가 필요합니다(패치 및 수정 페이지).
+Frame mode (frame rate)	프레임 모드(프레임 속도)
+Inside, the game runs only 40 steps per second and used to show about as many frames (and hit a 60 ceiling). The program adds in-between frames, so the motion is smooth and the game itself does not speed up.\n"Monitor refresh rate" - RECOMMENDED: vertical sync, smooth up to your monitor's rate (e.g. 144), no tearing and no extra load.\n"Unlimited" - hundreds of frames per second; tearing is possible and the video card runs at full load.\n"Own limit" - your own frame rate, e.g. 144 or 165, without vertical sync.\n"As in the original (40)" - off: how the game ran before.\nThe gr-draw wrapper is needed; it turns on by itself. This is an experimental div.exe patch; undo it by choosing "As in the original" or with "Revert all".	게임 내부에서는 초당 40단계만 처리하며, 기존에는 표시되는 프레임 수도 비슷했습니다(최대 60 제한). 프로그램이 중간 프레임을 추가하여 게임 속도를 높이지 않고 움직임만 부드럽게 만듭니다.\n"모니터 주사율" - 권장: 수직 동기화를 사용하여 모니터 주사율(예: 144)까지 부드럽게 표시합니다. 화면 찢어짐과 추가 부하가 없습니다.\n"무제한" - 초당 수백 프레임을 표시합니다. 화면 찢어짐이 발생할 수 있으며 그래픽 카드가 최대 부하로 작동합니다.\n"사용자 지정 제한" - 수직 동기화 없이 144 또는 165 등 원하는 프레임 속도를 설정합니다.\n"원본대로 (40)" - 기능을 끄고 게임을 원래 방식으로 실행합니다.\ngr-draw 래퍼가 필요하며 자동으로 활성화됩니다. 이 기능은 실험적인 div.exe 패치입니다. "원본대로"를 선택하거나 "모두 되돌리기"를 사용하면 원래대로 복구할 수 있습니다.
+Inside, the game runs 40 steps a second, so even on a 144 Hz monitor motion looks stepped. The FPS mod is our patch of div.exe: the walking of the hero, NPCs and the camera are shown 80 times a second, while AI, combat, speed and saves stay as in the original. The game does not speed up.\nWhen to use: if walking and map scrolling look jerky on a fast monitor.\nExperimental: small jerks are possible on isometric diagonals; if they bother you, turn it off and the game file goes back to the original.\nThe program turns on gr-draw itself (without it the frame rate stops at 60). Change it with the game closed.	게임 내부는 초당 40단계로 작동하므로 144 Hz 모니터에서도 움직임이 끊겨 보입니다. FPS 모드는 div.exe에 적용하는 자체 패치로, 주인공과 NPC의 이동 및 카메라 움직임을 초당 40번 대신 80번 표시합니다. AI, 전투, 게임 속도, 세이브 파일은 원본 그대로 유지됩니다. 게임 속도는 빨라지지 않습니다.\n사용 시점: 고주사율 모니터에서 걷기 동작이나 지도 스크롤이 끊겨 보일 때 사용하세요.\n실험적 기능: 아이소메트릭 대각선 방향에서 미세한 끊김이 발생할 수 있습니다. 거슬린다면 기능을 끄세요. 게임 파일이 원본으로 복구됩니다.\n프로그램이 gr-draw를 자동으로 활성화합니다(없으면 프레임 속도가 60으로 제한됨). 게임을 종료한 상태에서 변경하세요.
+FPS mod (80 Hz tick): the movement of the hero, NPCs and camera is shown 80 times a second instead of 40; the game does not speed up. Experimental, off by default; if small jerks on diagonals bother you, turn it off.\nGlow of rare items: a coloured halo under green, yellow and gold items in the backpack and coloured labels on the ground (Alt). On by default.\nBoth can be changed later on the Graphics tab.	FPS 모드(80 Hz 틱): 주인공과 NPC의 이동 및 카메라 움직임을 초당 40번 대신 80번 표시합니다. 게임 속도는 빨라지지 않습니다. 실험적 기능이며 기본적으로 꺼져 있습니다. 대각선 이동 시 미세한 끊김이 거슬린다면 끄세요.\n희귀 아이템 후광: 가방의 녹색, 노란색, 금색 아이템 아래에 색상별 후광을 표시하고 바닥에 놓인 아이템의 레이블(Alt)에도 색상을 적용합니다. 기본적으로 켜져 있습니다.\n두 기능 모두 나중에 그래픽 탭에서 변경할 수 있습니다.
+An Off | On switch. On - the whole game picture (characters, monsters, items, ground tiles) is replaced by a copy cleaned of noise and jaggies by a neural network; sizes and transparency stay the same.\nOff - the original pictures.\nExample: heroes and armour have cleaner edges and colours.\nThe set weighs about 470 MB and is downloaded once from our server (you can cancel and continue). Originals are kept, one-click revert. Like every choice on the page, the switch changes nothing until you press Apply.	끔 | 켬 스위치입니다. 켜면 게임의 모든 이미지(캐릭터, 몬스터, 아이템, 바닥 타일)를 신경망으로 노이즈와 계단 현상을 제거한 이미지로 교체합니다. 이미지 크기와 투명도는 유지됩니다.\n끄면 원본 이미지를 사용합니다.\n예: 주인공과 방어구의 가장자리 및 색상이 더 깔끔해집니다.\n세트 용량은 약 470 MB이며 서버에서 한 번만 다운로드합니다(취소 및 이어받기 가능). 원본은 보관되며 클릭 한 번으로 되돌릴 수 있습니다. 이 페이지의 다른 선택 항목과 마찬가지로 적용 버튼을 누르기 전에는 변경되지 않습니다.
+The look of windows, frames and buttons. The window layout does not change - only the pictures.\nRedrawn - new inventory and equipment windows, the rest in the same teal and gold. Parchment - dark leather and paper. Dark metal - iron and bronze. Original HD - the old look, but cleaner. Dark glass - flat graphite panels.\nOne skin at a time. The choice shows in the preview on the left (Before | After slider).\nSkins go on top of the chosen game picture.	창, 프레임 및 버튼의 디자인을 변경합니다. 창 배치는 그대로 유지되며 이미지만 바뀝니다.\n새로 그리기 - 인벤토리와 장비 창을 새롭게 디자인하고 나머지는 기존 청록색과 금색을 유지합니다. 양피지 - 어두운 가죽과 종이 디자인입니다. 어두운 금속 - 철과 청동 디자인입니다. 원본 HD - 기존 디자인을 더 깔끔하게 개선했습니다. 어두운 유리 - 평평한 흑연색 패널입니다.\n한 번에 하나의 스킨만 적용할 수 있습니다. 선택한 스킨은 왼쪽 미리보기(이전 | 이후 슬라이더)에 표시됩니다.\n스킨은 선택한 게임 화면 세트 위에 적용됩니다.
+An Off | On switch. Off puts the original fonts back at once. On opens the font window: main, books and diary, dialogues - three variants each with a text sample; "Larger" and the rest are applied there. If you close the window without choosing, the switch goes back to where it was. Clicking the name "Fonts >" opens the same window. If you picked your own fonts, neither side is lit.\nExample: Larger makes dialogues easier to read on a 2K or 4K monitor.\nFonts change at once (not with the Apply button at the bottom of the page); the game must be closed.	끔 | 켬 스위치입니다. 끄면 원본 글꼴이 즉시 복원됩니다. 켜면 글꼴 설정 창이 열립니다. 기본 글꼴, 책과 일기, 대화의 세 그룹에서 각각 예시 문구가 있는 세 가지 글꼴을 선택할 수 있습니다. "크게" 등의 크기는 해당 창에서 적용합니다. 아무것도 선택하지 않고 창을 닫으면 스위치는 이전 상태로 돌아갑니다. "글꼴 >" 이름을 클릭해도 같은 창이 열립니다. 직접 지정한 글꼴을 사용 중이면 스위치의 어느 쪽도 선택되지 않습니다.\n예: 크게를 선택하면 2K 또는 4K 모니터에서 대화 내용을 읽기 편해집니다.\n글꼴 변경은 즉시 적용되며(페이지 하단의 적용 버튼과 무관함), 게임을 종료해야 합니다.
+Which wrapper puts the game picture on the screen: gr-draw (recommended) or dgVoodoo.\nThe Adjust button opens the settings of the active wrapper: window mode, filter, smoothing, sync.\nYou can switch the wrapper on the Patches & fixes page.	게임 화면을 표시할 래퍼를 선택합니다. gr-draw(권장) 또는 dgVoodoo를 사용할 수 있습니다.\n조정 버튼을 누르면 활성 래퍼의 설정이 열립니다. 창 모드, 필터, 안티앨리어싱 및 동기화를 설정할 수 있습니다.\n패치 및 수정 페이지에서 래퍼를 전환할 수 있습니다.
+Dusk and dawn	황혼과 새벽
+The game switches day to night in one jump. The fix makes the change smooth (one byte in div.exe).\nNothing else is touched; it turns off again without a trace.	게임에서는 낮에서 밤으로 한 번에 전환됩니다. 이 수정은 전환을 부드럽게 만듭니다(div.exe의 1바이트 변경).\n다른 부분은 건드리지 않으며, 기능을 끄면 흔적 없이 원래대로 돌아갑니다.
+Apply and restore original	적용 및 원본 복원
+A choice on the page changes nothing on disk until you press Apply. Left of the buttons you see what will change and how much to download.\nApply does everything in one go: downloads (with your consent; you can cancel and continue later), keeps the originals, installs; on a failure it restores the previous state. The game must be closed.\nRestore original removes the picture sets and skins. Fonts, interface size and renderer are set separately.	페이지에서 옵션을 선택해도 적용 버튼을 누르기 전에는 디스크의 파일이 변경되지 않습니다. 버튼 왼쪽에는 변경될 항목과 다운로드 용량이 표시됩니다.\n적용을 누르면 모든 작업을 한 번에 처리합니다. 동의한 항목을 다운로드하고(취소 및 나중에 이어받기 가능), 원본을 보관한 뒤 설치합니다. 오류가 발생하면 이전 상태로 복구합니다. 게임을 종료해야 합니다.\n원본 복원은 게임 화면 세트와 스킨을 제거합니다. 글꼴, 인터페이스 크기 및 렌더러는 별도로 설정됩니다.
+The pictures of things: weapons, armour, inventory and ground icons.\nOriginal - as in the game. Redrawn sets will appear here when they are ready; a preview will be added to the picture above.\nItem pictures can be changed independently of upscaling and the interface. New items and loot - as separate sets, later.	무기, 방어구, 인벤토리 및 바닥 아이콘 등 아이템 이미지를 설정합니다.\n원본 - 게임의 기본 이미지입니다. 새로 그린 세트는 준비되는 대로 여기에 추가되며, 위 이미지에도 미리보기가 제공됩니다.\n아이템 이미지는 업스케일링 및 인터페이스와 별개로 변경할 수 있습니다. 새로운 아이템과 전리품은 나중에 별도 세트로 추가될 예정입니다.
+Large windows (backpack, trade, stats)	큰 창(가방, 거래, 능력치)
+An Off | On switch. On - one kit: a bigger backpack (422x480 instead of 332x310) that scrolls with the mouse wheel; trading with tiles and tabs (weapons, armour, potions, books, other), items grouped by type, worn items marked "worn"; a wider character-stats window that fits the large fonts; a "Sort" button (and Ctrl+C) next to "Close" in the backpack; the equipment and stats windows open on the left and the backpack on the right instead of on top of each other.\nExample: twice as many things fit into the backpack and "Sort" puts them in order by type.\nWhat changes: the window artwork (a set of about 10 MB, made for each interface), a small change to the game itself (div.exe 1.0.0.62, Russian and English version) and two lines in the game data (the stats layout, the button tooltip). Everything goes in and out as one piece; the originals are kept and Off brings everything back.\nWindows you have already moved in the game open where you left them. Works with the Original, Original HD and Redrawn interfaces. Like the other choices, it changes nothing until you press Apply.	끔 | 켬 스위치입니다. 켜면 다음 기능이 하나의 패키지로 적용됩니다. 더 큰 가방(332x310 대신 422x480, 마우스 휠 스크롤 지원), 타일과 탭이 있는 거래 창(무기, 방어구, 물약, 책, 기타), 종류별 아이템 분류, 착용한 아이템의 "착용 중" 표시, 큰 글꼴에 맞춘 넓은 캐릭터 능력치 창, 가방의 "닫기" 옆에 "정렬" 버튼 추가(Ctrl+C로도 실행 가능), 장비 및 능력치 창은 왼쪽에, 가방은 오른쪽에 열리도록 배치합니다. 창이 서로 겹치지 않습니다.\n예: 가방에 약 두 배 많은 아이템이 표시되며 "정렬"을 누르면 종류별로 정리됩니다.\n변경 사항: 창 이미지(각 인터페이스에 맞게 제작된 약 10 MB 세트), 게임 자체의 작은 변경(div.exe 1.0.0.62, 러시아어판 및 영어판), 게임 데이터의 두 줄(능력치 창 배치 및 버튼 툴팁)입니다. 모든 변경 사항이 하나의 패키지로 적용되거나 제거됩니다. 원본은 보관되며 끄면 모두 복원됩니다.\n게임에서 이미 위치를 옮긴 창은 마지막 위치에서 열립니다. 원본, 원본 HD 및 새로 그리기 인터페이스와 호환됩니다. 다른 옵션과 마찬가지로 적용 버튼을 누르기 전에는 변경되지 않습니다.
+An Off | On switch. On - rare items in the backpack get a coloured halo under the picture (green, yellow, gold - the colour of the name in the tooltip), and the labels of items on the ground (Alt) are coloured at once. Ordinary items are unchanged.\nExample: a gold sword in the backpack has a golden halo - you will not miss it among the junk.\nWhat changes: a small change to the game itself (div.exe 1.0.0.62, Russian and English version); no files are touched. The item name in tooltips stays as in the original. On by default; Off brings everything back. Changes nothing until you press Apply.	끔 | 켬 스위치입니다. 켜면 가방의 희귀 아이템 이미지 아래에 색상별 후광이 표시됩니다(녹색, 노란색, 금색 - 툴팁의 아이템 이름 색상과 동일). 바닥에 놓인 아이템의 레이블(Alt)에도 즉시 색상이 적용됩니다. 일반 아이템은 변경되지 않습니다.\n예: 가방 속 금색 검에는 금빛 후광이 생겨 다른 잡동사니 사이에서도 쉽게 찾을 수 있습니다.\n변경 사항: 게임 자체에 작은 변경을 적용합니다(div.exe 1.0.0.62, 러시아어판 및 영어판). 다른 파일은 건드리지 않습니다. 툴팁의 아이템 이름은 원본 그대로 유지됩니다. 기본적으로 켜져 있으며, 끄면 모두 복원됩니다. 적용 버튼을 누르기 전에는 변경되지 않습니다.
+Only for the English version of the game	영어판 게임에서만 사용할 수 있습니다
+Needs the original files of the English version	영어판 게임의 원본 파일이 필요합니다

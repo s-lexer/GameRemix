@@ -1,4 +1,4 @@
-// "Effects and FPS": our build of cnc-ddraw (shared/cnc-ddraw/fx, MIT, sources in games/divine-divinity/fx_shader/ddfx_src) replaces the stock ddraw.dll while this is on.
+﻿// "Effects and FPS": our build of cnc-ddraw (shared/cnc-ddraw/fx, MIT, sources in games/divine-divinity/fx_shader/ddfx_src) replaces the stock ddraw.dll while this is on.
 // In the game: F11 = FPS counter, F9 = shaders on/off, F10 = the effects menu (the keys can be changed). Everything is off at the game start by default.
 // State lives in the game folder: ddraw.dll (our build), ddraw.dll.stock-cnc (the stock one, comes back when this is turned off), dd-fx.cfg ([current] fx, show_fps; [keys] menu, fps, fx = virtual-key codes), ddraw.ini fx=true.
 using System;
@@ -47,26 +47,45 @@ namespace DDFixTool
         public bool FxNeeded { get { return FxAvail && EmbOurs("grdraw", "ddraw.dll") && (!FxCurrent || CncGet("fx", "false").ToLower() != "true"); } }   // StartupSync
         public void FxApply(FxState s)
         {
-            if (!HasGame) throw new InvalidOperationException(L.Ru ? "Игра не найдена." : "Game not found.");
-            if (!Cnc) throw new InvalidOperationException(L.Ru ? "Сначала включите gr-draw на странице «Патчи и фиксы»." : "Turn on gr-draw on the Patches page first.");
+            if (!HasGame) throw new InvalidOperationException(U.R("Игра не найдена.", "Game not found."));
+            if (!Cnc) throw new InvalidOperationException(U.R("Сначала включите gr-draw на странице «Патчи и фиксы».", "Turn on gr-draw on the Patches page first."));
             if (GameRunning()) throw new InvalidOperationException(L.T("running"));
             if (!FxCurrent)   // a stock cnc-ddraw or an older build of ours put in by this program: swap it for the current build
             {
-                if (!EmbOurs("grdraw", "ddraw.dll")) throw new InvalidOperationException(L.Ru ? "gr-draw в папке игры установлен не этой программой, поэтому подменять его нельзя. Выключите и включите gr-draw на странице «Патчи и фиксы»." : "The gr-draw in the game folder was not installed by this program, so it cannot be swapped. Turn gr-draw off and on again on the Patches page.");
+                if (!EmbOurs("grdraw", "ddraw.dll")) throw new InvalidOperationException(U.R("gr-draw в папке игры установлен не этой программой, поэтому подменять его нельзя. Выключите и включите gr-draw на странице «Патчи и фиксы».", "The gr-draw in the game folder was not installed by this program, so it cannot be swapped. Turn gr-draw off and on again on the Patches page."));
                 AtomicWrite(P("ddraw.dll"), CncRes("fxddraw.dll"));
             }
             File.WriteAllBytes(P("ddfx LICENSE-DejaVu.txt"), FxLicBytes()); MarkAdd("ddfx LICENSE-DejaVu.txt"); JNote("grdraw", false);
-            if (!File.Exists(FxCfgPath)) { File.WriteAllText(FxCfgPath, "; ddfx config v1\r\n[current]\r\n"); MarkAdd("dd-fx.cfg"); }
+            // Fresh installs receive the exact owner-approved shader profile. Never overwrite an existing cfg.
+            if (!File.Exists(FxCfgPath)) { File.WriteAllBytes(FxCfgPath, Res("ccd_dd-fx.cfg")); MarkAdd("dd-fx.cfg"); }
             IniEdit.Set(FxCfgPath, "current", "fx", s.Shaders ? "1" : "0"); IniEdit.Set(FxCfgPath, "current", "show_fps", s.Fps ? "1" : "0");
             IniEdit.Set(FxCfgPath, "keys", "menu", s.KMenu.ToString()); IniEdit.Set(FxCfgPath, "keys", "fps", s.KFps.ToString()); IniEdit.Set(FxCfgPath, "keys", "fx", s.KFx.ToString());
             CncSet("fx", "true"); CncSingleCpu();
             try { if (File.Exists(FxStockPath)) File.Delete(FxStockPath); } catch { }   // left by 1.0.15
             Sync(); Log(L.T("applied") + "fx shaders=" + s.Shaders + " fps=" + s.Fps + " keys=" + s.KMenu + "," + s.KFps + "," + s.KFx);
         }
-        // the values the shaders start with when the quick setup turns them on: the "Ambient" preset (fx_shader params.py, preset 3; the owner's setting 07.11.2026)
+        // Quick setup must NOT silently replace a player's own [current] profile.
+        // For a legacy skeleton cfg, fill only missing keys from the frozen owner-approved default.
         public void FxStartPreset()
         {
-            foreach (string kv in "fire_on=1,fire_bloom=0.6,flicker=0.05,light_on=1,light_str=0.7,ambient=0.1,magic_on=1,magic_bloom=0.6".Split(',')) { int i = kv.IndexOf('='); IniEdit.Set(FxCfgPath, "current", kv.Substring(0, i), kv.Substring(i + 1)); }
+            if (!File.Exists(FxCfgPath)) return;
+            string source = Encoding.UTF8.GetString(Res("ccd_dd-fx.cfg"));
+            bool inCurrent = false;
+            foreach (string raw in source.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string line = raw.Trim();
+                if (line.StartsWith("[", StringComparison.Ordinal))
+                {
+                    inCurrent = string.Equals(line, "[current]", StringComparison.OrdinalIgnoreCase);
+                    continue;
+                }
+                if (!inCurrent || line.Length == 0 || line[0] == ';') continue;
+                int pos = line.IndexOf('=');
+                if (pos <= 0) continue;
+                string key = line.Substring(0, pos).Trim(), val = line.Substring(pos + 1).Trim();
+                if (IniEdit.Get(FxCfgPath, "current", key, null) == null)
+                    IniEdit.Set(FxCfgPath, "current", key, val);
+            }
         }
         public static string KeyName(int vk) { return ((Keys)vk).ToString(); }
     }
@@ -98,12 +117,14 @@ namespace DDFixTool
         public FxForm(Core c) : base(c, new Size(880, 470)) { }
         protected override string TitleRu { get { return "Эффекты и FPS"; } }
         protected override string TitleEn { get { return "Effects and FPS"; } }
-        void Save(FxState n)
+        // every change is written to the game folder at once; the line at the bottom says exactly what was saved (owner 08.11.2026: "I can't tell whether it applied")
+        void Save(FxState n, string ru, string en)
         {
-            try { Game.FxApply(n); st = n; Status("Сохранено. Применится при следующем запуске игры.", "Saved. Applies on the next game start."); }
-            catch (Exception ex) { Status(ex.Message, ex.Message); MessageBox.Show(this, ex.Message, T("Эффекты и FPS", "Effects and FPS")); }
+            try { Game.FxApply(n); st = n; Done(true, "Сохранено: " + ru, "Saved: " + en); }
+            catch (Exception ex) { Done(false, ex.Message, ex.Message); MessageBox.Show(this, ex.Message, T("Эффекты и FPS", "Effects and FPS")); }
             Reload();
         }
+        static string Key(int vk) { return Core.KeyName(vk); }
         FxState Copy() { FxState n = new FxState(); n.Shaders = st.Shaders; n.Fps = st.Fps; n.KMenu = st.KMenu; n.KFps = st.KFps; n.KFx = st.KFx; return n; }
         Btn KeyBtn(int vk, string what, Action<FxState, int> set)
         {
@@ -112,7 +133,7 @@ namespace DDFixTool
                 KeyPickForm f = new KeyPickForm(what); f.ShowDialog(this); if (f.Vk == 0) return;
                 FxState n = Copy(); set(n, f.Vk);
                 if (n.KMenu == n.KFps || n.KMenu == n.KFx || n.KFps == n.KFx) { Status("Эта клавиша уже занята другим действием.", "That key is already used by another action."); return; }
-                Save(n);
+                Save(n, what + " — клавиша " + Key(f.Vk) + ".", what + " — key " + Key(f.Vk) + ".");
             });
             return b;
         }
@@ -129,21 +150,27 @@ namespace DDFixTool
                 l.Text = T("Включите «gr-draw» на странице «Патчи и фиксы» и откройте это окно снова.", "Turn on “gr-draw” on the Patches page and reopen this window."); c.Controls.Add(l); Status("", ""); return;
             }
             string[] oo = { T("Выкл", "Off"), T("Вкл", "On") };
-            Seg sh = Sg(oo, st.Shaders ? 1 : 0, null); sh.Changed += delegate { FxState n = Copy(); n.Shaders = sh.Selected == 1; Save(n); };
-            Seg fp = Sg(oo, st.Fps ? 1 : 0, null); fp.Changed += delegate { FxState n = Copy(); n.Fps = fp.Selected == 1; Save(n); };
+            Seg sh = Sg(oo, st.Shaders ? 1 : 0, null);
+            sh.Changed += delegate { FxState n = Copy(); n.Shaders = sh.Selected == 1; Save(n, n.Shaders ? "шейдеры включатся при следующем запуске игры." : "шейдеры будут выключены при запуске игры (в игре их включает " + Key(n.KFx) + ").", n.Shaders ? "the shaders turn on at the next game start." : "the shaders stay off at the game start (" + Key(n.KFx) + " turns them on in the game)."); };
+            Seg fp = Sg(oo, st.Fps ? 1 : 0, null);
+            fp.Changed += delegate { FxState n = Copy(); n.Fps = fp.Selected == 1; Save(n, n.Fps ? "счётчик FPS будет виден при следующем запуске игры." : "счётчик FPS будет скрыт при запуске игры (показать — " + Key(n.KFps) + ").", n.Fps ? "the FPS counter shows at the next game start." : "the FPS counter is hidden at the game start (" + Key(n.KFps) + " shows it)."); };
+            RowCtl rSh = Row("✦", Th.Amber, T("Шейдеры эффектов", "Effect shaders"), T("Тёплый свет от огней и магии; выкл по умолчанию", "Warm light from fires and magic; off by default"), sh);
+            RowCtl rFp = Row("⏱", Th.Amber, T("Счётчик FPS", "FPS counter"), T("Число кадров в секунду в углу экрана", "Frames per second in the corner"), fp);
+            OnOff(rSh, st.Shaders); OnOff(rFp, st.Fps);
             Btn kM = KeyBtn(st.KMenu, T("Меню шейдеров", "Shader menu"), delegate(FxState n, int v) { n.KMenu = v; });
             Btn kX = KeyBtn(st.KFx, T("Шейдеры: включить / выключить", "Shaders: on / off"), delegate(FxState n, int v) { n.KFx = v; });
             Btn kF = KeyBtn(st.KFps, T("Счётчик FPS: показать / скрыть", "FPS counter: show / hide"), delegate(FxState n, int v) { n.KFps = v; });
             Lay(c, 66,
                 new SecHead(T("При запуске игры", "When the game starts")),
-                Row("✦", Th.Amber, T("Шейдеры эффектов", "Effect shaders"), T("Экспериментально: огонь, свет, магия; выкл по умолчанию", "Experimental: fire, light, magic; off by default"), sh),
-                Row("⏱", Th.Amber, T("Счётчик FPS", "FPS counter"), T("Число кадров в секунду в углу экрана", "Frames per second in the corner"), fp),
+                rSh, rFp,
                 new SecHead(T("Клавиши в игре (нажмите кнопку и затем новую клавишу)", "In-game keys (press the button, then the new key)")),
                 Row("⌨", Th.Amber, T("Меню шейдеров", "Shader menu"), T("Настройка эффектов прямо в игре", "Tune the effects in the game"), kM),
                 Row("⌨", Th.Amber, T("Шейдеры вкл / выкл", "Shaders on / off"), T("Сравнить картинку «до» и «после»", "Compare before and after"), kX),
                 Row("⌨", Th.Amber, T("Счётчик FPS", "FPS counter"), T("Показать или скрыть счётчик", "Show or hide the counter"), kF));
-            Status("Если клавиша нужна самой игре — выберите другую. По умолчанию: F9, F10, F11.", "If the game uses a key itself, pick another. Defaults: F9, F10, F11.");
+            Status("Всё сохраняется сразу и действует со следующего запуска игры. Клавиши по умолчанию: F9, F10, F11.", "Everything is saved at once and works from the next game start. Default keys: F9, F10, F11.");
         }
+        // the status column of a row: what the game starts with, as a coloured word
+        void OnOff(RowCtl r, bool on) { r.Status = on ? T("включено", "on") : T("выключено", "off"); r.StatusColor = on ? Th.Green : Th.Faint; }
         // tab 2: the FPS mod = our "tick 80" exe patch (Core.SetFps80, src/Tick80.cs): the world still runs 40 steps a second, what is SHOWN moves 80 times a second
         void BuildFps(RPanel c)
         {
@@ -152,22 +179,23 @@ namespace DDFixTool
             sw.Changed += delegate
             {
                 bool on = sw.Selected == 1;
-                try { Game.SetFps80(on); Status(on ? "FPS-мод включён." : "FPS-мод выключен.", on ? "FPS mod is on." : "FPS mod is off."); }
-                catch (Exception ex) { Status(ex.Message, ex.Message); MessageBox.Show(this, ex.Message, T("FPS-мод", "FPS mod")); }
+                try { Game.SetFps80(on); Done(true, on ? "Сохранено: FPS-мод включён, заработает при следующем запуске игры." : "Сохранено: FPS-мод выключен, файл игры возвращён к исходному.", on ? "Saved: the FPS mod is on and works from the next game start." : "Saved: the FPS mod is off, the game file is back to the original."); }
+                catch (Exception ex) { Done(false, ex.Message, ex.Message); MessageBox.Show(this, ex.Message, T("FPS-мод", "FPS mod")); }
                 Reload();
             };
             string d = !av ? T("Недоступно для вашей версии игры", "Not available for your game version") : (s == "on" ? T("Включён: 80 кадров движения в секунду", "On: 80 frames of motion a second") : T("Выключен: 40 кадров, как в оригинале", "Off: 40 frames, as in the original"));
-            int y = Lay(c, 66, new SecHead(T("Такт 80 Гц", "80 Hz tick")), Hr(Row("⏱", av ? Th.Amber : Th.Faint, T("FPS-мод", "FPS mod"), d, sw), "fps80"));
+            RowCtl rf = Hr(Row("⏱", av ? Th.Amber : Th.Faint, T("FPS-мод", "FPS mod"), d, sw), "fps80"); if (av) OnOff(rf, s == "on");
+            int y = Lay(c, 66, new SecHead(T("Такт 80 Гц", "80 Hz tick")), rf);
             Label l = new Label(); l.AutoSize = false; l.SetBounds(14, y + 6, c.Width - 28, 150); l.ForeColor = Th.Muted; l.BackColor = Th.Surf; l.UseMnemonic = false; l.Font = Th.F("Segoe UI", 9f, FontStyle.Regular);
-            l.Text = T("Игра считает 40 шагов в секунду, поэтому ходьба на быстром мониторе выглядит рывками. FPS-мод показывает движение героя, NPC и камеры 80 раз в секунду, а ИИ, бой и скорость остаются прежними: игра не ускоряется.\n\nЭкспериментальный режим: на изометрических диагоналях возможны мелкие рывки. Включайте при закрытой игре. Выключение возвращает файл игры к исходному.\n\nЕсли нужно, программа сама подключит gr-draw: без него частота кадров упирается в 60.",
-                "The game runs 40 steps a second, so walking looks jerky on a fast monitor. The FPS mod shows the movement of the hero, NPCs and camera 80 times a second, while AI, combat and speed stay the same: the game does not speed up.\n\nExperimental: small jerks are possible on isometric diagonals. Turn it on with the game closed. Turning it off brings the game file back to the original.\n\nIf needed the program turns on gr-draw itself: without it the frame rate stops at 60.");
+            l.Text = T("FPS-мод убирает рывки при движении героя, NPC и камеры на быстрых мониторах, в том числе с VA-матрицей. Движение отображается 80 раз в секунду, а ИИ, бой и скорость остаются прежними: игра не ускоряется.\n\nВключайте при закрытой игре. Выключение возвращает файл игры к исходному.\n\nЕсли нужно, программа сама подключит gr-draw: без него частота кадров упирается в 60.",
+                "The FPS mod removes stutter when the hero, NPCs and camera move on high refresh rate monitors, including VA panels. Movement is displayed 80 times a second, while AI, combat and game speed stay the same: the game does not speed up.\n\nTurn it on with the game closed. Turning it off brings the game file back to the original.\n\nIf needed the program turns on gr-draw itself: without it the frame rate stops at 60.");
             c.Controls.Add(l);
-            Status(av ? "Применится при следующем запуске игры." : "Недоступно: нужна поддерживаемая версия div.exe.", av ? "Applies on the next game start." : "Not available: a supported div.exe is needed.");
+            Status(av ? "Сохраняется сразу при переключении и действует со следующего запуска игры." : "Недоступно: нужна поддерживаемая версия div.exe.", av ? "Saved at once when switched; works from the next game start." : "Not available: a supported div.exe is needed.");
         }
         protected override void BuildFoot()
         {
             FootBtn(T("Закрыть", "Close"), true, 110, delegate { Close(); });
-            if (tab == 0) FootBtn(T("Клавиши по умолчанию", "Default keys"), false, 190, delegate { if (!Game.FxAvail) return; FxState n = Copy(); n.KMenu = 121; n.KFps = 122; n.KFx = 120; Save(n); });
+            if (tab == 0) FootBtn(T("Клавиши по умолчанию", "Default keys"), false, 190, delegate { if (!Game.FxAvail) return; FxState n = Copy(); n.KMenu = 121; n.KFps = 122; n.KFx = 120; Save(n, "клавиши по умолчанию F9, F10, F11.", "default keys F9, F10, F11."); });
         }
     }
 }

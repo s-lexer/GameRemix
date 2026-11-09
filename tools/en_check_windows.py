@@ -5,7 +5,7 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 G = next((a for a in sys.argv[1:] if not a.startswith('--')), os.path.join(r'C:\ARM\WORK\MODDING\GAMES\DivineDivinity', 'steam_en_test'))
 sys.path.insert(0, os.path.join(ROOT, 'games', 'divine-divinity', 'tools')); sys.path.insert(0, os.path.join(ROOT, 'games', 'divine-divinity', 'analysis'))
 import textcmp, voicecmp
-E = os.path.join(ROOT, 'scratch', 'en_env'); EXE = os.path.join(ROOT, 'dist', 'managed', 'GameRemix.exe')
+E = os.path.join(ROOT, 'scratch', 'en_env'); EXE = os.path.join(ROOT, 'dist', 'build', 'GameRemix.exe')
 import importlib.util
 spec = importlib.util.spec_from_file_location('st', os.path.join(ROOT, 'tools', 'selftest.py')); st = importlib.util.module_from_spec(spec); spec.loader.exec_module(st)
 srv = st.make_srv_class(os.path.join(ROOT, 'dist'))()

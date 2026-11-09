@@ -19,6 +19,7 @@ namespace DDFixTool
     static class L
     {
         public static bool Ru = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru"; public static bool Forced;
+        public static bool Ko = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ko";   // Korean interface: the English text is looked up in src/ko.txt (key = the English string); not found = English
         static readonly Dictionary<string, string[]> S = new Dictionary<string, string[]>();
         static void A(string k, string ru, string en) { S[k] = new string[] { ru, en }; }
         static L()
@@ -93,7 +94,38 @@ namespace DDFixTool
             A("choose", "Выберите папку с игрой Divine Divinity (где лежит div.exe)", "Select the Divine Divinity folder (containing div.exe)");
             A("notFoundExe", "В выбранной папке нет div.exe.", "div.exe not found in the selected folder.");
         }
-        public static string T(string k) { string[] v; return S.TryGetValue(k, out v) ? v[Ru ? 0 : 1] : k; }
+        public static string T(string k) { string[] v; return S.TryGetValue(k, out v) ? (Ru ? v[0] : Kor(v[1])) : k; }
+        static Dictionary<string, string> koTab; static List<string> koPre;
+        public static string Kor(string en) { return Ko ? KoText(en) : en; }
+        public static string KoText(string en)
+        {
+            if (en == null || en.Length == 0) return en; if (koTab == null) KoRead(); string k; if (koTab.TryGetValue(en, out k)) return k;
+            foreach (string p in koPre) if (en.Length > p.Length && en.StartsWith(p, StringComparison.Ordinal)) return koTab[p] + en.Substring(p.Length);   // "Label: " + value
+            return en;
+        }
+        static void KoRead()
+        {
+            Dictionary<string, string> t = new Dictionary<string, string>(StringComparer.Ordinal); List<string> pre = new List<string>();
+            try
+            {
+                using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("ko_ui")) using (StreamReader r = new StreamReader(s, Encoding.UTF8))
+                {
+                    string ln; while ((ln = r.ReadLine()) != null)
+                    {
+                        int e = ln.IndexOf('\t'); if (e <= 0) continue; string en = Unesc(ln.Substring(0, e)), ko = Unesc(ln.Substring(e + 1)); if (ko.Length == 0) continue; t[en] = ko;
+                        if (en.EndsWith(": ") || en.EndsWith(" — ") || en.EndsWith("… ")) pre.Add(en);
+                    }
+                }
+            }
+            catch (Exception) { }
+            pre.Sort(delegate(string a, string b) { return b.Length.CompareTo(a.Length); }); koTab = t; koPre = pre;
+        }
+        static string Unesc(string s)
+        {
+            if (s.IndexOf('\\') < 0) return s; StringBuilder b = new StringBuilder();
+            for (int i = 0; i < s.Length; i++) { char c = s[i]; if (c == '\\' && i + 1 < s.Length) { char n = s[++i]; b.Append(n == 'n' ? '\n' : n == 't' ? '\t' : n == 'r' ? '\r' : n); } else b.Append(c); }
+            return b.ToString();
+        }
     }
 
     // ---------------------------------------------------------------- core logic (no UI)
@@ -267,6 +299,8 @@ namespace DDFixTool
 
         // ---- independent switches: voice+music (DLLs + div.exe) and dusk/dawn (one byte of div.exe)
         public bool VoiceOn { get { return ExeSupported && VoicePatched && DllsFull; } }
+        // the game has voiced dialogues at all (localizations\<lang>\voice.cmp; the Russian edition keeps them in localizations\german). The English version has none, so the voice fix has nothing to fix there.
+        public bool VoiceUseful { get { try { return HasGame && Directory.Exists(P("localizations")) && Directory.GetFiles(P("localizations"), "voice.cmp", SearchOption.AllDirectories).Length > 0; } catch { return false; } } }
         public bool DuskOn { get { return ExeSupported && DuskPatched; } }
         public void SetVoice(bool on)
         {
@@ -362,7 +396,7 @@ namespace DDFixTool
                 lt.InvokeMember("Save", System.Reflection.BindingFlags.InvokeMethod, null, lnk, null);
                 Log(L.T("applied") + lnkp);
             }
-            catch (Exception e) { Log("shortcut: " + e.Message); throw new IOException((L.Ru ? "Не удалось создать ярлык: " : "Could not create the shortcut: ") + e.Message); }
+            catch (Exception e) { Log("shortcut: " + e.Message); throw new IOException((U.R("Не удалось создать ярлык: ", "Could not create the shortcut: ")) + e.Message); }
         }
         // Play.cmd starts the game the way the enabled fixes need (single core when "smooth" is on); the Play button and the shortcut both use it.
         // Written in the console's OEM code page so cmd reads Cyrillic folders right; if the path does not fit that code page, UTF-8 without BOM + chcp 65001.
@@ -659,7 +693,7 @@ namespace DDFixTool
         public static Color Line = Color.FromArgb(74, 66, 53), Text = Color.FromArgb(240, 230, 206), Muted = Color.FromArgb(188, 178, 154), Faint = Color.FromArgb(140, 131, 112);
         public static Color Amber = Color.FromArgb(222, 168, 66), AmberDeep = Color.FromArgb(150, 108, 36), Green = Color.FromArgb(132, 170, 108), Red = Color.FromArgb(205, 92, 70);
         public static Color OnAmber = Color.FromArgb(34, 30, 24), Tint = Color.White; public static bool Light;
-        static Th() { try { if (App.Get("theme") == "light") Set(true); } catch { } }
+        static Th() { try { Set(App.Get("theme") != "dark"); } catch { Set(true); } }   // light unless the user picked dark (owner 08.11.2026)
         public static void Set(bool light)
         {
             Light = light;
@@ -919,7 +953,7 @@ namespace DDFixTool
         // Strict: a missing value, a value other than on/off, an unknown flag -> message + exit code 2 (flags) / 3 (game running) / 4 (no rights); nothing is changed then.
         static int Cli(string[] a)
         {
-            bool sync = false; string dir = null, cnc = null, voice = null, dusk = null, shortcut = null, set = null, bone = null, launcher = null, fps = null, fps80 = null, defs = null, dgv = null, font = null, log = null, preset = null, wrapper = "cnc", scale = null, monitor = null, gfxImage = null, gfxSkin = null; bool bak = false, status = false, revertAll = false; string assetsAct = null, assetsId = null, gfxAct = null, gfxArg = null;
+            bool sync = false; string dir = null, cnc = null, voice = null, dusk = null, shortcut = null, set = null, bone = null, launcher = null, fps = null, fps80 = null, korean = null, defs = null, dgv = null, font = null, log = null, preset = null, wrapper = "cnc", scale = null, monitor = null, gfxImage = null, gfxSkin = null; bool bak = false, status = false, revertAll = false; string assetsAct = null, assetsId = null, gfxAct = null, gfxArg = null;
             List<string> errs = new List<string>(), warns = new List<string>();
             for (int i = 0; i < a.Length; i++)
             {
@@ -944,16 +978,16 @@ namespace DDFixTool
                     else if (gfxAct != "list" && gfxAct != "status" && gfxAct != "revert") errs.Add("ERROR --gfx must be list, status, revert or apply slot=value,..., got: " + gfxAct);
                     continue;
                 }
-                bool known = Array.IndexOf(new string[] { "--game", "--set", "--bone", "--launcher", "--fps", "--fps80", "--defaults", "--dgv", "--font", "--log", "--cnc", "--voice", "--dusk", "--shortcut", "--lang", "--preset", "--wrapper", "--scale", "--monitor", "--gfx-image", "--gfx-skin" }, f) >= 0;
+                bool known = Array.IndexOf(new string[] { "--game", "--set", "--bone", "--launcher", "--fps", "--fps80", "--korean", "--defaults", "--dgv", "--font", "--log", "--cnc", "--voice", "--dusk", "--shortcut", "--lang", "--preset", "--wrapper", "--scale", "--monitor", "--gfx-image", "--gfx-skin" }, f) >= 0;
                 if (!known) { warns.Add("WARN unknown argument ignored: " + f); continue; }
                 if (i + 1 >= a.Length || a[i + 1].StartsWith("--")) { errs.Add("ERROR missing value for " + f); continue; }
                 string v = a[++i];
-                if (f == "--game") dir = v; else if (f == "--set") set = v; else if (f == "--bone") bone = v; else if (f == "--launcher") launcher = v; else if (f == "--fps") fps = v; else if (f == "--fps80") fps80 = v; else if (f == "--defaults") defs = v; else if (f == "--dgv") dgv = v; else if (f == "--font") font = v;
+                if (f == "--game") dir = v; else if (f == "--set") set = v; else if (f == "--bone") bone = v; else if (f == "--launcher") launcher = v; else if (f == "--fps") fps = v; else if (f == "--fps80") fps80 = v; else if (f == "--korean") korean = v; else if (f == "--defaults") defs = v; else if (f == "--dgv") dgv = v; else if (f == "--font") font = v;
                 else if (f == "--log") log = v; else if (f == "--cnc") cnc = v; else if (f == "--voice") voice = v; else if (f == "--dusk") dusk = v; else if (f == "--shortcut") shortcut = v; else if (f == "--preset") preset = v; else if (f == "--wrapper") wrapper = v; else if (f == "--scale") scale = v; else if (f == "--gfx-image") gfxImage = v; else if (f == "--gfx-skin") gfxSkin = v; else if (f == "--monitor") monitor = v;
-                else if (f == "--lang") { if (v == "ru" || v == "en") L.Ru = v == "ru"; else errs.Add("ERROR --lang must be ru or en, got: " + v); }
+                else if (f == "--lang") { if (v == "ru" || v == "en" || v == "ko") { L.Ru = v == "ru"; L.Ko = v == "ko"; } else errs.Add("ERROR --lang must be ru, en or ko, got: " + v); }
             }
             Action<string, string> onoff = delegate(string n, string v) { if (v != null && v != "on" && v != "off") errs.Add("ERROR " + n + " must be on or off, got: " + v); };
-            onoff("--voice", voice); onoff("--dusk", dusk); onoff("--dgv", dgv); onoff("--cnc", cnc); onoff("--launcher", launcher); onoff("--bone", bone); onoff("--shortcut", shortcut); onoff("--fps80", fps80);
+            onoff("--voice", voice); onoff("--dusk", dusk); onoff("--dgv", dgv); onoff("--cnc", cnc); onoff("--launcher", launcher); onoff("--bone", bone); onoff("--shortcut", shortcut); onoff("--fps80", fps80); onoff("--korean", korean);
             int fpsMode = -1, fpsN = 0; if (fps != null) { string fl = fps.ToLowerInvariant(); if (fl == "orig" || fl == "off") fpsMode = Core.FpsOrig; else if (fl == "monitor") fpsMode = Core.FpsMonitor; else if (fl == "unlimited") fpsMode = Core.FpsUnlimited; else if (int.TryParse(fl, out fpsN) && fpsN >= 20 && fpsN <= 1000) fpsMode = Core.FpsCustom; else errs.Add("ERROR --fps must be orig, monitor, unlimited or a number 20..1000, got: " + fps); }   // frame mode
             if (set != null && set != "none" && set != "dusk" && set != "full") errs.Add("ERROR --set must be none, dusk or full, got: " + set);
             int pk = -1; if (preset != null && (!int.TryParse(preset, out pk) || pk < 0 || pk > 2)) errs.Add("ERROR --preset must be 0 (HD), 1 (2K) or 2 (4K), got: " + preset);
@@ -974,7 +1008,7 @@ namespace DDFixTool
             {
                 Core c = new Core(dir); c.Log = delegate(string s) { sb.AppendLine(s); }; c.Warn = delegate(string s) { sb.AppendLine("WARN " + s); };
                 if (!c.HasGame) throw new Exception(L.T("stNoGame"));
-                bool change = (assetsAct == "apply" || assetsAct == "revert") || gfxAct == "apply" || gfxAct == "revert" || (gfxImage != null && gfxImage != "none") || (gfxSkin != null && gfxSkin != "none") || set != null || fps != null || fps80 != null || defs != null || voice != null || dusk != null || shortcut != null || bone != null || launcher != null || dgv != null || cnc != null || font != null || bak || preset != null || revertAll || scale != null || sync;
+                bool change = korean != null || (assetsAct == "apply" || assetsAct == "revert") || gfxAct == "apply" || gfxAct == "revert" || (gfxImage != null && gfxImage != "none") || (gfxSkin != null && gfxSkin != "none") || set != null || fps != null || fps80 != null || defs != null || voice != null || dusk != null || shortcut != null || bone != null || launcher != null || dgv != null || cnc != null || font != null || bak || preset != null || revertAll || scale != null || sync;
                 if (change && Core.GameRunning()) { sb.AppendLine("ERROR " + L.T("running")); rc = 3; }
                 else if (change && !Core.IsAdmin() && !c.Writable()) { sb.AppendLine("ERROR " + L.T("needAdmin").Split('\r')[0]); rc = 4; }
                 else
@@ -992,6 +1026,7 @@ namespace DDFixTool
                     if (bone != null) c.SetBone(bone == "on");
                     if (launcher != null) c.SetLauncher(launcher == "on");
                     if (fpsMode >= 0) c.SetFpsMode(fpsMode, fpsN);
+                    if (korean != null) c.SetKorean(korean == "on");   // the Korean language pack for the English game (src/Korean.cs)
                     if (fps80 != null) c.SetFps80(fps80 == "on");   // tick 80 (src/Tick80.cs)
                     if (defs != null) { c.StartupSync(); c.ApplyPatchDefaults(defs == "force"); }   // the start-up defaults of Patches & fixes (voice, dusk, smooth play, frame mode): once per game; force = like the wizard
                     if (dgv != null) c.SetDgv(dgv == "on", true);
@@ -1016,6 +1051,7 @@ namespace DDFixTool
                 }
                 sb.AppendLine("STATUS exeSupported=" + c.ExeSupported + " mode=" + c.Mode + " voice=" + c.VoiceOn + " dusk=" + c.DuskOn + " shortcut=" + c.ShortcutExists + " voicePatched=" + c.VoicePatched + " duskPatched=" + c.DuskPatched + " dllsFull=" + c.DllsFull + " bone=" + c.Bone + " fps=" + Core.FpsStatus(c) + " optouts=" + string.Join("+", new string[] { c.FixOptedOut("voice") ? "voice" : "", c.FixOptedOut("dusk") ? "dusk" : "", c.FixOptedOut("smooth") ? "smooth" : "", c.FixOptedOut("fps") ? "fps" : "" }) + " launcher=" + c.Launcher + " dgv=" + c.Dgv + " cnc=" + c.Cnc + " fonts=" + c.FontState(0) + "," + c.FontState(1) + "," + c.FontState(2) + " fontStep=" + c.FontStep(0) + "," + c.FontStep(1) + "," + c.FontStep(2) + " fontCustom=" + c.FontIsCustom(0) + "," + c.FontIsCustom(1) + "," + c.FontIsCustom(2) + " voiceMixed=" + c.VoiceMixed);
                 sb.AppendLine("FPS80 state=" + c.Fps80State() + " avail=" + c.Fps80Avail);
+                sb.AppendLine("KOREAN state=" + c.KoreanState() + " why=" + (c.KoreanWhyNot() ?? "ok"));
             }
             catch (Exception ex) { sb.AppendLine("ERROR " + ex.Message); rc = 1; }
             if (log != null) File.WriteAllText(log, sb.ToString(), Encoding.UTF8);

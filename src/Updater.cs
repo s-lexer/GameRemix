@@ -3,7 +3,8 @@
 //   changelog.<ru|en>.txt next to latest.txt: same format as src/changelog.*.txt.
 // Install = download to <exe>.new (https + trusted host, size limit, streaming SHA-256) -> compare with latest.txt -> Authenticode (WinVerifyTrust) + same publisher as the
 // running program -> rename the running exe to <exe>.old, put the new one in its place -> start it, quit. Any failure puts <exe>.old back. The new instance deletes .old.
-// The exe that is replaced is the file the USER started (OGF_STUB, the single-file launcher), else the running exe.
+// The exe that is replaced is the file the USER started (OGF_STUB, the single-file launcher of copies up to 1.0.35), else the running exe.
+// From 1.0.36 the program is one plain exe for .NET 4 (no launcher, no .config): an old launcher file is simply replaced by it.
 // Tests: OGF_UPDATE_URL points latest.txt at a local server (plain http to 127.0.0.1 is accepted ONLY then). OGF_TEST_ALLOW_UNSIGNED=1 skips the signature step, and only when
 // (a) OGF_UPDATE_URL is a loopback address AND (b) the running program carries NO Authenticode signature at all. A signed (release) build ignores it completely.
 using System;
@@ -108,6 +109,12 @@ namespace DDFixTool
                 {
                     bool left = false;
                     foreach (string f in new string[] { t + ".old", t + ".new" }) { try { if (File.Exists(f)) { File.Delete(f); } } catch { left = true; } }
+                    try   // what the old launcher unpacked into %LOCALAPPDATA%\GameRemix\app (not needed once we run as a plain exe)
+                    {
+                        string app = Path.Combine(App.LocalDir, "app");
+                        if (Directory.Exists(app) && !Path.GetFullPath(Application.ExecutablePath).StartsWith(Path.GetFullPath(app) + "\\", StringComparison.OrdinalIgnoreCase)) Directory.Delete(app, true);
+                    }
+                    catch { }
                     if (!left) return; Thread.Sleep(1000);
                 }
             }); th.IsBackground = true; th.Start();

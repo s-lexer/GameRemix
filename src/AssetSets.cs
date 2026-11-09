@@ -78,8 +78,8 @@ namespace DDFixTool
         public int Layer { get { return LayerSet >= 0 ? LayerSet : DefaultLayer(Kind); } }
         public static int DefaultLayer(string kind) { return kind == "ui-skin" ? 1 : 0; }
         public List<AssetFile> Files = new List<AssetFile>();
-        public string Name { get { string n = L.Ru ? NameRu : NameEn; return n.Length > 0 ? n : (NameEn.Length > 0 ? NameEn : (NameRu.Length > 0 ? NameRu : Id)); } }
-        public string Desc { get { string n = L.Ru ? DescRu : DescEn; return n.Length > 0 ? n : (DescEn.Length > 0 ? DescEn : DescRu); } }
+        public string Name { get { string n = L.Ru ? NameRu : L.Kor(NameEn); return n.Length > 0 ? n : (NameEn.Length > 0 ? NameEn : (NameRu.Length > 0 ? NameRu : Id)); } }
+        public string Desc { get { string n = L.Ru ? DescRu : L.Kor(DescEn); return n.Length > 0 ? n : (DescEn.Length > 0 ? DescEn : DescRu); } }
         public long Download { get { long s = 0; foreach (AssetFile f in Files) s += f.CSize; return s; } }
         // flat file name on the alternative host (release assets have no folders): "2.1/static/x.gz" -> "2.1__static__x.gz"
         public string AltUrl(AssetFile f) { if (Alt.Length == 0) return null; string rel = f.Url.Replace('\\', '/'); int q = rel.IndexOf('?'); if (q >= 0) rel = rel.Substring(0, q); return Alt + rel.Replace("/", "__"); }
@@ -135,7 +135,7 @@ namespace DDFixTool
     {
         public string Id = "", Version = "", Kind = "graphics", State = "applied", NameRu = "", NameEn = ""; public int Layer = -1;   // -1 = old record: by kind
         public int EffLayer { get { return Layer >= 0 ? Layer : AssetManifest.DefaultLayer(Kind); } } public List<AssetRecFile> Files = new List<AssetRecFile>();
-        public string Name { get { string n = L.Ru ? NameRu : NameEn; return n.Length > 0 ? n : (NameEn.Length > 0 ? NameEn : (NameRu.Length > 0 ? NameRu : Id)); } }
+        public string Name { get { string n = L.Ru ? NameRu : L.Kor(NameEn); return n.Length > 0 ? n : (NameEn.Length > 0 ? NameEn : (NameRu.Length > 0 ? NameRu : Id)); } }
     }
     class AssetQuick { public AssetRec Rec; public bool Intact; }   // Intact: every file still has the size and time we recorded (no hashing)
     class AssetState
@@ -348,9 +348,10 @@ namespace DDFixTool
             catch (Exception) { return null; }
         }
         // the sets this game offers; offline (or a broken catalog) -> the manifests seen before. note: why the list may be incomplete ("" = fine)
+        public bool Offline;   // the last LoadCatalog could not reach the server (the list came from the cache)
         public List<AssetManifest> LoadCatalog(out string note)
         {
-            List<AssetManifest> l = new List<AssetManifest>(); note = "";
+            List<AssetManifest> l = new List<AssetManifest>(); note = ""; Offline = false;
             try
             {
                 string url = BaseUrl(GameId) + "catalog.txt"; CheckHost(url); string t = Net.GetString(url, 65536, 30000); bool head = false;
@@ -365,7 +366,7 @@ namespace DDFixTool
             }
             catch (Exception ex)
             {
-                Log("assets: catalog: " + ex.Message); l.Clear();
+                Log("assets: catalog: " + ex.Message); l.Clear(); Offline = true;
                 note = U.R("Нет связи с сервером наборов — показаны ранее полученные. ", "The sets server is not reachable - showing what was fetched before. ") + ex.Message;
                 if (Directory.Exists(ManDir)) foreach (string f in Directory.GetFiles(ManDir, "*.txt")) { AssetManifest m = CachedManifest(Path.GetFileNameWithoutExtension(f)); if (m != null) l.Add(m); }
                 return l;

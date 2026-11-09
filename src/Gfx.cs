@@ -13,22 +13,22 @@ namespace DDFixTool
     {
         public string Slot = "", Value = "", SetId = "", NameRu = "", NameEn = "", Prev = "", Patch = "";   // Patch: a byte patch (gfx.txt patch=) that goes with this option; SetId ending in "@ui" = one set per interface skin ("windows-@ui" -> windows-c)
          public bool Optional, Hidden; public int ApproxMb;   // ApproxMb: the download size shown BEFORE the catalog is known (quick setup)   // Optional: shown only when the server offers the set
-        public string Name { get { return L.Ru ? NameRu : NameEn; } }
+        public string Name { get { return L.Ru ? NameRu : L.Kor(NameEn); } }
         public bool PerSkin { get { return SetId.EndsWith("@ui"); } }
         public string SetPrefix { get { return PerSkin ? SetId.Substring(0, SetId.Length - 3) : SetId; } }   // "windows-"
     }
     class GfxSlot
     {
         public string Id = "", Kind = "", TitleRu = "", TitleEn = "", DescRu = "", DescEn = ""; public List<GfxOpt> Opts = new List<GfxOpt>();
-        public string Title { get { return L.Ru ? TitleRu : TitleEn; } }
-        public string Desc { get { return L.Ru ? DescRu : DescEn; } }
+        public string Title { get { return L.Ru ? TitleRu : L.Kor(TitleEn); } }
+        public string Desc { get { return L.Ru ? DescRu : L.Kor(DescEn); } }
         public GfxOpt Find(string v) { foreach (GfxOpt o in Opts) if (o.Value == v) return o; return null; }
     }
     class GfxFix
     {
         public string Id = "", Kind = "", Arg = "", NameRu = "", NameEn = "", DescRu = "", DescEn = ""; public bool Default, Switch;   // Switch: default-on fix that still has a switch on the Graphics page (item glow). Default: part of the base set, applied without a switch (see Core.ApplyDefaultFixes)
-        public string Name { get { return L.Ru ? NameRu : NameEn; } }
-        public string Desc { get { return L.Ru ? DescRu : DescEn; } }
+        public string Name { get { return L.Ru ? NameRu : L.Kor(NameEn); } }
+        public string Desc { get { return L.Ru ? DescRu : L.Kor(DescEn); } }
     }
 
     class GfxDef

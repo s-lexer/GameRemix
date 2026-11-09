@@ -153,7 +153,7 @@ namespace DDFixTool
                 }
                 catch (Exception ex) { fail.Add(t + ": " + ex.Message); }
             }
-            if (fail.Count > 0) throw new IOException((L.Ru ? "Не все шрифты вернулись, резервные копии оставлены в " : "Not every font was restored, the backups are kept in ") + FBak + ":\n" + string.Join("\n", fail.ToArray()));
+            if (fail.Count > 0) throw new IOException((U.R("Не все шрифты вернулись, резервные копии оставлены в ", "Not every font was restored, the backups are kept in ")) + FBak + ":\n" + string.Join("\n", fail.ToArray()));
             Directory.Delete(FBak, true); Log(L.T("reverted") + "fonts");
         }
 
@@ -163,7 +163,7 @@ namespace DDFixTool
             string dst = Path.Combine(P("savegames_backup"), DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")); int n = 0;
             foreach (string sd in new string[] { "savegames", "savegames2" })
                 if (Directory.Exists(P(sd))) n += CopyDir(P(sd), Path.Combine(dst, sd));
-            if (n == 0) throw new InvalidOperationException(L.Ru ? "Сохранений не найдено." : "No saves found.");
+            if (n == 0) throw new InvalidOperationException(U.R("Сохранений не найдено.", "No saves found."));
             Log(L.T("applied") + dst + " (" + n + ")"); return dst;
         }
         static int CopyDir(string src, string dst)

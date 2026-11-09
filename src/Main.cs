@@ -15,7 +15,7 @@ namespace DDFixTool
 {
     static class App
     {
-        public const string Name = "GameRemix - By Lex", Version = "1.0.33";
+        public const string Name = "GameRemix - By Lex", Version = "1.0.38";
         public const string UpdateUrl = "https://gameremix.pro/dl/latest.txt";   // one line: "<version>|<download url>|<sha256>"
         public const string Mail = "5@1221.by";
         public static Image Icon(string id) { using (MemoryStream ms = new MemoryStream(Core.ResBytes("icon_" + id))) return new Bitmap(Image.FromStream(ms)); }   // game icons ship inside the program, so they show even when the game is not installed
@@ -235,8 +235,9 @@ namespace DDFixTool
         Image gameIcon = App.Icon("dd"); Field reqBox; string newVer, newUrl, updText = ""; UpdateInfo upd; bool bootCheck = true; Btn bBadge; System.Windows.Forms.Timer updTimer; bool updBusy;
         Btn bPlay, bLnk, bQuick; Label lPath, lLnk; Btn bRevert;
         RowCtl rVer, rVoice, rDusk, rCnc, rDgv, rGfx, rFonts, rAssets, rSmooth, rBone, rSaves;
-        Seg sVoice, sDusk, sDgv, sCnc, sSmooth, sBone; Btn bFonts;
+        Seg sVoice, sDusk, sDgv, sCnc, sSmooth, sBone, sKo; RowCtl rKo; Btn bFonts;
 
+        public string KoRowProbe() { return "present=" + (rKo != null && rKo.Parent != null) + " enabled=" + (rKo != null && rKo.Enabled) + " voice=" + (rVoice != null && rVoice.Parent != null); }
         public MainForm(string initial)
         {
             Text = App.Name; BackColor = Th.Bg; ForeColor = Th.Text; Font = Th.Body; StartPosition = FormStartPosition.CenterScreen; DoubleBuffered = true;
@@ -244,7 +245,7 @@ namespace DDFixTool
             try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } catch { }
             core = NewCore(""); Deactivate += delegate { tip.Hide(); }; FormClosing += delegate { tip.Close(); };
             MouseDown += delegate { HidePicker(); };
-            string lg = App.Get("lang"); if (lg != null && !L.Forced) L.Ru = lg == "ru";
+            string lg = App.Get("lang"); if (lg != null && !L.Forced) { L.Ru = lg == "ru"; L.Ko = lg == "ko"; }
             string last = initial ?? LoadLast();
             if (last != null && last.Length > 0 && File.Exists(Path.Combine(Core.NormPath(last), "div.exe"))) SetPath(last, false);
             else if (last != null && last.Length > 0) { pathUnavailable = true; unavailPath = last; core = NewCore(last); Log("saved game folder is not available: " + last); }   // unplugged drive / network: keep the saved path, do NOT pick another install in its place
@@ -303,11 +304,11 @@ namespace DDFixTool
             bNew.Click += delegate { Updater.MarkSeen(); bNew.Badge = 0; bNew.Invalidate(); tip.Hide(); Dlg(delegate { return new ChangelogForm(); }); };
             bUpd.MouseEnter += delegate { string st = upd != null ? U.R("Доступна новая версия ", "A new version is available: ") + newVer : (updText.Length > 0 ? updText : U.R("Нажмите, чтобы проверить", "Click to check")); tip.ShowFor(this, bUpd, new Rectangle(0, 0, bUpd.Width, bUpd.Height), U.R("Обновление", "Update") + " · v" + App.Version, st); }; bUpd.MouseLeave += delegate { tip.Hide(); };
             // two big switches in place of the old version line: theme (moon = dark, sun = light) and language
-            segTheme = new Seg(); segTheme.Under = Th.Surf; segTheme.Items = new string[] { "\u263E", "\u2600" }; segTheme.SetBounds(10, 176, 90, 34); segTheme.Selected = Th.Light ? 1 : 0;
+            segTheme = new Seg(); segTheme.Under = Th.Surf; segTheme.Items = new string[] { "\u263E", "\u2600" }; segTheme.SetBounds(10, 176, 60, 34); segTheme.Selected = Th.Light ? 1 : 0;
             segTheme.MouseEnter += delegate { tip.ShowFor(this, segTheme, new Rectangle(0, 0, segTheme.Width, segTheme.Height), U.R("Тема оформления", "Colour theme"), U.R("Слева тёмная, справа светлая", "Dark on the left, light on the right")); }; segTheme.MouseLeave += delegate { tip.Hide(); };
             segTheme.Changed += delegate { bool light = segTheme.Selected == 1; App.Set("theme", light ? "light" : "dark"); Th.Set(light); BeginInvoke((MethodInvoker)delegate { BuildAll(); }); };
-            segLang = new Seg(); segLang.Under = Th.Surf; segLang.SetBounds(foot.Width - 10 - 90, 176, 90, 34); segLang.Selected = L.Ru ? 0 : 1;
-            segLang.Changed += delegate { L.Ru = segLang.Selected == 0; App.Set("lang", L.Ru ? "ru" : "en"); BeginInvoke((MethodInvoker)delegate { BuildAll(); }); };
+            segLang = new Seg(); segLang.Under = Th.Surf; segLang.Items = new string[] { "RU", "EN", "KO" }; segLang.SetBounds(foot.Width - 10 - 120, 176, 120, 34); segLang.Selected = L.Ko ? 2 : (L.Ru ? 0 : 1);
+            segLang.Changed += delegate { L.Ru = segLang.Selected == 0; L.Ko = segLang.Selected == 2; App.Set("lang", L.Ko ? "ko" : (U.R("ru", "en"))); BeginInvoke((MethodInvoker)delegate { BuildAll(); }); };
             foot.Controls.AddRange(new Control[] { bSup, bAbout, bFb, bUpd, bNew, segTheme, segLang });
             bBadge = new Btn(); bBadge.Accent = true; bBadge.Pt = 9.5f; bBadge.SetBounds(side.X, foot.Top - 50, SideW, 42); bBadge.Visible = false; bBadge.Click += delegate { OpenUpdate(); };   // "version X is available" above the footer
             pop = null;
@@ -372,11 +373,13 @@ namespace DDFixTool
             lPath.SetBounds(14, 58, c.Width - 28, 18);   // its own line BELOW the button row (the buttons occupy y 14..52 over most of the width)
             sVoice = OnOff(delegate(bool on) { Guard(delegate { core.SetVoice(on); core.FixOptOut("voice", !on); }); });
             sDusk = OnOff(delegate(bool on) { Guard(delegate { core.SetDusk(on); core.FixOptOut("dusk", !on); }); });
+            sKo = OnOff(delegate(bool on) { Guard(delegate { core.SetKorean(on); }); });
             sDgv = OnOff(delegate(bool on) { Guard(delegate { core.SetDgv(on, true); }); });
             sCnc = OnOff(delegate(bool on) { Guard(delegate { core.SetCnc(on); }); });
             sSmooth = OnOff(delegate(bool on) { Guard(delegate { core.SetLauncher(on); core.FixOptOut("smooth", !on); }); });   // frame mode is FROZEN (07.11.2026, Fps.cs): "Smooth play" is the switch it was before
             bFonts = Act(U.R("Выбрать", "Choose"), delegate { Dlg(delegate { return new FontForm(core); }); RefreshState(); });
             rVoice = Row("♪", Amb, U.R("Озвучка и музыка", "Voice & music"), U.R("Голос и музыка не пропадают после диалога", "Voice and music no longer drop after a dialogue"), sVoice);
+            rKo = Row("한", Amb, U.R("Корейский язык", "Korean language"), U.R("Тексты и диалоги на корейском, шрифт хангыль", "Korean texts and dialogues, Hangul font"), sKo);
             rDusk = Row("☾", Amb, U.R("Закат и рассвет", "Dusk & dawn"), U.R("Плавная смена дня и ночи без скачков", "Smooth day and night, no sudden jumps"), sDusk);
             rDgv = Row("◈", Amb, "dgVoodoo", U.R("Другая обёртка: ускорение и MSAA", "Another wrapper: acceleration and MSAA"), sDgv);
             rCnc = Row("◇", Amb, "gr-draw  ★", U.R("Рекомендуется: лучшая картинка, без рамки", "Recommended: better picture, borderless"), sCnc);
@@ -392,8 +395,14 @@ namespace DDFixTool
             rSmooth = Row("\u21AF", Amb, U.R("Плавная работа", "Smooth play"), U.R("Один поток и флаги совместимости, без лагов", "Single core and compatibility flags, no stutter"), sSmooth);
             Btn bVer = Act(U.R("Подробнее", "Details"), delegate { Dlg(delegate { return new VersionForm(core); }); });
             rVer = Row("⚑", Amb, U.R("Версия игры", "Game version"), "", bVer);
-            cntFix = new RowCtl[] { rVoice, rDusk, rDgv, rCnc, rFonts, rSmooth }.Length;   // the fixes of this page (the version row and the quality window are not fixes)
-            Lay(c, 84, rVer, new SecHead(U.R("Звук и производительность", "Sound and performance")), rVoice, rSmooth, new SecHead(U.R("Графика", "Graphics")), rDusk, rCnc, rDgv, rGfx, rFonts);   // 6 rows + 2 heads must fit the 610 px card
+            bool voiceRow = !core.HasGame || core.VoiceUseful || core.VoicePatched || core.OurDllAny;   // a game without dialogue voices (the English version) has nothing to fix here: the row is hidden (owner 08.11.2026)
+            cntFix = new RowCtl[] { rVoice, rDusk, rDgv, rCnc, rFonts, rSmooth }.Length - (voiceRow ? 0 : 1);   // the fixes of this page (the version row and the quality window are not fixes)
+            // the Korean row exists ONLY in the Korean interface (owner 09.11.2026): the English game - a working switch, the Russian one - inactive; independent of the voice row
+            Control[] ko = L.Ko ? new Control[] { rKo } : new Control[0];
+            List<Control> li = new List<Control>(); li.Add(rVer);
+            if (voiceRow) { li.Add(new SecHead(U.R("Звук и производительность", "Sound and performance"))); li.Add(rVoice); } else li.Add(new SecHead(U.R("Производительность", "Performance")));
+            li.AddRange(ko); li.Add(rSmooth); li.Add(new SecHead(U.R("Графика", "Graphics"))); li.AddRange(new Control[] { rDusk, rCnc, rDgv, rGfx, rFonts });
+            Lay(c, 84, li.ToArray());
             RPanel st = new RPanel(); st.SetBounds(0, MainH - 56, MainW, 56); p.Controls.Add(st);
             lLnk = new Label(); lLnk.AutoSize = false; lLnk.SetBounds(14, 8, st.Width - 14 - 150, 40); lLnk.Font = Th.F("Segoe UI", 8.5f, FontStyle.Regular); lLnk.ForeColor = Th.Muted; lLnk.BackColor = Th.Surf; lLnk.TextAlign = ContentAlignment.MiddleLeft;
             bRevert = new Btn(); bRevert.Under = Th.Surf; bRevert.Pt = 8.5f; bRevert.Text = U.R("Откатить всё", "Revert all"); bRevert.SetBounds(st.Width - 14 - 124, 12, 124, 32); bRevert.Click += delegate { RevertAll(); };
@@ -414,7 +423,7 @@ namespace DDFixTool
                 Art a = a0; Btn rd = Act(U.R("Читать", "Read"), delegate { Dlg(delegate { return new ArticleForm(a); }); });
                 items.Add(Row(a.Glyph, Amb, a.Title, a.Desc, rd));
             }
-            string wiki = L.Ru ? "https://divinity.fandom.com/ru/wiki/Divinity_%D0%B2%D0%B8%D0%BA%D0%B8" : "https://divinity.fandom.com/wiki/Divinity_Wiki";
+            string wiki = U.R("https://divinity.fandom.com/ru/wiki/Divinity_%D0%B2%D0%B8%D0%BA%D0%B8", "https://divinity.fandom.com/wiki/Divinity_Wiki");
             items.Add(Row("\u2316", Amb, U.R("Divinity вики", "Divinity Wiki"), U.R("Энциклопедия серии: квесты, предметы, карты", "Series encyclopedia: quests, items, maps"), Act(U.R("Открыть", "Open"), delegate { U.Open(wiki); })));
             cntSec = 1 + Art.DivineDivinity().Length;   // Lar's Bone + the articles (the wiki link is not a secret)
             Lay(c, 66, items.ToArray());
@@ -504,6 +513,7 @@ namespace DDFixTool
             bool has = core.HasGame, ok = has && core.ExeSupported;
             SetRow(rVoice, sVoice, has, ok && core.VoiceOn); if (has && core.VoiceMixed) { rVoice.Status = U.R("частично", "partial"); rVoice.StatusColor = Th.Amber; rVoice.Desc = U.R("Файлы озвучки в смешанном состоянии: включите и выключите заново", "Voice files are in a mixed state: switch it on and off again"); } else rVoice.Desc = U.R("Голос и музыка не пропадают после диалога", "Voice and music no longer drop after a dialogue");
             if (has && !ok && !core.VoiceMixed) { rVoice.Enabled = sVoice.Enabled = false; rVoice.Status = U.R("недоступно", "unavailable"); } else if (has && !ok) { rVoice.Enabled = sVoice.Enabled = true; }   // an unsupported exe: only switching OFF (taking our DLLs out) is possible
+            { string ks = has ? core.KoreanState() : "n/a", kw = has ? core.KoreanWhyNot() : null; bool kav = has && ok && (kw == null); SetRow(rKo, sKo, kav || ks == "on" || ks == "mixed", ks == "on"); if (ks == "mixed") { rKo.Status = U.R("частично", "partial"); rKo.StatusColor = Th.Amber; } else if (!kav && ks != "on") rKo.Status = U.R("недоступно", "unavailable"); bool ruKo = has && core.GameRussian && ks == "off"; if (ruKo) rKo.Desc = U.R("Только для английской версии игры", "Only for the English version of the game"); else rKo.Desc = (kw != null && ks == "off") ? U.R("Нужны оригинальные файлы английской версии", "Needs the original files of the English version") : U.R("Тексты и диалоги на корейском, шрифт хангыль", "Korean texts and dialogues, Hangul font"); rKo.Invalidate(); }
             rVoice.Invalidate(); SetRow(rDusk, sDusk, ok, ok && core.DuskOn); SetRow(rDgv, sDgv, has, has && core.Dgv); SetRow(rCnc, sCnc, has, has && core.Cnc); SetRow(rSmooth, sSmooth, has, has && core.Launcher); SetRow(rBone, sBone, has, has && core.Bone);
             rGfx.Enabled = rGfx.Ctl.Enabled = has && (core.Dgv || core.Cnc); rGfx.Status = rGfx.Enabled ? (core.Cnc ? "gr-draw" : "dgVoodoo") : U.R("нужна обёртка", "needs a wrapper"); rGfx.Invalidate();
             int fs = has ? Math.Max(Math.Max(core.FontState(0), core.FontState(1)), core.FontState(2)) : -1; int fa = has ? Math.Min(Math.Min(core.FontState(0), core.FontState(1)), core.FontState(2)) : -1;
@@ -518,12 +528,13 @@ namespace DDFixTool
             rVer.Enabled = rVer.Ctl.Enabled = has;
             rVer.Desc = !has ? "" : (ok ? U.R("Найден div.exe " + core.ExeFileVersion + " — все фиксы подходят", "Found div.exe " + core.ExeFileVersion + " — every fix fits") : U.R("div.exe " + core.ExeVersionText + " — фиксы рассчитаны на 1.0.0.62", "div.exe " + core.ExeVersionText + " — fixes are made for 1.0.0.62"));
             rVer.Status = !has ? "" : (ok ? U.R("подходит", "fits") : U.R("не подходит", "does not fit")); rVer.StatusColor = ok ? Th.Green : Th.Red; rVer.Invalidate();
-            bPlay.Enabled = has; bLnk.Enabled = has; bQuick.Enabled = has; bRevert.Enabled = has;
+            PlayState(); bLnk.Enabled = has; bQuick.Enabled = has; bRevert.Enabled = has;
             for (int i = 0; i < toolRows.Count; i++) { bool en = toolEn[i](); toolRows[i].Enabled = en; toolRows[i].Ctl.Enabled = en; toolRows[i].Invalidate(); }
             rSaves.Enabled = rSaves.Ctl.Enabled = has && Directory.Exists(core.P("savegames"));
             string sub = pathUnavailable && !has ? U.R("Папка недоступна: " + unavailPath + " — подключите диск или нажмите и выберите другую", "Folder not available: " + unavailPath + " — plug the drive in or click to pick another")
-                : (!has ? U.R("Игра есть в базе, на этом ПК не найдена — нажмите и укажите папку", "The game is in the base but not found on this PC — click and pick its folder") : (!ok ? U.R("версия не поддерживается (нужна 1.0.0.62)", "unsupported version (1.0.0.62 needed)") : ""));
-            lPath.Text = sub; lPath.ForeColor = has && ok ? Th.Muted : (has ? Th.Red : Th.Amber);
+                : (!has ? U.R("Игра есть в базе, на этом ПК не найдена — нажмите и укажите папку", "The game is in the base but not found on this PC — click and pick its folder") : (!ok ? U.R("версия не поддерживается (нужна 1.0.0.62)", "unsupported version (1.0.0.62 needed)")
+                : (setsOffline ? U.R("Сервер наборов недоступен — обновления не проверены. Играть можно.", "The sets server is not available — updates were not checked. You can play.") : "")));
+            lPath.Text = sub; lPath.ForeColor = has && ok ? (setsOffline ? Th.Amber : Th.Muted) : (has ? Th.Red : Th.Amber);
             lLnk.Text = has ? (core.ShortcutExists ? U.R("Ярлык «с фиксами» есть на рабочем столе. «Играть» и ярлык запускают игру со всеми включёнными фиксами.", "The \"with fixes\" desktop shortcut exists. Play and the shortcut start the game with every enabled fix.") : U.R("Ярлыка «с фиксами» ещё нет. «Играть» запускает игру со всеми включёнными фиксами.", "No \"with fixes\" shortcut yet. Play starts the game with every enabled fix.")) : "";
             lLnk.Invalidate();
             pick.Icon = gameIcon; pick.Mono = game.Mono; pick.GameName = game.Name; pick.Small = U.R("Выбрана игра:", "Selected game:"); pick.Invalidate();
@@ -716,7 +727,7 @@ namespace DDFixTool
             string t = reqBox.Box.Text.Trim().Replace("|", "/").Replace("\r", " ").Replace("\n", " "); if (t.Length == 0) { reqBox.Box.Focus(); return; }
             if (t.Length > 500) t = t.Substring(0, 500);
             if (sendBusy) return; sendBusy = true; if (bSend != null) { bSend.Enabled = false; bSend.Text = "\u2026"; }
-            string lang = L.Ru ? "ru" : "en", ver = App.Version;
+            string lang = U.R("ru", "en"), ver = App.Version;
             Thread th = new Thread(delegate()
             {
                 string err; try { err = FeedbackForm.Post("[game request] " + t, "", ver, lang, null); } catch (Exception ex) { err = ex.Message; }
@@ -858,9 +869,9 @@ namespace DDFixTool
         static int TextFitAll(string outp, string game)
         {
             TextFit.Probe = true; StringBuilder err = new StringBuilder(); string[] pages = { "fix", "gfx", "gfxstep2", "sec", "tools", "req", "picker" };
-            foreach (bool ru in new bool[] { true, false })
+            foreach (int mode in new int[] { 0, 1, 2 })   // RU, EN, KO
             {
-                L.Ru = ru; string lg = ru ? "RU" : "EN";
+                L.Ru = mode == 0; L.Ko = mode == 2; string lg = mode == 0 ? "RU" : (mode == 1 ? "EN" : "KO");
                 Probe(delegate { return new MainForm(game); }, lg + " main", delegate(Form f, string w) { MainForm mf = (MainForm)f; foreach (string p in pages) { mf.ShotPage(p); Paint(f, w + "/" + p); } }, err);
                 Probe(delegate { return new WizardForm(new Core(game)); }, lg + " wizard", delegate(Form f, string w) { WizardForm wf = (WizardForm)f; for (int i = 0; i < wf.Steps; i++) { wf.ShowStep(i); Paint(f, w + "/step " + (i + 1)); } }, err);
                 Probe(delegate { return new AboutForm(); }, lg + " about", null, err);
@@ -930,6 +941,12 @@ namespace DDFixTool
                         }
                     }
                     File.WriteAllText(outp, (ok ? "ok" : "FAIL") + "\r\n" + ol); return ok ? 0 : 1;
+                }
+                if (what == "korow")   // self-test: the Korean row exists only in the Korean interface (RU/EN: absent; KO: present, inactive on the Russian game), the voice row is independent
+                {
+                    StringBuilder ko = new StringBuilder("ok\r\n"); bool r0 = L.Ru, k0 = L.Ko; string g = a.Length > 3 ? a[3] : "";
+                    foreach (string lg2 in new string[] { "ru", "en", "ko" }) { L.Ru = lg2 == "ru"; L.Ko = lg2 == "ko"; using (MainForm mf = new MainForm(g)) { mf.ShotPage("fix"); ko.AppendLine(lg2 + " " + mf.KoRowProbe()); } }
+                    L.Ru = r0; L.Ko = k0; File.WriteAllText(outp, ko.ToString()); return 0;
                 }
                 if (what == "textfit") return TextFitAll(outp, a.Length > 3 && !a[3].StartsWith("--") ? a[3] : "");
                 if (what == "logzip") { File.WriteAllBytes(outp, new Core(a.Length > 3 && !a[3].StartsWith("--") ? a[3] : "").CollectLogs()); return 0; }

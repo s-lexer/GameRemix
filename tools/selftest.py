@@ -4,9 +4,9 @@
 # folder with a Cyrillic name from the owner's pristine backups (read-only). The program is driven through its CLI (--game ... --voice on ... --revert-all).
 import os, sys, io, glob, shutil, subprocess, hashlib, ctypes, ctypes.wintypes as wt, datetime, re
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace', line_buffering=True)
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-EXE = os.environ.get('OGF_EXE') or os.path.join(ROOT, 'dist', 'managed', 'GameRemix.exe')   # OGF_EXE: test another build (the shipped path may be locked by a running copy)
+EXE = os.environ.get('OGF_EXE') or os.path.join(ROOT, 'dist', 'build', 'GameRemix.exe')   # OGF_EXE: test another build (the shipped path may be locked by a running copy)
 S = os.path.join(ROOT, 'scratch', 'selftest')
 GAME = os.path.join(S, 'тест игра')
 DATA, DESK, CACHE = os.path.join(S, 'data'), os.path.join(S, 'desktop'), os.path.join(S, 'cache')
@@ -28,6 +28,7 @@ def mkgame(dest=GAME, with_saves=True):
     os.makedirs(dest)
     shutil.copy(PRISTINE, os.path.join(dest, 'div.exe'))
     for n in ('OsirisDLL.dll', 'DivDialogSystem.dll'): open(os.path.join(dest, n), 'wb').write(b'ORIGINAL-' + n.encode() + b'\0' * 64)
+    os.makedirs(os.path.join(dest, 'localizations', 'german')); open(os.path.join(dest, 'localizations', 'german', 'voice.cmp'), 'wb').write(b'voices')   # the Russian edition: voiced dialogues (the English one has none)
     for n in ('slash1.dll', 'slash4.dll'): open(os.path.join(dest, n), 'wb').write(b'MZ-' + n.encode())
     shutil.copy(os.path.join(REAL, 'preset', 'config.div'), os.path.join(dest, 'config.div'))
     shutil.copy(os.path.join(REAL, 'preset', 'slashed-d3d6.cfg'), os.path.join(dest, 'slashed-d3d6.cfg'))
@@ -510,6 +511,87 @@ def gfx_tests():
     check('windows: applying twice changes nothing (idempotent)', rd(ex) == e_again and rc == 0, txt)
     kit_setup(); shutil.rmtree(os.path.join(GAME, 'localizations', 'german')); cli('--gfx', 'apply', 'bag=big', env=gen); een = rd(ex)
     check('windows label by the game language: English-only game -> "worn" in the exe (ASCII, safe), no Cyrillic label', b'worn\0' in een and b'\xed\xe0\xe4\xe5\xf2\xee' not in een)
+    # ---- Korean pack (src/Korean.cs) together with every other fix on the ENGLISH game (owner 09.11.2026). Needs the pristine English files of the Steam version (read-only).
+    ENSRC = r'C:\ARM\WORK\MODDING\GAMES\DivineDivinity\steam_en_test\_GameRemix_Korean_Backup'
+    ENFILES = ['localizations/english/text.cmp', 'localizations/english/dialogtxt.dat', 'localizations/english/mono.cmp', 'dat/English/itemgen.cmp', 'dat/global.cmp', 'localizations/english/skills.txt', 'localizations/english/hints.txt']
+    ENGLOBAL = r'C:\ARM\WORK\MODDING\GAMES\DivineDivinity\steam_en_test\dat\global.cmp'   # the untouched archive of the Steam version (books + diary live in it)
+    KOMAN = os.path.join(ROOT, 'games', 'divine-divinity', 'payload', 'korean', 'korean.txt')
+    if not (os.path.exists(os.path.join(ENSRC, 'config.div')) and os.path.exists(ENGLOBAL)): results.append(('SKIP korean pack tests (no pristine English files at %s)' % ENSRC, True, ''))
+    else:
+        KOF = {}
+        for l in open(KOMAN, encoding='utf-8').read().splitlines():
+            if l.startswith('file='): rel, res, ks, os_ = l[5:].split('|'); KOF[rel.replace('\\', '/')] = (ks, os_)
+        KODLL = [l.split('|')[2] for l in open(KOMAN, encoding='utf-8').read().splitlines() if l.startswith('embed=')][0]
+        def en_game():
+            kit_setup(); shutil.rmtree(os.path.join(GAME, 'localizations', 'german'), ignore_errors=True)
+            for rel in ENFILES: os.makedirs(os.path.dirname(os.path.join(GAME, *rel.split('/'))), exist_ok=True); shutil.copy(ENGLOBAL if rel.endswith('global.cmp') else (os.path.join(ENSRC, *rel.split('/')) if os.path.exists(os.path.join(ENSRC, *rel.split('/'))) else os.path.join(os.path.dirname(ENGLOBAL), '..', *rel.split('/'))), os.path.join(GAME, *rel.split('/')))
+            shutil.copy(os.path.join(ENSRC, 'config.div'), os.path.join(GAME, 'config.div'))
+        def shaf(rel): return hashlib.sha256(rd(os.path.join(GAME, *rel.split('/')))).hexdigest()
+        def CmpState():   # 1 = the Large windows kit's entry edit is in the (Korean) global.cmp
+            return 1 if 'GFX-WINPACK exe=on data=on' in cli('--gfx', 'list', env=gen)[1] else 0   # data=on = the global.cmp entry AND the Sort string are in
+        def sites_ok(b):   # every point khangul.dll patches in memory still holds the ORIGINAL bytes (a table of another fix on top of it would make the hook refuse to patch)
+            import struct
+            src = open(os.path.join(ROOT, 'games', 'divine-divinity', 'korean', 'khangul.c'), encoding='utf-8', errors='replace').read()
+            pe = struct.unpack_from('<I', b, 0x3c)[0]; nsec = struct.unpack_from('<H', b, pe + 6)[0]; opt = struct.unpack_from('<H', b, pe + 20)[0]; secs = []
+            for i in range(nsec): o = pe + 24 + opt + i * 40; vs, va, rs, rp = struct.unpack_from('<IIII', b, o + 8); secs.append((va, max(vs, rs), rp))
+            def fo(va):
+                r = va - 0x400000
+                for a, n, rp in secs:
+                    if a <= r < a + n: return rp + r - a
+            blk = re.search(r'patches\[\]\s*=\s*\{(.*?)\n\};', src, re.S).group(1); bad = []
+            for m in re.finditer(r'P3\((0x[0-9a-fA-F]+),\s*([^)]*)\)', blk):
+                va = int(m.group(1), 16); exp = bytes(int(x, 16) for x in m.group(2).split(',')[:3])
+                if b[fo(va):fo(va) + 3] != exp: bad.append(hex(va))
+            for m in re.finditer(r'\{\s*(0x[0-9a-fA-F]+)\s*,\s*(\d+)\s*,\s*\{([^}]*)\}', blk):
+                va = int(m.group(1), 16); n = int(m.group(2)); exp = bytes(int(x, 16) for x in m.group(3).split(',')[:n])
+                if b[fo(va):fo(va) + n] != exp: bad.append(hex(va))
+            for name, tgt in (('adv_sites', 0x4948d0), ('draw1_sites', 0x4944e0), ('draw2_sites', 0x494580)):
+                for h_ in re.findall(r'0x[0-9a-fA-F]+', re.search(name + r'\[\]\s*=\s*\{([^}]*)\}', src).group(1)):
+                    va = int(h_, 16); o = fo(va)
+                    if not (b[o] == 0xE8 and struct.unpack_from('<i', b, o + 1)[0] + va + 5 == tgt): bad.append(hex(va))
+            for h_ in re.findall(r'0x[0-9a-fA-F]+', re.search(r'ggo_sites\[\]\s*=\s*\{([^}]*)\}', src).group(1)):
+                o = fo(int(h_, 16))
+                if not (b[o:o + 2] == b'\xff\x15' and struct.unpack_from('<I', b, o + 2)[0] == 0x606048): bad.append(h_)
+            return bad
+        en_game(); ex = os.path.join(GAME, 'div.exe'); exo = rd(ex); t0 = tree(GAME)
+        rc, txt = cli('--korean', 'on', env=gen); ek = rd(ex); IMP = 0x24648c
+        diff = [i for i in range(len(exo)) if exo[i] != ek[i]] if len(exo) == len(ek) else None
+        check('korean: on -> the 4 text files are the pack, khangul.dll + use8bitfont 0 are in, div.exe differs ONLY in the import name (VERSION.dll -> khangul.dll)',
+              rc == 0 and all(shaf(k) == v[0] for k, v in KOF.items()) and hashlib.sha256(rd(os.path.join(GAME, 'khangul.dll'))).hexdigest() == KODLL and b'use8bitfont 0' in rd(os.path.join(GAME, 'config.div'))
+              and diff is not None and diff and IMP <= diff[0] and diff[-1] < IMP + 11 and ek[IMP:IMP + 12] == b'khangul.dll\0', txt)
+        check('korean: the hook\'s patch points are original in this exe', sites_ok(ek) == [], str(sites_ok(ek)))
+        check('korean: journal line "korean" names the files, status says on', 'korean' in journal() and 'KOREAN state=on' in cli('--status', env=gen)[1])
+        rc, txt = cli('--korean', 'on', env=gen); check('korean: on twice changes nothing (idempotent)', rc == 0 and rd(ex) == ek and all(shaf(k) == v[0] for k, v in KOF.items()), txt)
+        rc, txt = cli('--sync', env=gen); check('korean: --sync keeps the pack and the exe patch (it is a table of div.exe)', rc == 0 and rd(ex) == ek and 'KOREAN state=on' in cli('--status', env=gen)[1], txt)
+        rc, txt = cli('--korean', 'off', env=gen); check('korean: off -> every file, div.exe and config.div are the originals again, byte for byte; khangul.dll gone', rc == 0 and tree(GAME) == t0 and 'korean' not in journal(), txt)
+        # every other fix of the English game on top, in two orders, then the pack: nothing of the others is lost, the hook still finds its bytes
+        def others():
+            cli('--dusk', 'on', env=gen); cli('--gfx', 'apply', 'automap=on,glow=on', env=gen); cli('--fps80', 'on', env=gen)
+        en_game(); others(); eo = rd(ex); rc, txt = cli('--korean', 'on', env=gen); ea = rd(ex)
+        check('korean after dusk + map panel + glow + FPS mod: all of them stay on, the pack is on, the hook\'s points are original', rc == 0 and ea[0x196b73] == 0xEB and ea[0x4b280] == 0xC3 and ea[IMP:IMP + 12] == b'khangul.dll\0' and sites_ok(ea) == [] and 'FPS80 state=on' in cli('--status', env=gen)[1], txt)
+        en_game(); rc, txt = cli('--korean', 'on', env=gen); others(); eb = rd(ex)
+        check('korean first, then the other fixes: the same exe as the other order', eb == ea, str(len(eb)) + '/' + str(len(ea)))
+        rc, txt = cli('--fps80', 'off', env=gen); rc, txt = cli('--gfx', 'apply', 'glow=off,automap=off', env=gen); rc, txt = cli('--dusk', 'off', env=gen)
+        check('korean: the other fixes off one by one -> only the pack\'s import name is left in div.exe', rd(ex)[IMP:IMP + 12] == b'khangul.dll\0' and exo[:IMP] == rd(ex)[:IMP] and exo[IMP + 12:] == rd(ex)[IMP + 12:], txt)
+        # the Large windows kit adds a "Sort" string to text.cmp: with the pack it must go on/off correctly in the KOREAN file and the originals must come back exactly
+        en_game(); t0 = tree(GAME); cli('--gfx', 'apply', 'bag=big', env=gen); tw = rd(os.path.join(GAME, *ENFILES[0].split('/'))); gw = rd(os.path.join(GAME, 'dat', 'global.cmp')); rc, txt = cli('--korean', 'on', env=gen)
+        te = rd(os.path.join(GAME, *ENFILES[0].split('/')))
+        check('korean on top of the Large windows kit: text.cmp is Korean AND still has the Sort string, global.cmp is Korean AND still has the kit\'s statuspl entry; the kit stays on', rc == 0 and te != tw and b'Sort\0' in te and rd(os.path.join(GAME, 'dat', 'global.cmp')) != gw and CmpState() == 1 and 'GFX-WINPACK exe=on data=on' in cli('--gfx', 'list', env=gen)[1], txt)
+        rc, txt = cli('--korean', 'off', env=gen)
+        check('korean off with the kit on: text.cmp and global.cmp are the English originals + the kit\'s edits again, byte for byte', rc == 0 and rd(os.path.join(GAME, *ENFILES[0].split('/'))) == tw and rd(os.path.join(GAME, 'dat', 'global.cmp')) == gw and 'GFX-WINPACK exe=on data=on' in cli('--gfx', 'list', env=gen)[1], txt)
+        cli('--korean', 'on', env=gen); rc, txt = cli('--gfx', 'apply', 'bag=orig', env=gen)
+        check('korean + kit off: text.cmp is the pure Korean pack (Sort string gone), pack still on', rc == 0 and shaf(ENFILES[0]) == KOF[ENFILES[0]][0] and 'KOREAN state=on' in cli('--status', env=gen)[1], txt)
+        cli('--gfx', 'apply', 'bag=big', env=gen); cli('--dusk', 'on', env=gen); rc, txt = cli('--revert-all', env=gen)
+        check('korean: "Revert all" with the kit and the pack on -> every file of the game is the original again', tree(GAME) == t0, str(sorted(k for k in set(tree(GAME)) | set(t0) if tree(GAME).get(k) != t0.get(k))[:6]))
+        # the Russian game: refused with a message, nothing written
+        kit_setup(); tR = tree(GAME); rc, txt = cli('--korean', 'on', env=gen)
+        check('korean on the RUSSIAN game: refused (rc 1, message), not a single file changed', rc == 1 and 'английской версии' in txt and tree(GAME) == tR, txt)
+        # a file changed by the player: the pack is not installed over it; a changed file after install is left on "off"
+        en_game(); p0 = os.path.join(GAME, *ENFILES[2].split('/')); open(p0, 'ab').write(b'x'); tM = tree(GAME); rc, txt = cli('--korean', 'on', env=gen)
+        check('korean over a player-modified original: refused, nothing changed', rc != 0 and tree(GAME) == tM, txt)
+        en_game(); cli('--korean', 'on', env=gen); open(os.path.join(GAME, *ENFILES[2].split('/')), 'ab').write(b'y'); mm = rd(os.path.join(GAME, *ENFILES[2].split('/')))
+        rc, txt = cli('--korean', 'off', env=gen)
+        check('korean off: a file the player changed after the install is left as it is (the rest goes back)', rd(os.path.join(GAME, *ENFILES[2].split('/'))) == mm and shaf(ENFILES[0]) == hashlib.sha256(rd(os.path.join(ENSRC, *ENFILES[0].split('/')))).hexdigest(), txt)
     # glow + interp + windows in the frame: every order gives the same exe, each switch-off keeps the others, the last one takes the frame out
     import hashlib as _h
     def seq(order):
@@ -620,6 +702,12 @@ def gfx_tests():
     rc, txt = cli('--defaults', 'first', env=lab); check('defaults: after "Revert all" nothing comes back by itself', rc == 0 and 'voice=False' in txt and 'fps=orig' in txt, txt)
     rc, txt = cli('--defaults', 'force', env=lab); check('defaults force (the wizard): everything is switched on again, opt-outs cleared', rc == 0 and 'voice=True' in txt and 'fps=monitor' in txt and 'optouts=' in txt and 'optouts=voice' not in txt, txt)
     cli('--revert-all', env=gen)
+    # a game without voiced dialogues (the English version: no localizations\*\voice.cmp): the voice fix is not a default, and one left on is taken out at start-up (owner 08.11.2026)
+    setup(); shutil.rmtree(os.path.join(GAME, 'localizations')); exo = rd(ex)
+    rc, txt = cli('--defaults', 'force', env=gen); check('no voices (EN): the defaults do not turn the voice fix on', rc == 0 and 'voice=False' in txt and 'dusk=True' in txt and rd(os.path.join(GAME, 'OsirisDLL.dll')).startswith(b'ORIGINAL-'), txt)
+    cli('--voice', 'on', env=gen); cli('--sync', env=gen); rc, txt = cli('--status', env=gen)
+    check('no voices (EN): start-up takes a voice fix left on out (original DLLs back, voice bytes gone)', rc == 0 and 'voice=False' in txt and 'voicePatched=False' in txt and rd(os.path.join(GAME, 'OsirisDLL.dll')).startswith(b'ORIGINAL-') and rd(os.path.join(GAME, 'DivDialogSystem.dll')).startswith(b'ORIGINAL-'), txt)
+    cli('--revert-all', env=gen)
 
     # ---- FPS mod = tick 80 (src/Tick80.cs, patch=tick80 of gfx.txt; --fps80 on|off). Exe: frame (+40960, unchanged since 1.0.18) + hooks and code inside the .interp section; settings put back exactly.
     T80_SHA = '468f9e259097f2fa1900b3c2dd2cb3382843ac46d6a09fd82688c5b0ebacb4c7'   # sha256 of original + frame + tick80 (games/divine-divinity/tools/make_exe_patches.py, same as tick80_patch.py --frame)
@@ -707,7 +795,12 @@ def gfx_tests():
     # "text always fits" (docs/design.md): every page, wizard step and tool window in RU and EN is painted; any text that does not fit its place even at the minimal font is a failure
     setup(); out = os.path.join(S, 'textfit.txt'); r = subprocess.run([EXE, '--shot', 'textfit', out, GAME], env=ENV, capture_output=True, timeout=300)
     tf = open(out, encoding='utf-8-sig').read() if os.path.exists(out) else str(r.stderr)
-    check('no text overflow (RU and EN): every page, wizard step and tool window painted, each text fits its place', r.returncode == 0 and tf.startswith('ok') and tf.count('MEASURED ') >= 40, '\n'.join(l for l in tf.splitlines() if not l.startswith('MEASURED'))[:3000])
+    check('no text overflow (RU, EN and KO): every page, wizard step and tool window painted, each text fits its place', r.returncode == 0 and tf.startswith('ok') and tf.count('MEASURED ') >= 40, '\n'.join(l for l in tf.splitlines() if not l.startswith('MEASURED'))[:3000])
+    setup(); out = os.path.join(S, 'korow.txt'); r = subprocess.run([EXE, '--shot', 'korow', out, GAME], env=ENV, capture_output=True, timeout=120)
+    kr = open(out, encoding='utf-8-sig').read() if os.path.exists(out) else str(r.stderr)
+    check('Korean row: only in the Korean interface (absent in RU and EN, present in KO), the voice row stays independent of it', r.returncode == 0 and 'ru present=False' in kr and 'en present=False' in kr and 'ko present=True' in kr, kr)
+    kg = [l for l in kr.splitlines() if l.startswith('ko ')]
+    check('Korean row on the Russian game (KO interface): visible but inactive; voice row not replaced', bool(kg) and 'enabled=False' in kg[0] and (('voice=True' in kg[0]) == ('voice=True' in kr.split('ru ')[1].splitlines()[0])), kr)
     setup(); out = os.path.join(S, 'wizsteps.txt'); r = subprocess.run([EXE, '--shot', 'wizsteps', out, GAME], env=ENV, capture_output=True, timeout=180)
     check('wizard: all 8 steps build without an error', r.returncode == 0 and open(out).read().startswith('ok'), open(out).read() if os.path.exists(out) else str(r.stderr))
     check('wizard fonts step: the two preview pictures (default / larger) are really different, or the fonts are absent (none)', 'differing=' in open(out).read() and int(open(out).read().split('differing=')[1] or 0) > 100 or 'fonts none' in open(out).read(), open(out).read())

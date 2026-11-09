@@ -13,7 +13,7 @@ namespace DDFixTool
 {
     static class U
     {
-        public static string R(string ru, string en) { return L.Ru ? ru : en; }
+        public static string R(string ru, string en) { return L.Ru ? ru : L.Kor(en); }
         public const TextFormatFlags Wrap = TextFormatFlags.WordBreak | TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix;
         public static bool Open(string url) { try { Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }); return true; } catch { return false; } }   // false = nothing was opened (no mail program, no browser)
         public static string Pl(int n, string one, string few, string many) { int m = Math.Abs(n) % 100, d = m % 10; if (!L.Ru) return n == 1 ? one : many; return m > 10 && m < 20 ? many : (d == 1 ? one : (d >= 2 && d <= 4 ? few : many)); }
@@ -286,13 +286,13 @@ namespace DDFixTool
             core = c; Text = U.R("Шрифты", "Fonts"); FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false; MinimizeBox = false; ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent; BackColor = Th.Bg; ForeColor = Th.Text; Font = Th.Body;
             string[] names = { U.R("ОСНОВНЫЕ ШРИФТЫ (интерфейс, предметы)", "GENERAL FONTS (interface, items)"), U.R("ШРИФТЫ КНИГ И ДНЕВНИКА", "BOOK AND DIARY FONTS"), U.R("ШРИФТЫ ДИАЛОГОВ", "DIALOG FONTS") };
-            string[] items = L.Ru ? new string[] { "Оригинал игры", "Крупные", "Сверхкрупные" } : new string[] { "Original", "Larger", "Extra large" }; string[] caps = L.Ru ? new string[] { "ОРИГИНАЛ ИГРЫ", "КРУПНЫЕ", "СВЕРХКРУПНЫЕ" } : new string[] { "ORIGINAL", "LARGER", "EXTRA LARGE" };
+            string[] items = L.Ru ? new string[] { "Оригинал игры", "Крупные", "Сверхкрупные" } : (L.Ko ? new string[] { "원본", "크게", "매우 크게" } : new string[] { "Original", "Larger", "Extra large" }); string[] caps = L.Ru ? new string[] { "ОРИГИНАЛ ИГРЫ", "КРУПНЫЕ", "СВЕРХКРУПНЫЕ" } : (L.Ko ? new string[] { "원본", "크게", "매우 크게" } : new string[] { "ORIGINAL", "LARGER", "EXTRA LARGE" });
             int[] steps = L.Ru ? new int[] { 0, 3, 4 } : new int[] { 0, 1, 2 };
             string[][] samples = { new string[] { "fontn2.fnt", "fontn3.fnt", "fontn4.fnt", "fontn5.fnt" }, new string[] { "fontblack1.fnt", "fontblack2.fnt" }, new string[] { "dialog_white.fnt", "dialog_yellow.fnt", "dialog_red.fnt", "dialog_grey.fnt" } };
-            string text = L.Ru ? "Привет, друг!" : "Hello, friend!";
+            string text = U.R("Привет, друг!", "Hello, friend!");
             Panel host = new Panel(); host.BackColor = Th.Bg; host.SetBounds(0, 0, 640, 100); Controls.Add(host);   // all groups live here; when the screen is low this panel scrolls
             Label note = new Label(); note.AutoSize = false; note.SetBounds(24, 8, 592, 30); note.Font = Th.Small; note.ForeColor = Th.Muted; note.BackColor = Th.Bg;
-            note.Text = L.Ru ? "Нажмите на карточку, чтобы выбрать. Оригинал — шрифты самой игры; Крупные и Сверхкрупные — увеличенные шрифты из программы." : "Click a card to choose. Original: the game's own fonts; Larger / Extra large: bigger fonts from the program."; host.Controls.Add(note);
+            note.Text = U.R("Нажмите на карточку, чтобы выбрать. Оригинал — шрифты самой игры; Крупные и Сверхкрупные — увеличенные шрифты из программы.", "Click a card to choose. Original: the game's own fonts; Larger / Extra large: bigger fonts from the program."); host.Controls.Add(note);
             int y = 40;
             for (int i = 0; i < 3; i++)
             {

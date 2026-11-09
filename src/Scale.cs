@@ -32,7 +32,7 @@ namespace DDFixTool
 
         // 4K -> 200% (1920x1080, exactly x2), 1440p / 1600p -> 125%, 1080p and below -> 100%
         public static int AutoPct(Size m) { return m.Height >= 2000 ? 200 : (m.Height >= 1300 ? 125 : 100); }
-        public static string PctText(int pct) { return pct == 0 ? (L.Ru ? "Авто" : "Auto") : pct + "%"; }
+        public static string PctText(int pct) { return pct == 0 ? (U.R("Авто", "Auto")) : pct + "%"; }
         // modes cnc-ddraw v7.1 reports with resolutions=2 (full list; the monitor's own size is always added). Checked with an EnumDisplayModes test (fx_shader/ddfx_src/fx/ddenum.c).
         static readonly int[][] CncStock = {
             new[]{320,200}, new[]{320,240}, new[]{512,384}, new[]{640,400}, new[]{640,480}, new[]{800,600}, new[]{1024,768}, new[]{1280,1024}, new[]{1600,1200}, new[]{1280,720},
@@ -190,8 +190,8 @@ namespace DDFixTool
         // Applies ONLY the scale (cnc-ddraw must be on): resolution in config.div / slashed*.cfg + ddraw.ini. All-or-nothing; the originals go to the preset backup (Revert all).
         public ScalePlan ApplyScale(int pct, Size mon)
         {
-            if (!HasGame) throw new InvalidOperationException(L.Ru ? "Игра не найдена." : "Game not found.");
-            if (!Cnc) throw new InvalidOperationException(L.Ru ? "Масштаб картинки работает через gr-draw: сначала включите его." : "The picture scale works through gr-draw: turn it on first.");
+            if (!HasGame) throw new InvalidOperationException(U.R("Игра не найдена.", "Game not found."));
+            if (!Cnc) throw new InvalidOperationException(U.R("Масштаб картинки работает через gr-draw: сначала включите его.", "The picture scale works through gr-draw: turn it on first."));
             ScalePlan p = PlanScale(pct, mon);
             PresetBackupOriginals();
             string[] files = { "config.div", "slashed-d3d6.cfg", "slashed-software.cfg", "ddraw.ini" }; Dictionary<string, byte[]> snap = new Dictionary<string, byte[]>();
@@ -201,7 +201,7 @@ namespace DDFixTool
             {
                 List<string> undo = new List<string>();
                 foreach (KeyValuePair<string, byte[]> kv in snap) { try { File.WriteAllBytes(P(kv.Key), kv.Value); } catch (Exception e2) { undo.Add(kv.Key + ": " + e2.Message); } }
-                throw new InvalidOperationException((L.Ru ? "Масштаб не применён: " : "The scale was not applied: ") + ex.Message + (undo.Count > 0 ? "\n" + string.Join("; ", undo.ToArray()) : ""), ex);
+                throw new InvalidOperationException((U.R("Масштаб не применён: ", "The scale was not applied: ")) + ex.Message + (undo.Count > 0 ? "\n" + string.Join("; ", undo.ToArray()) : ""), ex);
             }
             Log(L.T("applied") + "scale " + UiScale.Summary(p, false));
             return p;

@@ -1,7 +1,7 @@
 # Descriptor of the downloadable item-pictures set "Items: Redrawn" (built by shared/assets/build_asset_set.py). NOT published to the server.
 id=items-redrawn
 game=divine-divinity
-version=1.2.4
+version=1.2.5
 kind=items
 layer=1
 name.ru=Предметы: Перерисованные
