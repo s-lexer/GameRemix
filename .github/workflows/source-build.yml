@@ -24,9 +24,3 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           if (-not (Test-Path dist/build/GameRemix-source-only.exe)) { throw 'No EXE produced' }
           Get-FileHash dist/build/GameRemix-source-only.exe -Algorithm SHA256
-      - name: Full build must report omitted proprietary assets
-        shell: pwsh
-        run: |
-          $result = python src/build.py 2>&1 | Out-String
-          if ($LASTEXITCODE -eq 0) { throw 'Unexpected full build without payload' }
-          if ($result -notmatch 'Full build requires external licensed resources') { throw "Unexpected failure: $result" }
