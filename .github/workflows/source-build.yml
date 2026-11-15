@@ -1,0 +1,32 @@
+name: Compile public source
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: windows-2022
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile from public source without proprietary assets
+        shell: pwsh
+        run: |
+          python src/build.py --source-only
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (-not (Test-Path dist/build/GameRemix-source-only.exe)) { throw 'No EXE produced' }
+          Get-FileHash dist/build/GameRemix-source-only.exe -Algorithm SHA256
+      - name: Full build must report omitted proprietary assets
+        shell: pwsh
+        run: |
+          $result = python src/build.py 2>&1 | Out-String
+          if ($LASTEXITCODE -eq 0) { throw 'Unexpected full build without payload' }
+          if ($result -notmatch 'Full build requires external licensed resources') { throw "Unexpected failure: $result" }

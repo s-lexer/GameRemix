@@ -4,70 +4,92 @@
 
 ## English
 
-A utility for configuring older games on Windows. The main supported game is currently **Divine Divinity**.
+GameRemix is a Windows utility for classic game fixes, graphics wrappers, UI scaling, fonts, graphics packs, and backups with rollback support. The main supported game is **Divine Divinity**.
 
-GameRemix brings together game fixes, graphics wrapper settings, interface scaling, fonts, graphics packs, and backups with rollback support.
+Website and signed downloads: **https://gameremix.pro/**.
 
-Website and application download: **https://gameremix.pro/**.
+### Source-only verification build
 
-### Source code
+Requirements: Windows, Python 3, .NET Framework 4.x compiler at `%WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe`.
 
-- `src/` — C# 3 / .NET Framework 3.5 application using Windows Forms.
-- `shared/` — shared tools for preparing assets and graphics wrappers.
-- `games/divine-divinity/` — game definitions, patch generators, and tools.
-- `tools/` — checks and helper scripts.
-- `docs/` — documentation for the application's features and interface.
+```powershell
+git clone https://github.com/s-lexer/GameRemix.git
+cd GameRemix
+python src/build.py --source-only
+```
 
-The public branch contains a separate source snapshot. Local development history, internal settings, backup copies of game executables, saved games, and original game assets are not included.
+Produces `dist/build/GameRemix-source-only.exe` from the actual C# sources without the missing proprietary and third-party resources. **This is a limited verification build, not a complete/functional release binary**. It does not prove that a distributed signed EXE is safe or byte-for-byte reproducible. [GitHub Actions checks compilation](.github/workflows/source-build.yml).
 
-### Building
+### Full build
 
-Requirements: Windows, Python 3, the .NET Framework 3.5 compiler, and MSVC Build Tools for the launcher.
-
-```text
+```powershell
 python src/build.py
 ```
 
-The command produces `dist/build/GameRemix.exe`, a single file built for the .NET Framework 4 (included in Windows 8–11; Windows 7 SP1 needs the .NET Framework 4.8).
+A complete build requires additional resources in the paths listed in `src/build.py`. The script reports the missing inputs and fails rather than silently producing an incomplete release. Those files include original-game DLLs/fonts, game-derived resources, third-party editors, and dgVoodoo; they are **not** redistributed here. Users who are entitled to use these resources can provide them locally. The MIT-licensed cnc-ddraw build resources are included in `shared/cnc-ddraw/` with their license notices.
 
-**A clean clone is not sufficient for a complete build:** `src/build.py` also expects binary components and prepared resources in `games/divine-divinity/payload/`, `games/divine-divinity/gfx/`, and `shared/cnc-ddraw/`. These are not included in this snapshot; the build script lists the exact paths. This repository does not include the game itself. Release signing and publishing require the project owner's separate infrastructure.
+**Third-party rights matter:** [dgVoodoo's redistribution rules](https://www.dege.freeweb.hu/dgVoodoo2/ReadmeGeneral/) limit bundling its components in general-purpose launchers. This repository does not include the game itself.
 
-### Third-party components
+The public branch is a **version 1.0.38 source snapshot**. Newer downloads may contain different source changes. Release signing/publishing are separate. Full byte-for-byte reproducibility has **not** been established.
 
-GameRemix uses third-party components, including cnc-ddraw and dgVoodoo. Their authorship and license terms are preserved; licenses for included third-party source code are located alongside that code. Publishing the source code in this repository does not itself grant a license to GameRemix's own code.
+### VirusTotal and independent verification
+
+A VirusTotal detection **by itself neither proves malware nor a false positive**. Please report the exact file SHA-256, detection name, version, and VirusTotal report URL so it can be investigated.
+
+```powershell
+Get-FileHash .\GameRemix-1.0.38.exe -Algorithm SHA256
+Get-AuthenticodeSignature .\GameRemix-1.0.38.exe | Format-List
+```
+
+Compare a hash against the publisher's official listing for the **same release version**. Verify the signature status and signer; do not turn off antivirus protection based on source availability.
+
+### Source layout
+
+- `src/` — C# / Windows Forms application and build script
+- `shared/` — common tools and graphics-wrapper resources
+- `games/divine-divinity/` — definitions, patch generators, and tools
+- `tools/` — checks and helper scripts
+- `docs/` — documentation
+
+Third-party authorship and licensing remain in effect. Publishing the source does not automatically grant rights to separately owned GameRemix code.
 
 ---
 
 ## Русский
 
-Утилита для настройки старых игр на Windows. Сейчас основная поддерживаемая игра — **Divine Divinity**.
+GameRemix — утилита для исправлений классических игр Windows, настройки графических обёрток, интерфейса, шрифтов и графических пакетов. Основная поддерживаемая игра — **Divine Divinity**.
 
-GameRemix объединяет исправления игры, настройку графических обёрток, масштабирование интерфейса, шрифты, наборы графики и резервные копии с откатом изменений.
+Сайт и подписанные версии: **https://gameremix.pro/**.
 
-Сайт и загрузка готовой программы: **https://gameremix.pro/**.
+### Проверочная сборка исходников
 
-### Исходники
+Нужны Windows, Python 3 и компилятор .NET Framework 4.x (`%WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe`).
 
-- `src/` — приложение на C# 3 / .NET Framework 3.5, Windows Forms.
-- `shared/` — общие механизмы подготовки ассетов и графических обёрток.
-- `games/divine-divinity/` — данные игры, генераторы патчей и инструменты.
-- `tools/` — проверки и вспомогательные скрипты.
-- `docs/` — описание механизмов и интерфейса.
+```powershell
+git clone https://github.com/s-lexer/GameRemix.git
+cd GameRemix
+python src/build.py --source-only
+```
 
-Публичная ветка содержит отдельный снимок исходников. Локальная рабочая история, внутренние настройки, резервные копии игровых exe, сохранения и оригинальные ресурсы игры сюда не включены.
+Получится `dist/build/GameRemix-source-only.exe`. Режим собирает настоящий C#-код приложения, исключая отсутствующие игровые и сторонние ресурсы. **Это неполный проверочный бинар, не полноценная рабочая версия.** Его нельзя выдавать за релиз или использовать для доказательства отсутствия угроз в подписанном EXE. Компиляцию проверяет [GitHub Actions](.github/workflows/source-build.yml).
 
-### Сборка
+### Полная сборка
 
-Нужны Windows, Python 3, компилятор .NET Framework 3.5 и MSVC Build Tools для запускателя.
-
-```text
+```powershell
 python src/build.py
 ```
 
-Команда создаёт `dist/build/GameRemix.exe` — один файл под .NET Framework 4 (есть в Windows 8–11; для Windows 7 SP1 нужен .NET Framework 4.8).
+Требуются дополнительные ресурсы из `src/build.py`. При их отсутствии скрипт перечисляет недостающие файлы и завершается ошибкой. Оригинальные DLL и шрифты игры, производные игровые ресурсы, сторонние редакторы и dgVoodoo не выкладываются — их нужно получать и использовать согласно правам правообладателей. Компоненты cnc-ddraw под лицензией MIT выложены с уведомлениями о лицензии. На [перераспространение dgVoodoo](https://www.dege.freeweb.hu/dgVoodoo2/ReadmeGeneral/) действуют отдельные ограничения, включая встраивание в универсальные лаунчеры.
 
-**Чистого клона недостаточно для полной сборки:** `src/build.py` также ожидает бинарные компоненты и подготовленные ресурсы в `games/divine-divinity/payload/`, `games/divine-divinity/gfx/` и `shared/cnc-ddraw/`. Они не включены в этот снимок; точные пути перечислены в скрипте сборки. Репозиторий не содержит дистрибутив игры. Подпись и публикация релизов требуют отдельной инфраструктуры владельца проекта.
+Публичный репозиторий — **снимок кода версии 1.0.38**, а не обязательно текущего подписанного релиза. Побайтовая воспроизводимость полного релиза пока не подтверждена.
 
-### Сторонние компоненты
+### VirusTotal
 
-GameRemix использует сторонние компоненты, включая cnc-ddraw и dgVoodoo. Их авторство и условия лицензирования сохраняются; лицензии включённых сторонних исходников находятся рядом с ними. Наличие исходников в репозитории само по себе не предоставляет лицензию на собственный код GameRemix.
+Срабатывание антивируса само по себе **не доказывает ни вредоносность, ни ложное срабатывание**. Для анализа нужны SHA-256, название детекта, версия и ссылка на VirusTotal.
+
+```powershell
+Get-FileHash .\GameRemix-1.0.38.exe -Algorithm SHA256
+Get-AuthenticodeSignature .\GameRemix-1.0.38.exe | Format-List
+```
+
+Проверьте подпись и сравните хеш с официальной публикацией **той же версии**. Не отключайте антивирус без дополнительной проверки.
