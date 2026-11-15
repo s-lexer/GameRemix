@@ -1,4 +1,7 @@
 ﻿# GameRemix change log. Important things only: new games, new features, milestones. Small fixes and corrections are not listed (AGENTS.md, item 13).
+## 1.0.39 - 2026-11-10
+- Divine Divinity from GOG: the program recognises the GOG build of div.exe 1.0.0.62, every fix works as on Steam
+
 ## 1.0.38 - 2026-11-09
 - Korean language: the program now has RU | EN | KO, and for the English version of the game a Korean translation (texts, dialogues, items, Hangul font) with the "Korean language" row on Patches & fixes; it is not installed on the Russian version
 

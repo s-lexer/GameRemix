@@ -6,7 +6,8 @@ param(
 $ErrorActionPreference = 'Stop'
 # Reflection-only metadata loading does not execute the target application.
 $assembly = [Reflection.Assembly]::ReflectionOnlyLoadFrom($AssemblyPath)
-$names = @($assembly.GetManifestResourceNames() | Sort-Object)
+# Preserve the exact embedded-manifest order used by the signed release.
+$names = @($assembly.GetManifestResourceNames())
 $resources = @()
 $index = 0
 foreach ($name in $names) {

@@ -97,6 +97,11 @@ namespace DDFixTool
         static byte[] ExeNormalize(byte[] src, List<string> notes)
         {
             byte[] b = (byte[])src.Clone(); long S = ExeSize;
+            // GOG build of 1.0.0.62: the same code relinked on 2013-04-16, only the PE timestamp (+ its copy in the debug directory) and the PE checksum differ
+            if (b.Length >= S && Le32(b, 0x118) == 0x516D17A7 && Le32(b, 0x2478E4) == 0x516D17A6)
+            {
+                Set32(b, 0x118, 0x5170ED51); Set32(b, 0x2478E4, 0x5170ED50); if (Le32(b, 0x168) == 0x267D10) Set32(b, 0x168, 0x26286C); notes.Add("GOG build stamps");
+            }
             if (b.Length == S + 4096 && Ascii(b, 0x2a8, 7) == ".interp")
             {
                 foreach (string id in new string[] { "interp_legacy", "interp", "frame" }) { BytePatch p = ExeTable(id); if (p == null) continue; foreach (BytePoint t in p.Points) if (t.Off + t.Orig.Length <= S) Array.Copy(t.Orig, 0, b, t.Off, t.Orig.Length); }
@@ -107,6 +112,8 @@ namespace DDFixTool
             if (b.Length == S + 40960 && b[0x259E00] == 0x83 && b[0x259E01] == 0x7C && b[0x259E02] == 0x24 && b[0x259E03] == 0x0C && (b[0x259E04] == 0x13 || b[0x259E04] == 0x0F)) { b[0x259E04] = 0x03; notes.Add("old sort key"); }
             return b;
         }
+        static uint Le32(byte[] b, int off) { return BitConverter.ToUInt32(b, off); }
+        static void Set32(byte[] b, int off, uint v) { Array.Copy(BitConverter.GetBytes(v), 0, b, off, 4); }
         static string Ascii(byte[] b, int off, int n) { return off + n <= b.Length ? Encoding.ASCII.GetString(b, off, n) : ""; }
 
         // which patches an exe carries (any form): only for the ONE-TIME decision of a game that has no journal yet / an exe changed behind the program's back

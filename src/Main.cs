@@ -15,7 +15,7 @@ namespace DDFixTool
 {
     static class App
     {
-        public const string Name = "GameRemix - By Lex", Version = "1.0.38";
+        public const string Name = "GameRemix - By Lex", Version = "1.0.39";
         public const string UpdateUrl = "https://gameremix.pro/dl/latest.txt";   // one line: "<version>|<download url>|<sha256>"
         public const string Mail = "5@1221.by";
         public static Image Icon(string id) { using (MemoryStream ms = new MemoryStream(Core.ResBytes("icon_" + id))) return new Bitmap(Image.FromStream(ms)); }   // game icons ship inside the program, so they show even when the game is not installed

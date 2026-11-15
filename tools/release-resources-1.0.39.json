@@ -1,640 +1,640 @@
 {
     "resources":  [
                       {
-                          "sha256":  "606d7aeb3356fe778153c953f6da3743cba5d7451836721e904cb9061af76fda",
-                          "name":  "ccd_dd-fx.cfg",
+                          "sha256":  "7d5f9e81f4e8c310c0faf8ffa34e9872bfa2b07ca28e62c17e6e90412f6a0f95",
+                          "name":  "OsirisDLL.dll",
                           "filename":  "000.bin",
-                          "size":  697
+                          "size":  356352
+                      },
+                      {
+                          "sha256":  "aa1ed27b268643e72e8553ca43b87b5e9f32d37740726b54c1c0449122af3a87",
+                          "name":  "DivDialogSystem.dll",
+                          "filename":  "001.bin",
+                          "size":  95232
+                      },
+                      {
+                          "sha256":  "31083b95eaca5948d6b169faa179def21c10b356a18130976e75d47d4bb150a8",
+                          "name":  "ko_text.cmp.gz",
+                          "filename":  "002.bin",
+                          "size":  39396
+                      },
+                      {
+                          "sha256":  "2de48f12d1b84e20c2e7d4b2d1414b90c2dcb50d152038d4df28c4b8127067cf",
+                          "name":  "ko_dialogtxt.dat.gz",
+                          "filename":  "003.bin",
+                          "size":  378015
+                      },
+                      {
+                          "sha256":  "7a9ae2851aa03c9ab98a00fa8488c1f95473fe8299eaae567cb6da2f374fa1b0",
+                          "name":  "ko_mono.cmp.gz",
+                          "filename":  "004.bin",
+                          "size":  45644
+                      },
+                      {
+                          "sha256":  "c9f37960f2131205e0aa9d85134ddb8e1154b422a3255d80cfc76ea7bb692e80",
+                          "name":  "ko_itemgen.cmp.gz",
+                          "filename":  "005.bin",
+                          "size":  4852
+                      },
+                      {
+                          "sha256":  "bd18e76d9071922e9befb921b365fc7b434cc49723133e0fbeca52cea0d2581c",
+                          "name":  "ko_global.cmp.gz",
+                          "filename":  "006.bin",
+                          "size":  613908
+                      },
+                      {
+                          "sha256":  "f791e59abdd6120c73c9b9318963710ccde0b22f61cfb7f2fd9e821759130a2d",
+                          "name":  "ko_skills.txt.gz",
+                          "filename":  "007.bin",
+                          "size":  7729
+                      },
+                      {
+                          "sha256":  "2fecc5a5934544555160d4bd3a56b36a9e12544c10c45fd2d70ff18575e75cce",
+                          "name":  "ko_hints.txt.gz",
+                          "filename":  "008.bin",
+                          "size":  1610
+                      },
+                      {
+                          "sha256":  "159320fcb85c26754f8d7570c16b817c1ab5e0042e80e1fa4da66d9d44b20587",
+                          "name":  "dgv_DDraw.dll",
+                          "filename":  "009.bin",
+                          "size":  225792
+                      },
+                      {
+                          "sha256":  "72ece40b088cac61456ef6b7c896f4820155332a34dc28cd8a381589476f53aa",
+                          "name":  "dgv_D3DImm.dll",
+                          "filename":  "010.bin",
+                          "size":  192512
+                      },
+                      {
+                          "sha256":  "e9fa8862dc051cd9e39dde0abf465e7f2cc35c6a7ff9a8b5d77287b6a3e34e65",
+                          "name":  "dgv_dgVoodooCpl.exe",
+                          "filename":  "011.bin",
+                          "size":  386560
+                      },
+                      {
+                          "sha256":  "935bd0bdfdb89580b8225f12d251feffd0470b49699a9c85453248969b52a0b7",
+                          "name":  "dgv_dgVoodoo.conf",
+                          "filename":  "012.bin",
+                          "size":  18947
+                      },
+                      {
+                          "sha256":  "da2ba30e788377eecfc576dac2e9bffae547aeec6e97f55889991b7d58e44510",
+                          "name":  "tool_ItemsEditor.exe",
+                          "filename":  "013.bin",
+                          "size":  120369
+                      },
+                      {
+                          "sha256":  "1de3e84876aa0f30192799d1d68cf64c1efa39d55dc1274a89b31842080e952d",
+                          "name":  "tool_DDIE.exe",
+                          "filename":  "014.bin",
+                          "size":  28526
+                      },
+                      {
+                          "sha256":  "f5d96523a8be1ed360e081a5d6c5b586c45c44069453a0fab8f2bf2611d18aa9",
+                          "name":  "tool_SaveEditor.exe",
+                          "filename":  "015.bin",
+                          "size":  109758
+                      },
+                      {
+                          "sha256":  "a31fa0c0c405dafb595323594adba5dc2875831bd08c8f65e426ff1c61c3ab75",
+                          "name":  "tool_FontEditor.exe",
+                          "filename":  "016.bin",
+                          "size":  37996
+                      },
+                      {
+                          "sha256":  "a77bf2b535a20fad8bd467e05374f783ea8b94c018b4280a3ba859f9f9b3ef88",
+                          "name":  "tool_TextCompiler.exe",
+                          "filename":  "017.bin",
+                          "size":  23213
+                      },
+                      {
+                          "sha256":  "5719ef858ab202fa692233ec5abb19048d8fc591900d2b8f806f246e52efeeb4",
+                          "name":  "tool_DialogCompiler.exe",
+                          "filename":  "018.bin",
+                          "size":  250970
                       },
                       {
                           "sha256":  "b493ba373ab03e42611822a2a8cb5d556dfa190f5d151bd8856d25bdd8c37113",
                           "name":  "ccd_ddraw.dll",
-                          "filename":  "001.bin",
+                          "filename":  "019.bin",
                           "size":  190508
-                      },
-                      {
-                          "sha256":  "7fd0b2030193f6c2a2c5b17e1844adb1db8715b8567bc0adc1013505a398a132",
-                          "name":  "ccd_ddraw.ini",
-                          "filename":  "002.bin",
-                          "size":  9061
                       },
                       {
                           "sha256":  "af9525f838542fbde47698e8df4729d3bc3078d909cfbf185c6487af0be50dec",
                           "name":  "ccd_fxddraw.dll",
-                          "filename":  "003.bin",
+                          "filename":  "020.bin",
                           "size":  247773
                       },
                       {
                           "sha256":  "7ddd43efcf0b88a7a9e203b0320a28b9a4eec09388b1d8db717af84ab76c8815",
                           "name":  "ccd_fxlic.txt",
-                          "filename":  "004.bin",
+                          "filename":  "021.bin",
                           "size":  1568
                       },
                       {
-                          "sha256":  "bd08a96f37c5b2cebcf3600e6d8ff85252e693e8410934144269981b8860a66a",
-                          "name":  "ccd_LICENSE.txt",
-                          "filename":  "005.bin",
-                          "size":  656
+                          "sha256":  "606d7aeb3356fe778153c953f6da3743cba5d7451836721e904cb9061af76fda",
+                          "name":  "ccd_dd-fx.cfg",
+                          "filename":  "022.bin",
+                          "size":  697
+                      },
+                      {
+                          "sha256":  "7fd0b2030193f6c2a2c5b17e1844adb1db8715b8567bc0adc1013505a398a132",
+                          "name":  "ccd_ddraw.ini",
+                          "filename":  "023.bin",
+                          "size":  9061
                       },
                       {
                           "sha256":  "6b924bae7a53b1b82114c3651071ac91d6e76699d9d01dcf526b2086313d34a4",
                           "name":  "ccd_shaders.bin",
-                          "filename":  "006.bin",
+                          "filename":  "024.bin",
                           "size":  10967
                       },
                       {
-                          "sha256":  "8be77c75268ba387001574ccb655eec06e6bb18662172e6c9426a5ee0260e9cf",
-                          "name":  "changelog_en",
-                          "filename":  "007.bin",
-                          "size":  5066
-                      },
-                      {
-                          "sha256":  "bd7822adf4d12f4bd0b97567c89fca48ca305b1fad97d1c1a30cc2c51388574d",
-                          "name":  "changelog_ru",
-                          "filename":  "008.bin",
-                          "size":  8581
-                      },
-                      {
-                          "sha256":  "72ece40b088cac61456ef6b7c896f4820155332a34dc28cd8a381589476f53aa",
-                          "name":  "dgv_D3DImm.dll",
-                          "filename":  "009.bin",
-                          "size":  192512
-                      },
-                      {
-                          "sha256":  "159320fcb85c26754f8d7570c16b817c1ab5e0042e80e1fa4da66d9d44b20587",
-                          "name":  "dgv_DDraw.dll",
-                          "filename":  "010.bin",
-                          "size":  225792
-                      },
-                      {
-                          "sha256":  "935bd0bdfdb89580b8225f12d251feffd0470b49699a9c85453248969b52a0b7",
-                          "name":  "dgv_dgVoodoo.conf",
-                          "filename":  "011.bin",
-                          "size":  18947
-                      },
-                      {
-                          "sha256":  "e9fa8862dc051cd9e39dde0abf465e7f2cc35c6a7ff9a8b5d77287b6a3e34e65",
-                          "name":  "dgv_dgVoodooCpl.exe",
-                          "filename":  "012.bin",
-                          "size":  386560
-                      },
-                      {
-                          "sha256":  "aa1ed27b268643e72e8553ca43b87b5e9f32d37740726b54c1c0449122af3a87",
-                          "name":  "DivDialogSystem.dll",
-                          "filename":  "013.bin",
-                          "size":  95232
+                          "sha256":  "bd08a96f37c5b2cebcf3600e6d8ff85252e693e8410934144269981b8860a66a",
+                          "name":  "ccd_LICENSE.txt",
+                          "filename":  "025.bin",
+                          "size":  656
                       },
                       {
                           "sha256":  "f8300bfb531ca632f141cc07a9ddb25b5084bdb8e90959d5fcfe7e4f1a280f5d",
                           "name":  "fx_bk1_fontblack1.fnt",
-                          "filename":  "014.bin",
+                          "filename":  "026.bin",
                           "size":  19620
                       },
                       {
                           "sha256":  "9635601a899072aaed8865f522363437fc276fc19d6a6be67602e5cb4cc7dc9c",
                           "name":  "fx_bk1_fontblack2.fnt",
-                          "filename":  "015.bin",
+                          "filename":  "027.bin",
                           "size":  21009
                       },
                       {
                           "sha256":  "6a89c7145c49d740a2a4a2c98483e41dd40d69faf21c4ae078c5679180f46881",
                           "name":  "fx_bk2_fontblack1.fnt",
-                          "filename":  "016.bin",
+                          "filename":  "028.bin",
                           "size":  23514
                       },
                       {
                           "sha256":  "ccc74565b092f8ff85697b01c17cbcd55929619b865770e63d458fec553d13c1",
                           "name":  "fx_bk2_fontblack2.fnt",
-                          "filename":  "017.bin",
+                          "filename":  "029.bin",
                           "size":  26956
-                      },
-                      {
-                          "sha256":  "1e612fcc07b22a030b0880055301eef0db697e71e47f9d3e851ecb2a8132378c",
-                          "name":  "fx_dlg_dialog_grey.fnt",
-                          "filename":  "018.bin",
-                          "size":  21670
-                      },
-                      {
-                          "sha256":  "3d7ecdf48d8df2b245af61a602d9bf0c51010ad38a220768fa9eb60a4aa99e80",
-                          "name":  "fx_dlg_dialog_red.fnt",
-                          "filename":  "019.bin",
-                          "size":  21436
-                      },
-                      {
-                          "sha256":  "50ddf7ed77a75b80df9c101b4921817d62b13eb755043b0f66dea9162fbbe8f2",
-                          "name":  "fx_dlg_dialog_white.fnt",
-                          "filename":  "020.bin",
-                          "size":  22904
-                      },
-                      {
-                          "sha256":  "ee77c7e69e1b772fb1a4eb9ed829c73739b9faccf514b159b30bf1be4259b924",
-                          "name":  "fx_dlg_dialog_yellow.fnt",
-                          "filename":  "021.bin",
-                          "size":  21722
                       },
                       {
                           "sha256":  "f94ac888b4dcd737e413bdbfb1a59269c740ba4dac7521160acb34ae93abe95e",
                           "name":  "fx_dlg2_dialog_grey.fnt",
-                          "filename":  "022.bin",
+                          "filename":  "030.bin",
                           "size":  16523
                       },
                       {
                           "sha256":  "5e6b447fe95dbfdad0bf1c94cbbc1157cdeff7052b8d96841893455f21b83205",
                           "name":  "fx_dlg2_dialog_red.fnt",
-                          "filename":  "023.bin",
+                          "filename":  "031.bin",
                           "size":  15278
                       },
                       {
                           "sha256":  "f6cb128cb7a2cace9c507e2255f52677d65bc39a2b945317038559e837724bf1",
                           "name":  "fx_dlg2_dialog_white.fnt",
-                          "filename":  "024.bin",
+                          "filename":  "032.bin",
                           "size":  17430
                       },
                       {
                           "sha256":  "8c9451f811b4c33dd16c968f3a3cdffeda74ef2d2022a29b2fcfb9d0c930fc4b",
                           "name":  "fx_dlg2_dialog_yellow.fnt",
-                          "filename":  "025.bin",
+                          "filename":  "033.bin",
                           "size":  15978
+                      },
+                      {
+                          "sha256":  "1e612fcc07b22a030b0880055301eef0db697e71e47f9d3e851ecb2a8132378c",
+                          "name":  "fx_dlg_dialog_grey.fnt",
+                          "filename":  "034.bin",
+                          "size":  21670
+                      },
+                      {
+                          "sha256":  "3d7ecdf48d8df2b245af61a602d9bf0c51010ad38a220768fa9eb60a4aa99e80",
+                          "name":  "fx_dlg_dialog_red.fnt",
+                          "filename":  "035.bin",
+                          "size":  21436
+                      },
+                      {
+                          "sha256":  "50ddf7ed77a75b80df9c101b4921817d62b13eb755043b0f66dea9162fbbe8f2",
+                          "name":  "fx_dlg_dialog_white.fnt",
+                          "filename":  "036.bin",
+                          "size":  22904
+                      },
+                      {
+                          "sha256":  "ee77c7e69e1b772fb1a4eb9ed829c73739b9faccf514b159b30bf1be4259b924",
+                          "name":  "fx_dlg_dialog_yellow.fnt",
+                          "filename":  "037.bin",
+                          "size":  21722
                       },
                       {
                           "sha256":  "5a108127f2d1abfb610d93ece14a64fd7b7bca3d7a0a0a9df8397d563b1fcdfd",
                           "name":  "fx_g_b.fnt",
-                          "filename":  "026.bin",
+                          "filename":  "038.bin",
                           "size":  18930
                       },
                       {
                           "sha256":  "d157b6d76c6743dbeb40e199a187734f0d686708ba3eae11fb20e9a86aee4214",
                           "name":  "fx_g_go.fnt",
-                          "filename":  "027.bin",
+                          "filename":  "039.bin",
                           "size":  20271
                       },
                       {
                           "sha256":  "dde802bea6e6196de352575614b2bb1ff53f64247b7af58f351f7376a80190be",
                           "name":  "fx_g_gr.fnt",
-                          "filename":  "028.bin",
+                          "filename":  "040.bin",
                           "size":  19306
                       },
                       {
                           "sha256":  "cc6c06f3ef81cf8bc9b94dd91ebb52cb82c2c78b8faf6ef17440ef5735546c23",
                           "name":  "fx_g_gra.fnt",
-                          "filename":  "029.bin",
+                          "filename":  "041.bin",
                           "size":  19337
                       },
                       {
                           "sha256":  "9d31ceec1d08e7832c4388cfb8d75e83016584e18e47f75fe9ecd3ff63def2bd",
                           "name":  "fx_g_n.fnt",
-                          "filename":  "030.bin",
+                          "filename":  "042.bin",
                           "size":  22136
                       },
                       {
                           "sha256":  "78a6f54e26780c6bbf64f65d3aeb37a5b8b3897a609d68dd6f350701fd8ad3a0",
                           "name":  "fx_g_or.fnt",
-                          "filename":  "031.bin",
+                          "filename":  "043.bin",
                           "size":  19692
                       },
                       {
                           "sha256":  "68fc9fadfc3f908e1d066edaa2f0283bc0fb9462ea228b496547ebf2a7514c33",
                           "name":  "fx_g_red.fnt",
-                          "filename":  "032.bin",
+                          "filename":  "044.bin",
                           "size":  17914
                       },
                       {
                           "sha256":  "2ae5f5f3ed2d2f9f45e4b9868555e873afd177189772755bf6029e2596553ee1",
                           "name":  "fx_g_yel.fnt",
-                          "filename":  "033.bin",
+                          "filename":  "045.bin",
                           "size":  20996
                       },
                       {
                           "sha256":  "001cd4f4d962da698070f06f75390ce55b81c48aff220b409cdbce8a9b8b576f",
                           "name":  "fx_pg_b.fnt",
-                          "filename":  "034.bin",
+                          "filename":  "046.bin",
                           "size":  11553
                       },
                       {
                           "sha256":  "6d2f1f61e43bae5a5b3f15e9331fb6f211b6cd7e0e13c7954bbb3e72a957798d",
                           "name":  "fx_pg_go.fnt",
-                          "filename":  "035.bin",
+                          "filename":  "047.bin",
                           "size":  12242
                       },
                       {
                           "sha256":  "1d1db2bf33ce560db8b32e3b3f0d36f256c980046db3c069dcce1fd462b1cf7b",
                           "name":  "fx_pg_gr.fnt",
-                          "filename":  "036.bin",
+                          "filename":  "048.bin",
                           "size":  11725
                       },
                       {
                           "sha256":  "ce7d8fcc3fa838495712cfa831d6a526b11f3d85d3538e323aaa55f0394c0059",
                           "name":  "fx_pg_n.fnt",
-                          "filename":  "037.bin",
+                          "filename":  "049.bin",
                           "size":  13138
                       },
                       {
                           "sha256":  "625ca1f8bb505ca98563a04d30788574d5df3b7903035f1ab5c1faf9598a2634",
                           "name":  "fx_pg_or.fnt",
-                          "filename":  "038.bin",
+                          "filename":  "050.bin",
                           "size":  12068
                       },
                       {
                           "sha256":  "5c6ea3226ab400a69790414f68770fad0933b1212c9fd67a81fc43eace86b7c3",
                           "name":  "fx_pg_red.fnt",
-                          "filename":  "039.bin",
+                          "filename":  "051.bin",
                           "size":  11072
                       },
                       {
                           "sha256":  "39e6cf694af821b5f0664d37d0eee1ee3588ebec66853635ed0767bb36816585",
                           "name":  "fx_pg_yel.fnt",
-                          "filename":  "040.bin",
+                          "filename":  "052.bin",
                           "size":  12516
                       },
                       {
                           "sha256":  "30b26edb7f3e7259d80750cdb431f584a4b8d73570c533d3b4ca673330284a81",
                           "name":  "fx_pk_fontblack1.fnt",
-                          "filename":  "041.bin",
+                          "filename":  "053.bin",
                           "size":  14994
                       },
                       {
                           "sha256":  "3b772e30d1f1a7b9853415c93291a8e1099aa18b476313a417a18245f755c50b",
                           "name":  "fx_pk_fontblack2.fnt",
-                          "filename":  "042.bin",
+                          "filename":  "054.bin",
                           "size":  14629
                       },
                       {
                           "sha256":  "0f22c168490ea9d337ba13c77abd681900ed0d27e3f76bc6e66d8e961b59880b",
                           "name":  "fx_ps_dlg_dialog_grey.fnt",
-                          "filename":  "043.bin",
+                          "filename":  "055.bin",
                           "size":  31232
                       },
                       {
                           "sha256":  "f9407dd78476115040df7c64274a7b4828add78fa8f201e3eec294e60f967a14",
                           "name":  "fx_ps_dlg_dialog_red.fnt",
-                          "filename":  "044.bin",
+                          "filename":  "056.bin",
                           "size":  30809
                       },
                       {
                           "sha256":  "576619d7e2ebec8416b13638406730c90e804c6ff0b4329edeafadc0940d3bfe",
                           "name":  "fx_ps_dlg_dialog_white.fnt",
-                          "filename":  "045.bin",
+                          "filename":  "057.bin",
                           "size":  33247
                       },
                       {
                           "sha256":  "5cfc88a3c4e524a7c4b9de00427bb4105e47b1624519570fad2028d6ec844e1f",
                           "name":  "fx_ps_dlg_dialog_yellow.fnt",
-                          "filename":  "046.bin",
+                          "filename":  "058.bin",
                           "size":  31401
                       },
                       {
                           "sha256":  "5a108127f2d1abfb610d93ece14a64fd7b7bca3d7a0a0a9df8397d563b1fcdfd",
                           "name":  "fx_ps_pg_b.fnt",
-                          "filename":  "047.bin",
+                          "filename":  "059.bin",
                           "size":  18930
                       },
                       {
                           "sha256":  "d157b6d76c6743dbeb40e199a187734f0d686708ba3eae11fb20e9a86aee4214",
                           "name":  "fx_ps_pg_go.fnt",
-                          "filename":  "048.bin",
+                          "filename":  "060.bin",
                           "size":  20271
                       },
                       {
                           "sha256":  "dde802bea6e6196de352575614b2bb1ff53f64247b7af58f351f7376a80190be",
                           "name":  "fx_ps_pg_gr.fnt",
-                          "filename":  "049.bin",
+                          "filename":  "061.bin",
                           "size":  19306
                       },
                       {
                           "sha256":  "9d31ceec1d08e7832c4388cfb8d75e83016584e18e47f75fe9ecd3ff63def2bd",
                           "name":  "fx_ps_pg_n.fnt",
-                          "filename":  "050.bin",
+                          "filename":  "062.bin",
                           "size":  22136
                       },
                       {
                           "sha256":  "78a6f54e26780c6bbf64f65d3aeb37a5b8b3897a609d68dd6f350701fd8ad3a0",
                           "name":  "fx_ps_pg_or.fnt",
-                          "filename":  "051.bin",
+                          "filename":  "063.bin",
                           "size":  19692
                       },
                       {
                           "sha256":  "68fc9fadfc3f908e1d066edaa2f0283bc0fb9462ea228b496547ebf2a7514c33",
                           "name":  "fx_ps_pg_red.fnt",
-                          "filename":  "052.bin",
+                          "filename":  "064.bin",
                           "size":  17914
                       },
                       {
                           "sha256":  "2ae5f5f3ed2d2f9f45e4b9868555e873afd177189772755bf6029e2596553ee1",
                           "name":  "fx_ps_pg_yel.fnt",
-                          "filename":  "053.bin",
+                          "filename":  "065.bin",
                           "size":  20996
                       },
                       {
                           "sha256":  "b4c028c3ece816243bc700839cf31588327e46a34af9082410e4b87f290af4e3",
                           "name":  "fx_ps_pk_fontblack1.fnt",
-                          "filename":  "054.bin",
+                          "filename":  "066.bin",
                           "size":  22571
                       },
                       {
                           "sha256":  "5b19dd7513214c387e87cfece935d772da859ea1e3a7dcca08938cb2a0dcfdd1",
                           "name":  "fx_ps_pk_fontblack2.fnt",
-                          "filename":  "055.bin",
-                          "size":  22098
-                      },
-                      {
-                          "sha256":  "3bcb40e3c3dac82c834744604b1489d40166803cfeb372e5265af8990bd4153d",
-                          "name":  "gfx_def",
-                          "filename":  "056.bin",
-                          "size":  104190
-                      },
-                      {
-                          "sha256":  "51195d287e32710b884033e399312346257b677ab7ac6afd85a067dc948a6514",
-                          "name":  "gfxprev_dlg_A",
-                          "filename":  "057.bin",
-                          "size":  90668
-                      },
-                      {
-                          "sha256":  "51195d287e32710b884033e399312346257b677ab7ac6afd85a067dc948a6514",
-                          "name":  "gfxprev_dlg_A_f0",
-                          "filename":  "058.bin",
-                          "size":  90668
-                      },
-                      {
-                          "sha256":  "2c3cc3797ff615d299e4a8830ee3c49c3732a746d28b64c76b167d195543de3e",
-                          "name":  "gfxprev_dlg_B",
-                          "filename":  "059.bin",
-                          "size":  90103
-                      },
-                      {
-                          "sha256":  "2c3cc3797ff615d299e4a8830ee3c49c3732a746d28b64c76b167d195543de3e",
-                          "name":  "gfxprev_dlg_B_f0",
-                          "filename":  "060.bin",
-                          "size":  90103
-                      },
-                      {
-                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
-                          "name":  "gfxprev_dlg_C",
-                          "filename":  "061.bin",
-                          "size":  87912
-                      },
-                      {
-                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
-                          "name":  "gfxprev_dlg_C_f0",
-                          "filename":  "062.bin",
-                          "size":  87912
-                      },
-                      {
-                          "sha256":  "79456510f98d8b19a995d2b488793608d102390690f16da267140014d7820aaf",
-                          "name":  "gfxprev_dlg_D",
-                          "filename":  "063.bin",
-                          "size":  83007
-                      },
-                      {
-                          "sha256":  "79456510f98d8b19a995d2b488793608d102390690f16da267140014d7820aaf",
-                          "name":  "gfxprev_dlg_D_f0",
-                          "filename":  "064.bin",
-                          "size":  83007
-                      },
-                      {
-                          "sha256":  "8651050e9360438825f0ca7673b632ecc3f8541c9f62c404a6ee3016e7320e05",
-                          "name":  "gfxprev_dlg_E",
-                          "filename":  "065.bin",
-                          "size":  85661
-                      },
-                      {
-                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
-                          "name":  "gfxprev_dlg_E_f0",
-                          "filename":  "066.bin",
-                          "size":  87912
-                      },
-                      {
-                          "sha256":  "13f5be79c83d3182339879b5484a16cc49062a48a32a3a6ec7f07f974747147d",
-                          "name":  "gfxprev_dlg_orig",
                           "filename":  "067.bin",
-                          "size":  87633
-                      },
-                      {
-                          "sha256":  "13f5be79c83d3182339879b5484a16cc49062a48a32a3a6ec7f07f974747147d",
-                          "name":  "gfxprev_dlg_orig_f0",
-                          "filename":  "068.bin",
-                          "size":  87633
-                      },
-                      {
-                          "sha256":  "88ea6abd9aec2032cb1b668f8df038aa2258bd4e6f516d59df3b06bd39ab602a",
-                          "name":  "gfxprev_dlg_v21",
-                          "filename":  "069.bin",
-                          "size":  85709
-                      },
-                      {
-                          "sha256":  "88ea6abd9aec2032cb1b668f8df038aa2258bd4e6f516d59df3b06bd39ab602a",
-                          "name":  "gfxprev_dlg_v21_f0",
-                          "filename":  "070.bin",
-                          "size":  85709
-                      },
-                      {
-                          "sha256":  "deff4eb3a2b310194e1d3d6c63da525a6595421e7d8d7212dad507e3e16f51c0",
-                          "name":  "gfxprev_fx_off",
-                          "filename":  "071.bin",
-                          "size":  71067
-                      },
-                      {
-                          "sha256":  "998c409fb4d76bf55b567672d57e980eda39befc2ce6ce8e5ca6624b3304b18d",
-                          "name":  "gfxprev_fx_on",
-                          "filename":  "072.bin",
-                          "size":  61141
-                      },
-                      {
-                          "sha256":  "55a8eee6ab161deb358526a387492b6b5d0001da522581f1f38b3b73a8fb8d53",
-                          "name":  "gfxprev_inv_A",
-                          "filename":  "073.bin",
-                          "size":  78025
-                      },
-                      {
-                          "sha256":  "24d7419ecc57163fc797b3c75f28a0d204f429f1546a58f961915a5ab8f19db9",
-                          "name":  "gfxprev_inv_B",
-                          "filename":  "074.bin",
-                          "size":  74068
-                      },
-                      {
-                          "sha256":  "6b215c4c4c6c9b233802799fb8a7fe6d4c9ca2c7097812991b611ff701f7e10c",
-                          "name":  "gfxprev_inv_C",
-                          "filename":  "075.bin",
-                          "size":  78890
-                      },
-                      {
-                          "sha256":  "1bceea027f4e5af2e2aa05e2e4ccbe71531c767ce6e1e931d0dc5bb694506045",
-                          "name":  "gfxprev_inv_D",
-                          "filename":  "076.bin",
-                          "size":  89121
-                      },
-                      {
-                          "sha256":  "bab247097c75fc267a5f5a8a2be64813067103af7126f06890f079477af29fcb",
-                          "name":  "gfxprev_inv_E",
-                          "filename":  "077.bin",
-                          "size":  71468
-                      },
-                      {
-                          "sha256":  "5dc1cd95f30ac46358c5595b25572075ffbb705c3703634740278621a5aa9637",
-                          "name":  "gfxprev_inv_itemsHD",
-                          "filename":  "078.bin",
-                          "size":  76302
-                      },
-                      {
-                          "sha256":  "674a5b742f2ac57fda32cd9bf913d98e09fa5478d87e1de06e83a0ee169059cc",
-                          "name":  "gfxprev_inv_itemsRedrawn",
-                          "filename":  "079.bin",
-                          "size":  74273
-                      },
-                      {
-                          "sha256":  "e6cf3913c01bfebb1bf8cc4627ebc24aaa3999bf39484d135a70479a5dbaa559",
-                          "name":  "gfxprev_inv_orig",
-                          "filename":  "080.bin",
-                          "size":  71456
-                      },
-                      {
-                          "sha256":  "61d0511cc1c593b3dc0d3e8f728f7ff96b0ed68282832044ed0a411848543634",
-                          "name":  "gfxprev_inv_v2",
-                          "filename":  "081.bin",
-                          "size":  74695
-                      },
-                      {
-                          "sha256":  "6b37e8a0b8c23061c8a9824b4719b16a559fe7f6de49339be41eac39f470a05a",
-                          "name":  "gfxprev_up_orig",
-                          "filename":  "082.bin",
-                          "size":  86395
-                      },
-                      {
-                          "sha256":  "e5dc181d41a9b2c18734dbf50bcffcfd3cb5e205bdd4a6cd8410b344e70ab3d8",
-                          "name":  "gfxprev_up_v2",
-                          "filename":  "083.bin",
-                          "size":  90739
-                      },
-                      {
-                          "sha256":  "392dcc3dadf138f8b717bfd7fa8164b514b7b02a4ab9e059a0835ce1972fbb39",
-                          "name":  "gfxprev_winkit_big",
-                          "filename":  "084.bin",
-                          "size":  86997
-                      },
-                      {
-                          "sha256":  "7cd0ffb520a93d82b5e96d18cc66854556c91e970da0cd60422cc7b9fc2dde8b",
-                          "name":  "gfxprev_winkit_orig",
-                          "filename":  "085.bin",
-                          "size":  54145
-                      },
-                      {
-                          "sha256":  "5d86d98c08f0c6e1a0a63d8985cbd9d6933497e45f0a759e15f861225cdc9236",
-                          "name":  "help_game",
-                          "filename":  "086.bin",
-                          "size":  13189
-                      },
-                      {
-                          "sha256":  "211fa6fe28343d69a5881b31ad2189074704e836821592b9ea670acdde68faf3",
-                          "name":  "help_shared",
-                          "filename":  "087.bin",
-                          "size":  23699
+                          "size":  22098
                       },
                       {
                           "sha256":  "3b068fb62ce43016b1a39f159f7e398b1cf7bce67a49c5edb0a7d9db8b727056",
                           "name":  "icon_dd",
-                          "filename":  "088.bin",
+                          "filename":  "068.bin",
                           "size":  738
-                      },
-                      {
-                          "sha256":  "2de48f12d1b84e20c2e7d4b2d1414b90c2dcb50d152038d4df28c4b8127067cf",
-                          "name":  "ko_dialogtxt.dat.gz",
-                          "filename":  "089.bin",
-                          "size":  378015
-                      },
-                      {
-                          "sha256":  "bd18e76d9071922e9befb921b365fc7b434cc49723133e0fbeca52cea0d2581c",
-                          "name":  "ko_global.cmp.gz",
-                          "filename":  "090.bin",
-                          "size":  613908
-                      },
-                      {
-                          "sha256":  "2fecc5a5934544555160d4bd3a56b36a9e12544c10c45fd2d70ff18575e75cce",
-                          "name":  "ko_hints.txt.gz",
-                          "filename":  "091.bin",
-                          "size":  1610
-                      },
-                      {
-                          "sha256":  "c9f37960f2131205e0aa9d85134ddb8e1154b422a3255d80cfc76ea7bb692e80",
-                          "name":  "ko_itemgen.cmp.gz",
-                          "filename":  "092.bin",
-                          "size":  4852
-                      },
-                      {
-                          "sha256":  "315fa9360d0a6a0f433bff9afb6d7639e6259466495dd1761a481c5b433f49e1",
-                          "name":  "ko_khangul.dll",
-                          "filename":  "093.bin",
-                          "size":  124416
-                      },
-                      {
-                          "sha256":  "7a9ae2851aa03c9ab98a00fa8488c1f95473fe8299eaae567cb6da2f374fa1b0",
-                          "name":  "ko_mono.cmp.gz",
-                          "filename":  "094.bin",
-                          "size":  45644
-                      },
-                      {
-                          "sha256":  "f791e59abdd6120c73c9b9318963710ccde0b22f61cfb7f2fd9e821759130a2d",
-                          "name":  "ko_skills.txt.gz",
-                          "filename":  "095.bin",
-                          "size":  7729
-                      },
-                      {
-                          "sha256":  "31083b95eaca5948d6b169faa179def21c10b356a18130976e75d47d4bb150a8",
-                          "name":  "ko_text.cmp.gz",
-                          "filename":  "096.bin",
-                          "size":  39396
                       },
                       {
                           "sha256":  "0438237c908094c32f6643e208874a3d2f7af5552cf12f429ee21df925be5bbe",
                           "name":  "ko_ui",
-                          "filename":  "097.bin",
+                          "filename":  "069.bin",
                           "size":  92872
                       },
                       {
                           "sha256":  "1e758673e2561cf2990a2a9ccd479d603239fe493f0ddb0785311c64dc03049e",
                           "name":  "korean_manifest",
-                          "filename":  "098.bin",
+                          "filename":  "070.bin",
                           "size":  1447
                       },
                       {
-                          "sha256":  "7d5f9e81f4e8c310c0faf8ffa34e9872bfa2b07ca28e62c17e6e90412f6a0f95",
-                          "name":  "OsirisDLL.dll",
+                          "sha256":  "315fa9360d0a6a0f433bff9afb6d7639e6259466495dd1761a481c5b433f49e1",
+                          "name":  "ko_khangul.dll",
+                          "filename":  "071.bin",
+                          "size":  124416
+                      },
+                      {
+                          "sha256":  "211fa6fe28343d69a5881b31ad2189074704e836821592b9ea670acdde68faf3",
+                          "name":  "help_shared",
+                          "filename":  "072.bin",
+                          "size":  23699
+                      },
+                      {
+                          "sha256":  "5d86d98c08f0c6e1a0a63d8985cbd9d6933497e45f0a759e15f861225cdc9236",
+                          "name":  "help_game",
+                          "filename":  "073.bin",
+                          "size":  13189
+                      },
+                      {
+                          "sha256":  "3bcb40e3c3dac82c834744604b1489d40166803cfeb372e5265af8990bd4153d",
+                          "name":  "gfx_def",
+                          "filename":  "074.bin",
+                          "size":  104190
+                      },
+                      {
+                          "sha256":  "bd7822adf4d12f4bd0b97567c89fca48ca305b1fad97d1c1a30cc2c51388574d",
+                          "name":  "changelog_ru",
+                          "filename":  "075.bin",
+                          "size":  8581
+                      },
+                      {
+                          "sha256":  "8be77c75268ba387001574ccb655eec06e6bb18662172e6c9426a5ee0260e9cf",
+                          "name":  "changelog_en",
+                          "filename":  "076.bin",
+                          "size":  5066
+                      },
+                      {
+                          "sha256":  "deff4eb3a2b310194e1d3d6c63da525a6595421e7d8d7212dad507e3e16f51c0",
+                          "name":  "gfxprev_fx_off",
+                          "filename":  "077.bin",
+                          "size":  71067
+                      },
+                      {
+                          "sha256":  "998c409fb4d76bf55b567672d57e980eda39befc2ce6ce8e5ca6624b3304b18d",
+                          "name":  "gfxprev_fx_on",
+                          "filename":  "078.bin",
+                          "size":  61141
+                      },
+                      {
+                          "sha256":  "55a8eee6ab161deb358526a387492b6b5d0001da522581f1f38b3b73a8fb8d53",
+                          "name":  "gfxprev_inv_A",
+                          "filename":  "079.bin",
+                          "size":  78025
+                      },
+                      {
+                          "sha256":  "24d7419ecc57163fc797b3c75f28a0d204f429f1546a58f961915a5ab8f19db9",
+                          "name":  "gfxprev_inv_B",
+                          "filename":  "080.bin",
+                          "size":  74068
+                      },
+                      {
+                          "sha256":  "6b215c4c4c6c9b233802799fb8a7fe6d4c9ca2c7097812991b611ff701f7e10c",
+                          "name":  "gfxprev_inv_C",
+                          "filename":  "081.bin",
+                          "size":  78890
+                      },
+                      {
+                          "sha256":  "1bceea027f4e5af2e2aa05e2e4ccbe71531c767ce6e1e931d0dc5bb694506045",
+                          "name":  "gfxprev_inv_D",
+                          "filename":  "082.bin",
+                          "size":  89121
+                      },
+                      {
+                          "sha256":  "bab247097c75fc267a5f5a8a2be64813067103af7126f06890f079477af29fcb",
+                          "name":  "gfxprev_inv_E",
+                          "filename":  "083.bin",
+                          "size":  71468
+                      },
+                      {
+                          "sha256":  "5dc1cd95f30ac46358c5595b25572075ffbb705c3703634740278621a5aa9637",
+                          "name":  "gfxprev_inv_itemsHD",
+                          "filename":  "084.bin",
+                          "size":  76302
+                      },
+                      {
+                          "sha256":  "674a5b742f2ac57fda32cd9bf913d98e09fa5478d87e1de06e83a0ee169059cc",
+                          "name":  "gfxprev_inv_itemsRedrawn",
+                          "filename":  "085.bin",
+                          "size":  74273
+                      },
+                      {
+                          "sha256":  "e6cf3913c01bfebb1bf8cc4627ebc24aaa3999bf39484d135a70479a5dbaa559",
+                          "name":  "gfxprev_inv_orig",
+                          "filename":  "086.bin",
+                          "size":  71456
+                      },
+                      {
+                          "sha256":  "61d0511cc1c593b3dc0d3e8f728f7ff96b0ed68282832044ed0a411848543634",
+                          "name":  "gfxprev_inv_v2",
+                          "filename":  "087.bin",
+                          "size":  74695
+                      },
+                      {
+                          "sha256":  "6b37e8a0b8c23061c8a9824b4719b16a559fe7f6de49339be41eac39f470a05a",
+                          "name":  "gfxprev_up_orig",
+                          "filename":  "088.bin",
+                          "size":  86395
+                      },
+                      {
+                          "sha256":  "e5dc181d41a9b2c18734dbf50bcffcfd3cb5e205bdd4a6cd8410b344e70ab3d8",
+                          "name":  "gfxprev_up_v2",
+                          "filename":  "089.bin",
+                          "size":  90739
+                      },
+                      {
+                          "sha256":  "392dcc3dadf138f8b717bfd7fa8164b514b7b02a4ab9e059a0835ce1972fbb39",
+                          "name":  "gfxprev_winkit_big",
+                          "filename":  "090.bin",
+                          "size":  86997
+                      },
+                      {
+                          "sha256":  "7cd0ffb520a93d82b5e96d18cc66854556c91e970da0cd60422cc7b9fc2dde8b",
+                          "name":  "gfxprev_winkit_orig",
+                          "filename":  "091.bin",
+                          "size":  54145
+                      },
+                      {
+                          "sha256":  "51195d287e32710b884033e399312346257b677ab7ac6afd85a067dc948a6514",
+                          "name":  "gfxprev_dlg_A",
+                          "filename":  "092.bin",
+                          "size":  90668
+                      },
+                      {
+                          "sha256":  "51195d287e32710b884033e399312346257b677ab7ac6afd85a067dc948a6514",
+                          "name":  "gfxprev_dlg_A_f0",
+                          "filename":  "093.bin",
+                          "size":  90668
+                      },
+                      {
+                          "sha256":  "2c3cc3797ff615d299e4a8830ee3c49c3732a746d28b64c76b167d195543de3e",
+                          "name":  "gfxprev_dlg_B",
+                          "filename":  "094.bin",
+                          "size":  90103
+                      },
+                      {
+                          "sha256":  "2c3cc3797ff615d299e4a8830ee3c49c3732a746d28b64c76b167d195543de3e",
+                          "name":  "gfxprev_dlg_B_f0",
+                          "filename":  "095.bin",
+                          "size":  90103
+                      },
+                      {
+                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
+                          "name":  "gfxprev_dlg_C",
+                          "filename":  "096.bin",
+                          "size":  87912
+                      },
+                      {
+                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
+                          "name":  "gfxprev_dlg_C_f0",
+                          "filename":  "097.bin",
+                          "size":  87912
+                      },
+                      {
+                          "sha256":  "79456510f98d8b19a995d2b488793608d102390690f16da267140014d7820aaf",
+                          "name":  "gfxprev_dlg_D",
+                          "filename":  "098.bin",
+                          "size":  83007
+                      },
+                      {
+                          "sha256":  "79456510f98d8b19a995d2b488793608d102390690f16da267140014d7820aaf",
+                          "name":  "gfxprev_dlg_D_f0",
                           "filename":  "099.bin",
-                          "size":  356352
+                          "size":  83007
                       },
                       {
-                          "sha256":  "1de3e84876aa0f30192799d1d68cf64c1efa39d55dc1274a89b31842080e952d",
-                          "name":  "tool_DDIE.exe",
+                          "sha256":  "8651050e9360438825f0ca7673b632ecc3f8541c9f62c404a6ee3016e7320e05",
+                          "name":  "gfxprev_dlg_E",
                           "filename":  "100.bin",
-                          "size":  28526
+                          "size":  85661
                       },
                       {
-                          "sha256":  "5719ef858ab202fa692233ec5abb19048d8fc591900d2b8f806f246e52efeeb4",
-                          "name":  "tool_DialogCompiler.exe",
+                          "sha256":  "dbd6b21e84406f86d6de6110aafdf0c33c610de02a3b4a881577e681f26242a2",
+                          "name":  "gfxprev_dlg_E_f0",
                           "filename":  "101.bin",
-                          "size":  250970
+                          "size":  87912
                       },
                       {
-                          "sha256":  "a31fa0c0c405dafb595323594adba5dc2875831bd08c8f65e426ff1c61c3ab75",
-                          "name":  "tool_FontEditor.exe",
+                          "sha256":  "13f5be79c83d3182339879b5484a16cc49062a48a32a3a6ec7f07f974747147d",
+                          "name":  "gfxprev_dlg_orig",
                           "filename":  "102.bin",
-                          "size":  37996
+                          "size":  87633
                       },
                       {
-                          "sha256":  "da2ba30e788377eecfc576dac2e9bffae547aeec6e97f55889991b7d58e44510",
-                          "name":  "tool_ItemsEditor.exe",
+                          "sha256":  "13f5be79c83d3182339879b5484a16cc49062a48a32a3a6ec7f07f974747147d",
+                          "name":  "gfxprev_dlg_orig_f0",
                           "filename":  "103.bin",
-                          "size":  120369
+                          "size":  87633
                       },
                       {
-                          "sha256":  "f5d96523a8be1ed360e081a5d6c5b586c45c44069453a0fab8f2bf2611d18aa9",
-                          "name":  "tool_SaveEditor.exe",
+                          "sha256":  "88ea6abd9aec2032cb1b668f8df038aa2258bd4e6f516d59df3b06bd39ab602a",
+                          "name":  "gfxprev_dlg_v21",
                           "filename":  "104.bin",
-                          "size":  109758
+                          "size":  85709
                       },
                       {
-                          "sha256":  "a77bf2b535a20fad8bd467e05374f783ea8b94c018b4280a3ba859f9f9b3ef88",
-                          "name":  "tool_TextCompiler.exe",
+                          "sha256":  "88ea6abd9aec2032cb1b668f8df038aa2258bd4e6f516d59df3b06bd39ab602a",
+                          "name":  "gfxprev_dlg_v21_f0",
                           "filename":  "105.bin",
-                          "size":  23213
+                          "size":  85709
                       }
                   ],
     "release_sha256":  "9d13de533b28432d9ba3ca72b7056042781b6a3f3c18b8add126ade380ded729"
