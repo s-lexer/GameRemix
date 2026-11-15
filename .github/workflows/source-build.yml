@@ -24,3 +24,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           if (-not (Test-Path dist/build/GameRemix-source-only.exe)) { throw 'No EXE produced' }
           Get-FileHash dist/build/GameRemix-source-only.exe -Algorithm SHA256
+      - name: Verify embedded resources from pinned official release
+        shell: pwsh
+        run: |
+          python src/build.py --from-release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $file = 'dist/build/GameRemix-rebuilt-from-release.exe'
+          if (-not (Test-Path $file)) { throw 'Full build did not produce its EXE' }
+          $assembly = [Reflection.Assembly]::ReflectionOnlyLoadFrom((Resolve-Path $file).Path)
+          $names = @($assembly.GetManifestResourceNames())
+          if ($names.Count -ne 106) { throw "Expected 106 embedded resources, found $($names.Count)" }
+          Get-FileHash $file -Algorithm SHA256

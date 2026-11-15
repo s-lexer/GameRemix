@@ -20,7 +20,21 @@ python src/build.py --source-only
 
 Produces `dist/build/GameRemix-source-only.exe` from the actual C# sources without the missing proprietary and third-party resources. **This is a limited verification build, not a complete/functional release binary**. It does not prove that a distributed signed EXE is safe or byte-for-byte reproducible. [GitHub Actions checks compilation](.github/workflows/source-build.yml).
 
-### Full build
+### Full-featured rebuild from an official signed release
+
+For the published source snapshot (**1.0.38**), a complete application can now be compiled with **all 106 embedded resources**:
+
+```powershell
+git clone https://github.com/s-lexer/GameRemix.git
+cd GameRemix
+python src/build.py --from-release
+```
+
+Output: `dist/build/GameRemix-rebuilt-from-release.exe`. The tool downloads the official signed `GameRemix-1.0.38.exe` from gameremix.pro and verifies its **pinned SHA-256** before extracting its .NET manifest resources **without executing the downloaded program**. It then compiles the public C# sources with all resource streams. The cached release and extracted resources stay under ignored `dist/`, never in Git. A resource-by-resource SHA-256 comparison against the original release was performed successfully.
+
+This provides a **complete unsigned rebuild for code inspection/testing**, not a bit-for-bit reproduction of the signed release. It still relies on the official EXE for binary resources; these are not independently built from source and must be independently audited if evaluating trust. No third-party/game binaries are separately republished in this repository. Do not represent the unsigned rebuild as the official signed distribution.
+
+### Full build with manually supplied resources
 
 ```powershell
 python src/build.py
@@ -73,7 +87,21 @@ python src/build.py --source-only
 
 Получится `dist/build/GameRemix-source-only.exe`. Режим собирает настоящий C#-код приложения, исключая отсутствующие игровые и сторонние ресурсы. **Это неполный проверочный бинар, не полноценная рабочая версия.** Его нельзя выдавать за релиз или использовать для доказательства отсутствия угроз в подписанном EXE. Компиляцию проверяет [GitHub Actions](.github/workflows/source-build.yml).
 
-### Полная сборка
+### Полная сборка с ресурсами из официального релиза
+
+Теперь можно собрать **полную программу со всеми 106 ресурсами** из публичных исходников версии **1.0.38**:
+
+```powershell
+git clone https://github.com/s-lexer/GameRemix.git
+cd GameRemix
+python src/build.py --from-release
+```
+
+Результат: `dist/build/GameRemix-rebuilt-from-release.exe`. Скрипт скачивает официальный подписанный `GameRemix-1.0.38.exe` с gameremix.pro, сверяет **жёстко зафиксированный SHA-256**, извлекает встроенные .NET-ресурсы **без запуска скачанного приложения** и компилирует C#-код с этими ресурсами. Кэш находится в игнорируемой Git папке `dist/`. Проверено: все 106 ресурсов собранного и оригинального EXE совпали по SHA-256.
+
+Это **полноценная по составу, но неподписанная** сборка, а не побайтовое воспроизведение подписанного релиза. Исходный EXE остаётся источником сторонних бинарных ресурсов: их происхождение и безопасность этим способом независимо не доказаны. Мы не публикуем игровые и сторонние бинарники отдельно. Не выдавайте пересобранный неподписанный файл за официальный подписанный релиз.
+
+### Полная сборка с ресурсами, предоставленными вручную
 
 ```powershell
 python src/build.py
