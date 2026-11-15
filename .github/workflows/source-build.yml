@@ -31,7 +31,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $file = 'dist/build/GameRemix-rebuilt-from-release.exe'
           if (-not (Test-Path $file)) { throw 'Full build did not produce its EXE' }
-          $assembly = [Reflection.Assembly]::ReflectionOnlyLoadFrom((Resolve-Path $file).Path)
-          $names = @($assembly.GetManifestResourceNames())
-          if ($names.Count -ne 106) { throw "Expected 106 embedded resources, found $($names.Count)" }
+          # Reflection-only inspection is supported by Windows PowerShell 5.1 (.NET Framework),
+          # but not by GitHub's default PowerShell 7 (.NET runtime).
+          $count = & "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -Command '[Reflection.Assembly]::ReflectionOnlyLoadFrom((Resolve-Path "dist/build/GameRemix-rebuilt-from-release.exe").Path).GetManifestResourceNames().Length'
+          if ($LASTEXITCODE -ne 0 -or ("$count".Trim()) -ne '106') { throw "Expected 106 embedded resources, found $count" }
           Get-FileHash $file -Algorithm SHA256
